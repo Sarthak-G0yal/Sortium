@@ -77,7 +77,7 @@ Moves all files from subfolders into a single directory and deletes the empty su
 ## 🧪 Run Tests
 
 ```bash
-pytest --cov=src/files_sorter
+pytest --cov=tests
 ```
 
 ---

@@ -1,7 +1,7 @@
-from files_sorter import Sorter
+from SortPy import Sorter
 
 # Define categories
-file_types = {
+file_types : dict[str, list[str]] = {
     "Images": [".jpg", ".jpeg", ".png", ".gif", ".bmp"],
     "Documents": [".pdf", ".docx", ".txt", ".doc", ".pptx"],
     "Videos": [".mp4", ".avi", ".mov", ".mkv"],
