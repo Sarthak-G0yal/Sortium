@@ -1,4 +1,4 @@
-# 🗂️ files-sorter
+# 🗂️ SortPy
 
 A Python utility to **automatically sort files** in a folder by their **type** (e.g., Images, Documents, Videos, etc.) and by their **last modified date**.
 
@@ -16,8 +16,8 @@ A Python utility to **automatically sort files** in a folder by their **type** (
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/files-sorter.git
-cd files-sorter
+git clone https://github.com/Sarthak-G0yal/SortPy.git
+cd SortPy
 
 # Install in editable mode
 pip install -e .
@@ -28,7 +28,7 @@ pip install -e .
 ### 1. Import and Initialize
 
 ```python
-from files_sorter.Sorter import Sorter
+from SortPy import Sorter
 
 # Define file type categories
 file_types = {
@@ -71,24 +71,6 @@ sorter.move_it_out("/path/to/source", "/path/to/target")
 ```
 
 Moves all files from subfolders into a single directory and deletes the empty subfolders.
-
----
-
-## 📦 Project Structure
-
-```
-files_sorter/
-├── src/files_sorter/
-│   ├── Sorter.py         # Main logic
-│   └── __init__.py
-├── tests/
-│   └── test_sorter.py
-├── README.md
-├── pyproject.toml
-├── setup.cfg
-├── MANIFEST.in
-└── LICENSE
-```
 
 ---
 

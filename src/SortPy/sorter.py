@@ -3,9 +3,12 @@ import shutil
 from datetime import datetime
 
 """
-This file defines the Sorter class, which helps in organizing files
-in a directory based on file type (like Images, Documents, etc.)
-and modification date.
+This module defines the Sorter class for organizing files within directories.
+
+The Sorter class helps sort files based on their type (e.g., Images, Documents)
+and their last modification date. It can move files into categorized folders,
+further organize them by modification date, and flatten nested directories by
+moving files out.
 """
 
 # Main sorter class.
@@ -13,7 +16,10 @@ and modification date.
 
 class Sorter:
     """
-    Initializes the Sorter with a dictionary mapping categories to file extensions.
+    Sorter class to organize files in a directory by file type and modification date.
+
+    Attributes:
+        file_types_dict (dict[str, list[str]]): A dictionary mapping categories to file extensions.
 
     Example:
         file_types = {
@@ -23,19 +29,27 @@ class Sorter:
             "Music": [".mp3", ".wav"],
             "Others": []
         }
+
+        sorter = Sorter(file_types)
+        sorter.sort_by_type('/path/to/downloads')
+        sorter.sort_by_date('/path/to/downloads', ['Images', 'Documents'])
     """
 
-    def __init__(self, file_types_dict: dict):
-        if not isinstance(file_types_dict, dict):
-            raise TypeError("file_types_dict must be a dictionary.")
+    def __init__(self, file_types_dict: dict[str, list[str]]):
         self.file_types_dict = file_types_dict
 
-    def get_file_modified_date(self, file_path):
+    def get_file_modified_date(self, file_path: str) -> datetime:
         """
         Returns the last modified datetime of a file.
 
-        :param file_path: Full path to the file.
-        :return: datetime object representing last modification time.
+        Args:
+            file_path (str): Full path to the file.
+
+        Returns:
+            datetime: Datetime object representing the last modification time.
+
+        Raises:
+            FileNotFoundError: If the file does not exist.
         """
         if not os.path.exists(file_path):
             raise FileNotFoundError(f"File does not exist: {file_path}")
@@ -45,21 +59,37 @@ class Sorter:
         """
         Determines the category of a file based on its extension.
 
-        :param extension: File extension (e.g., '.jpg').
-        :return: Category name as string.
+        Args:
+            extension (str) : The extension of the file that will be sorted.
+
+        Returns:
+            str: Category of the file based on the file_types_dict.
         """
         for category, extensions in self.file_types_dict.items():
             if extension.lower() in extensions:
                 return category
         return "Others"
 
-    def move_it_out(self, folder_path: str, dest_folder_path: str) -> None:
+    def flatten_the_dir(self, folder_path: str, dest_folder_path: str) -> None:
         """
-        Moves files from all subdirectories in a folder to a destination folder.
-        Then removes those subdirectories.
+        Moves all files from subdirectories of a given folder into a destination folder,
+        and then removes those subdirectories.
 
-        :param folder_path: Path containing subdirectories.
-        :param dest_folder_path: Path where files should be moved.
+        This is useful for flattening a directory structure by collecting all files
+        from nested folders and moving them into one target folder.
+
+        Args:
+            folder_path (str): Path to the root folder containing subdirectories with files.
+            dest_folder_path (str): Path to the folder where all files should be moved.
+
+        Raises:
+            FileNotFoundError: If the root folder (`folder_path`) does not exist.
+
+        Notes:
+            - Any errors encountered while moving files or removing subdirectories are
+            caught and printed, but not raised.
+            - Fails silently (with printed messages) on permission issues, missing files,
+            or non-empty directories during deletion.
         """
         if not os.path.exists(folder_path):
             raise FileNotFoundError(f"The folder path '{folder_path}' does not exist.")
@@ -95,8 +125,13 @@ class Sorter:
         """
         Sorts files in a directory into subdirectories by file type.
 
-        :param folder_path: Directory with unsorted files.
+        Args:
+            folder_path (str): Path to the directory containing unsorted files.
+
+        Raises:
+            FileNotFoundError: If the specified folder does not exist.
         """
+
         if not os.path.exists(folder_path):
             raise FileNotFoundError(f"The path '{folder_path}' does not exist.")
 
@@ -118,18 +153,25 @@ class Sorter:
         except Exception as e:
             print(f"An error occurred while sorting by type: {e}")
 
-    def sort_by_date(self, folder_path: str, folder_types: list) -> None:
+    def sort_by_date(self, folder_path: str, folder_types: list[str]) -> None:
         """
-        Sorts files inside each category folder into subfolders by their last modified date.
+        Sorts files inside specified category folders into subfolders based on their last modified date.
 
-        :param folder_path: Root path where category folders exist.
-        :param folder_types: List of folder names to process (e.g., ['Images', 'Documents']).
+        Each file is moved into a subfolder named by the modification date in the format "DD-MMM-YYYY".
+
+        Args:
+            folder_path (str): Root directory path containing the category folders.
+            folder_types (list[str]): List of category folder names to process (e.g., ['Images', 'Documents']).
+
+        Raises:
+            FileNotFoundError: If the root folder (`folder_path`) does not exist.
+
+        Notes:
+            - If a category folder in `folder_types` does not exist, it will be skipped with a printed message.
+            - Errors during moving individual files are caught and printed but do not stop the process.
         """
         if not os.path.exists(folder_path):
             raise FileNotFoundError(f"The folder path '{folder_path}' does not exist.")
-        if not isinstance(folder_types, list):
-            raise TypeError("folder_types must be a list of folder type names.")
-
         for folder_type in folder_types:
             sub_folder_path = os.path.join(folder_path, folder_type)
             if os.path.exists(sub_folder_path):
