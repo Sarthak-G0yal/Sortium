@@ -22,17 +22,16 @@ class Sorter:
         file_types_dict (dict[str, list[str]]): A dictionary mapping categories to file extensions.
 
     Example:
-        file_types = {
-            "Images": [".jpg", ".jpeg", ".png", ".gif"],
-            "Documents": [".pdf", ".docx", ".txt"],
-            "Videos": [".mp4", ".avi"],
-            "Music": [".mp3", ".wav"],
-            "Others": []
-        }
-
-        sorter = Sorter(file_types)
-        sorter.sort_by_type('/path/to/downloads')
-        sorter.sort_by_date('/path/to/downloads', ['Images', 'Documents'])
+        >>> file_types = {
+        ...     "Images": [".jpg", ".jpeg", ".png", ".gif"],
+        ...     "Documents": [".pdf", ".docx", ".txt"],
+        ...     "Videos": [".mp4", ".avi"],
+        ...     "Music": [".mp3", ".wav"],
+        ...     "Others": []
+        ... }
+        >>> sorter = Sorter(file_types)
+        >>> sorter.sort_by_type('/path/to/downloads')
+        >>> sorter.sort_by_date('/path/to/downloads', ['Images', 'Documents'])
     """
 
     def __init__(self, file_types_dict: dict[str, list[str]]):
@@ -86,10 +85,11 @@ class Sorter:
             FileNotFoundError: If the root folder (`folder_path`) does not exist.
 
         Notes:
+
             - Any errors encountered while moving files or removing subdirectories are
-            caught and printed, but not raised.
+              caught and printed, but not raised.
             - Fails silently (with printed messages) on permission issues, missing files,
-            or non-empty directories during deletion.
+              or non-empty directories during deletion.
         """
         if not os.path.exists(folder_path):
             raise FileNotFoundError(f"The folder path '{folder_path}' does not exist.")

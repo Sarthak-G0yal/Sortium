@@ -1,6 +1,71 @@
+# Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# Distribution / packaging
 *.egg-info/
 dist/
 build/
-*.lock
+.eggs/
+*.egg
+
+# Python virtual environments
+.env/
+.venv/
+env/
+venv/
+
+# Sphinx documentation build
+_build/
+*.doctree
+*.pickle
+*.html
+*.js
+*.css
+*.woff
+*.ttf
+*.svg
+*.eot
+*.png
+
+# Editor directories and files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS / system files
+.DS_Store
+Thumbs.db
+
+# pytest cache
+.pytest_cache/
+
+# Test output
+htmlcov/
+coverage.xml
+*.cover
+*.log
+
+# Jupyter Notebook checkpoints (if applicable)
+.ipynb_checkpoints/
+
+# MyPy and other tooling
+.mypy_cache/
+.dmypy.json
+.pyre/
+.pytype/
+
+# C extensions
+*.c
+*.cpp
+*.h
+*.o
+*.obj
+
+# Sphinx _static and _templates if auto-generated
+_static/
+_templates/
