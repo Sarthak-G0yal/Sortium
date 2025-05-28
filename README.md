@@ -94,7 +94,7 @@ Moves all files from subfolders into a single directory and deletes the empty su
 ## 🧪 Run Tests
 
 ```bash
-pytest --cov=tests
+pytest src/tests --cov=src/SortPy
 ```
 
 ---

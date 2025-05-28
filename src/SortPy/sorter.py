@@ -1,6 +1,7 @@
 import os
 import shutil
-from datetime import datetime
+from .file_utils import get_file_modified_date, get_subdirectories_names
+from .config import DEFAULT_FILE_TYPES
 
 """
 This module defines the Sorter class for organizing files within directories.
@@ -19,7 +20,7 @@ class Sorter:
     Sorter class to organize files in a directory by file type and modification date.
 
     Attributes:
-        file_types_dict (dict[str, list[str]]): A dictionary mapping categories to file extensions.
+        file_types_dict (dict[str, list[str]]): A mapping of file category names (e.g., "Images", "Documents") to lists of associated file extensions (e.g., [".jpg", ".png"]). This dictionary is used to determine how files should be grouped during sorting. If not provided, the default mapping from `DEFAULT_FILE_TYPES` is used.
 
     Example:
         >>> file_types = {
@@ -34,27 +35,10 @@ class Sorter:
         >>> sorter.sort_by_date('/path/to/downloads', ['Images', 'Documents'])
     """
 
-    def __init__(self, file_types_dict: dict[str, list[str]]):
+    def __init__(self, file_types_dict: dict[str, list[str]] = DEFAULT_FILE_TYPES):
         self.file_types_dict = file_types_dict
 
-    def get_file_modified_date(self, file_path: str) -> datetime:
-        """
-        Returns the last modified datetime of a file.
-
-        Args:
-            file_path (str): Full path to the file.
-
-        Returns:
-            datetime: Datetime object representing the last modification time.
-
-        Raises:
-            FileNotFoundError: If the file does not exist.
-        """
-        if not os.path.exists(file_path):
-            raise FileNotFoundError(f"File does not exist: {file_path}")
-        return datetime.fromtimestamp(os.stat(file_path).st_mtime)
-
-    def get_category(self, extension: str) -> str:
+    def __get_category(self, extension: str) -> str:
         """
         Determines the category of a file based on its extension.
 
@@ -69,64 +53,13 @@ class Sorter:
                 return category
         return "Others"
 
-    def flatten_the_dir(self, folder_path: str, dest_folder_path: str) -> None:
-        """
-        Moves all files from subdirectories of a given folder into a destination folder,
-        and then removes those subdirectories.
-
-        This is useful for flattening a directory structure by collecting all files
-        from nested folders and moving them into one target folder.
-
-        Args:
-            folder_path (str): Path to the root folder containing subdirectories with files.
-            dest_folder_path (str): Path to the folder where all files should be moved.
-
-        Raises:
-            FileNotFoundError: If the root folder (`folder_path`) does not exist.
-
-        Notes:
-
-            - Any errors encountered while moving files or removing subdirectories are
-              caught and printed, but not raised.
-            - Fails silently (with printed messages) on permission issues, missing files,
-              or non-empty directories during deletion.
-        """
-        if not os.path.exists(folder_path):
-            raise FileNotFoundError(f"The folder path '{folder_path}' does not exist.")
-
-        if not os.path.exists(dest_folder_path):
-            os.makedirs(dest_folder_path)
-
-        try:
-            # Identify subdirectories within the given folder
-            sub_dir_list = [
-                name
-                for name in os.listdir(folder_path)
-                if os.path.isdir(os.path.join(folder_path, name))
-            ]
-            for sub_dir_name in sub_dir_list:
-                file_path = os.path.join(folder_path, sub_dir_name)
-                items = os.listdir(file_path)
-                for item in items:
-                    source_item = os.path.join(file_path, item)
-                    dest_item = os.path.join(dest_folder_path, item)
-                    try:
-                        shutil.move(source_item, dest_item)
-                    except Exception as e:
-                        print(f"Failed to move '{source_item}' to '{dest_item}': {e}")
-                try:
-                    os.rmdir(file_path)
-                except OSError as e:
-                    print(f"Could not remove directory '{file_path}': {e}")
-        except Exception as e:
-            print(f"Error occurred while cleaning up folders: {e}")
-
-    def sort_by_type(self, folder_path: str) -> None:
+    def sort_by_type(self, folder_path: str, ignore_dir: list[str] = None) -> None:
         """
         Sorts files in a directory into subdirectories by file type.
 
         Args:
             folder_path (str): Path to the directory containing unsorted files.
+            ignore_dir (list[str]): Names of subdirectories within `folder_path` that should be ignored during processing.
 
         Raises:
             FileNotFoundError: If the specified folder does not exist.
@@ -136,20 +69,21 @@ class Sorter:
             raise FileNotFoundError(f"The path '{folder_path}' does not exist.")
 
         try:
-            for filename in os.listdir(folder_path):
-                file_path = os.path.join(folder_path, filename)
+            sub_dir_list = get_subdirectories_names(folder_path, ignore_dir)
+            for sub_dir_name in sub_dir_list:
+                file_path = os.path.join(folder_path, sub_dir_name)
 
                 if os.path.isfile(file_path):
-                    _, ext = os.path.splitext(filename)
-                    category = self.get_category(ext)
+                    _, ext = os.path.splitext(sub_dir_name)
+                    category = self.__get_category(ext)
 
                     dest_folder = os.path.join(folder_path, category)
                     os.makedirs(dest_folder, exist_ok=True)
 
                     try:
-                        shutil.move(file_path, os.path.join(dest_folder, filename))
+                        shutil.move(file_path, os.path.join(dest_folder, sub_dir_name))
                     except Exception as e:
-                        print(f"Error moving file '{filename}': {e}")
+                        print(f"Error moving file '{sub_dir_name}': {e}")
         except Exception as e:
             print(f"An error occurred while sorting by type: {e}")
 
@@ -181,7 +115,7 @@ class Sorter:
                         if os.path.isfile(file_path):
                             try:
                                 # Get modified date and format it
-                                modified = self.get_file_modified_date(file_path)
+                                modified = get_file_modified_date(file_path)
                                 date_folder = modified.strftime("%d-%b-%Y")
 
                                 # Create a subfolder for the date and move the file

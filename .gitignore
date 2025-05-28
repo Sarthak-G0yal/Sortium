@@ -69,3 +69,6 @@ coverage.xml
 # Sphinx _static and _templates if auto-generated
 _static/
 _templates/
+
+# pytest generated files
+.coverage

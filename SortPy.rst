@@ -1,21 +1,23 @@
-SortPy package
+SortPy Package
 ==============
-
-Submodules
-----------
-
-SortPy.sorter module
---------------------
-
-.. automodule:: SortPy.sorter
-   :members:
-   :show-inheritance:
-   :undoc-members:
-
-Module contents
----------------
 
 .. automodule:: SortPy
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
+
+file_utils
+~~~~~~~~~~
+
+.. automodule:: SortPy.file_utils
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+config
+~~~~~~
+
+.. automodule:: SortPy.config
+   :members:
+   :undoc-members:
+   :show-inheritance:
