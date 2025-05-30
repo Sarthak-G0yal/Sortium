@@ -48,6 +48,10 @@ def test_get_file_modified_date(setup_test_dirs):
     modified_time = get_file_modified_date(file_path)
     assert isinstance(modified_time, datetime)
 
+def test_get_file_modified_date_file_not_found(setup_test_dirs):
+    file_path = "./wrong_path"
+    with pytest.raises(FileNotFoundError):
+        get_file_modified_date(file_path)
 
 def test_get_subdirectories_names(setup_test_dirs):
     base = setup_test_dirs["base"]
@@ -79,3 +83,4 @@ def test_flatten_the_dir_removes_subdirs(setup_test_dirs):
     assert not os.path.exists(os.path.join(setup_test_dirs["base"], "sub1"))
     assert not os.path.exists(os.path.join(setup_test_dirs["base"], "sub2"))
     assert os.path.exists(setup_test_dirs["ignored"])  # ignored dir should remain
+    
