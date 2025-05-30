@@ -8,7 +8,7 @@ import sys
 project = "SortPy"
 author = "Sarthak Goyal"
 copyright = "2025, Sarthak Goyal"
-release = "1.0.0"
+release = "1.3.1"
 
 # -- General configuration ---------------------------------------------------
 

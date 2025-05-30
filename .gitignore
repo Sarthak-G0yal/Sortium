@@ -17,6 +17,7 @@ build/
 .venv/
 env/
 venv/
+.env
 
 # Sphinx documentation build
 _build/
