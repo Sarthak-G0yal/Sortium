@@ -9,11 +9,6 @@ A Python utility to **automatically sort files** in a folder by their **type** (
   - [📚 Table of Contents](#-table-of-contents)
   - [🚀 Features](#-features)
   - [🛠️ Installation](#️-installation)
-  - [🧾 Usage](#-usage)
-    - [1. Import and Initialize](#1-import-and-initialize)
-    - [2. Sort Files by Type](#2-sort-files-by-type)
-    - [3. Sort Files by Date](#3-sort-files-by-date)
-    - [4. Flatten Subdirectories (optional)](#4-flatten-subdirectories-optional)
   - [🧪 Run Tests](#-run-tests)
   - [👤 Author](#-author)
   - [📄 License](#-license)
@@ -39,57 +34,6 @@ cd SortPy
 # Install in editable mode
 pip install -e .
 ```
-
-## 🧾 Usage
-
-### 1. Import and Initialize
-
-```python
-from SortPy import Sorter
-
-# Define file type categories
-file_types = {
-    "Images": [".jpg", ".jpeg", ".png", ".gif", ".bmp"],
-    "Documents": [".pdf", ".docx", ".txt", ".doc", ".pptx"],
-    "Videos": [".mp4", ".avi", ".mov", ".mkv"],
-    "Music": [".mp3", ".wav", ".aac"],
-    "Others": []
-}
-
-sorter = Sorter(file_types)
-```
-
----
-
-### 2. Sort Files by Type
-
-```python
-sorter.sort_by_type("/path/to/your/folder")
-```
-
-After execution, files will be moved into subfolders like `Images/`, `Documents/`, etc., based on their extensions.
-
----
-
-### 3. Sort Files by Date
-
-```python
-sorter.sort_by_date("/path/to/your/folder", ["Images", "Documents", "Videos", "Music"])
-```
-
-Files inside each category will be sorted into folders by date (e.g., `06-May-2025/`).
-
----
-
-### 4. Flatten Subdirectories (optional)
-
-```python
-sorter.flatten_the_dir("/path/to/source", "/path/to/target")
-```
-
-Moves all files from subfolders into a single directory and deletes the empty subfolders.
-
----
 
 ## 🧪 Run Tests
 

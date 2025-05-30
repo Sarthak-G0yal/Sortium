@@ -34,12 +34,11 @@ def get_subdirectories_names(
     return sub_dir_list
 
 
-def flatten_the_dir(
+def flatten_the_folder(
     folder_path: str, dest_folder_path: str, ignore_dir: list[str] = None
 ) -> None:
     """
-    Moves all files from subdirectories of a given folder into a destination folder,
-    and then removes those subdirectories.
+    Moves all files from subdirectories of a given folder into a destination folder.
 
     This is useful for flattening a directory structure by collecting all files
     from nested folders and moving them into one target folder.
@@ -67,19 +66,33 @@ def flatten_the_dir(
 
     try:
         sub_dir_list = get_subdirectories_names(folder_path, ignore_dir)
-        for sub_dir_name in sub_dir_list:
-            file_path = os.path.join(folder_path, sub_dir_name)
-            items = os.listdir(file_path)
-            for item in items:
-                source_item = os.path.join(file_path, item)
-                dest_item = os.path.join(dest_folder_path, item)
+        file_list = [
+            name
+            for name in os.listdir(folder_path)
+            if os.path.isfile(os.path.join(folder_path, name))
+            and name not in (ignore_dir or [])
+        ]
+        if sub_dir_list and not file_list:
+            for sub_dir_name in sub_dir_list:
+                flatten_the_folder(
+                    os.path.join(folder_path, sub_dir_name),
+                    dest_folder_path,
+                    ignore_dir,
+                )
+        elif file_list:
+            for name in file_list:
+                source_item = os.path.join(folder_path, name)
+                dest_item = os.path.join(dest_folder_path, name)
                 try:
                     shutil.move(source_item, dest_item)
                 except Exception as e:
                     print(f"Failed to move '{source_item}' to '{dest_item}': {e}")
-            try:
-                os.rmdir(file_path)
-            except OSError as e:
-                print(f"Could not remove directory '{file_path}': {e}")
+            if sub_dir_list:
+                for sub_dir_name in sub_dir_list:
+                    flatten_the_folder(
+                        os.path.join(folder_path, sub_dir_name),
+                        dest_folder_path,
+                        ignore_dir,
+                    )
     except Exception as e:
         print(f"Error occurred while cleaning up folders: {e}")

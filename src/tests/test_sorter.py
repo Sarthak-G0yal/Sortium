@@ -4,7 +4,6 @@ import tempfile
 import pytest
 from datetime import datetime
 from SortPy.sorter import Sorter
-from SortPy.config import DEFAULT_FILE_TYPES
 
 
 def create_temp_file(directory, name, content="sample"):
