@@ -5,7 +5,7 @@ import sys
 
 # -- Project information -----------------------------------------------------
 
-project = "SortPy"
+project = "Sortium"
 author = "Sarthak Goyal"
 copyright = "2025, Sarthak Goyal"
 release = "1.3.1"
@@ -25,7 +25,7 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 # Add the path to your source code
 sys.path.insert(
     0, os.path.abspath("../src/*")
-)  # Adjusted to point to the SortPy package
+)  # Adjusted to point to the Sortium package
 
 # -- Options for Napoleon ----------------------------------------------------
 

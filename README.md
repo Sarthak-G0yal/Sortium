@@ -1,11 +1,11 @@
-# 🗂️ SortPy
+# 🗂️ Sortium
 
 A Python utility to **automatically sort files** in a folder by their **type** (e.g., Images, Documents, Videos, etc.) and by their **last modified date**.
 
 ---
 
 ## 📚 Table of Contents
-- [🗂️ SortPy](#️-sortpy)
+- [🗂️ Sortium](#️-sortium)
   - [📚 Table of Contents](#-table-of-contents)
   - [🚀 Features](#-features)
   - [🛠️ Installation](#️-installation)
@@ -38,7 +38,7 @@ pip install -e .
 ## 🧪 Run Tests
 
 ```bash
-pytest src/tests --cov=src/SortPy
+pytest src/tests --cov=src/Structa
 ```
 
 ---

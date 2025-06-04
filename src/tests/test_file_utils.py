@@ -3,7 +3,7 @@ import shutil
 import tempfile
 import pytest
 from datetime import datetime
-from SortPy import flatten_the_folder, get_file_modified_date, get_subdirectories_names
+from sortium import flatten_the_folder, get_file_modified_date, get_subdirectories_names
 
 
 def create_temp_file(directory, name, content="test"):

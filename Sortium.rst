@@ -1,7 +1,7 @@
-SortPy Package
+Sortium Package
 ==============
 
-.. automodule:: SortPy
+.. automodule:: Sortium
    :members:
    :undoc-members:
    :show-inheritance:
@@ -9,7 +9,7 @@ SortPy Package
 file_utils
 ~~~~~~~~~~
 
-.. automodule:: SortPy.file_utils
+.. automodule:: Sortium.file_utils
    :members:
    :undoc-members:
    :show-inheritance:
@@ -17,7 +17,7 @@ file_utils
 config
 ~~~~~~
 
-.. automodule:: SortPy.config
+.. automodule:: Sortium.config
    :members:
    :undoc-members:
    :show-inheritance:

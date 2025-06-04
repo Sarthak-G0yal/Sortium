@@ -3,7 +3,7 @@ import shutil
 import tempfile
 import pytest
 from datetime import datetime
-from SortPy.sorter import Sorter
+from sortium.sorter import Sorter
 
 
 def create_temp_file(directory, name, content="sample"):

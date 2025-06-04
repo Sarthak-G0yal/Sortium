@@ -1,7 +1,7 @@
-SortPy
+Sortium
 ======
 
 .. toctree::
    :maxdepth: 4
 
-   SortPy
+   Sortium

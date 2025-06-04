@@ -1,9 +1,9 @@
-.. SortPy documentation master file, created by
+.. Sortium documentation master file, created by
    sphinx-quickstart on Fri May 23 07:05:31 2025.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-SortPy documentation
+Sortium documentation
 ====================
 
 Add your content using ``reStructuredText`` syntax. See the
