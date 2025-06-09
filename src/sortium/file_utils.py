@@ -54,9 +54,8 @@ def flatten_the_folder(
     Notes:
 
         - Any errors encountered while moving files or removing subdirectories are
-        caught and printed, but not raised.
-        - Fails silently (with printed messages) on permission issues, missing files,
-        or non-empty directories during deletion.
+          caught and printed, but not raised.
+        - Fails silently (with printed messages) on permission issues, missing files, or non-empty directories during deletion.
     """
     if not os.path.exists(folder_path):
         raise FileNotFoundError(f"The folder path '{folder_path}' does not exist.")

@@ -8,24 +8,21 @@ import sys
 project = "Sortium"
 author = "Sarthak Goyal"
 copyright = "2025, Sarthak Goyal"
-release = "1.3.1"
 
 # -- General configuration ---------------------------------------------------
 
 extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.napoleon",
-    "sphinx.ext.viewcode",  # adds links to source code
-    "sphinx.ext.autosummary",  # for summary tables
+    "sphinx.ext.viewcode",
+    "sphinx.ext.autosummary",
 ]
 
 templates_path = ["_templates"]
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
 # Add the path to your source code
-sys.path.insert(
-    0, os.path.abspath("../src/*")
-)  # Adjusted to point to the Sortium package
+sys.path.insert(0, os.path.abspath("../src"))
 
 # -- Options for Napoleon ----------------------------------------------------
 
@@ -34,5 +31,6 @@ napoleon_numpy_docstring = False
 
 # -- Options for HTML output -------------------------------------------------
 
-html_theme = "sphinx_rtd_theme"  # Read the Docs theme
+html_theme = "sphinx_rtd_theme"
 html_static_path = ["_static"]
+

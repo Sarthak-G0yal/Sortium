@@ -1,7 +1,7 @@
-Sortium Package
-==============
+sortium Package
+===============
 
-.. automodule:: Sortium
+.. automodule:: sortium
    :members:
    :undoc-members:
    :show-inheritance:
@@ -9,7 +9,7 @@ Sortium Package
 file_utils
 ~~~~~~~~~~
 
-.. automodule:: Sortium.file_utils
+.. automodule:: sortium.file_utils
    :members:
    :undoc-members:
    :show-inheritance:
@@ -17,7 +17,7 @@ file_utils
 config
 ~~~~~~
 
-.. automodule:: Sortium.config
+.. automodule:: sortium.config
    :members:
    :undoc-members:
    :show-inheritance:

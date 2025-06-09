@@ -1,7 +1,7 @@
-Sortium
-======
+sortium
+=======
 
 .. toctree::
    :maxdepth: 4
 
-   Sortium
+   sortium
