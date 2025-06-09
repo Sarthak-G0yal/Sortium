@@ -1,44 +1,63 @@
 # 🗂️ Sortium
 
-A Python utility to **automatically sort files** in a folder by their **type** (e.g., Images, Documents, Videos, etc.) and by their **last modified date**.
+A Python utility to **automatically sort files** in a folder by their **type** (e.g., Images, Documents, Videos, etc.) and their **last modified date**.
 
 ---
 
 ## 📚 Table of Contents
+
 - [🗂️ Sortium](#️-sortium)
   - [📚 Table of Contents](#-table-of-contents)
   - [🚀 Features](#-features)
   - [🛠️ Installation](#️-installation)
+    - [📦 PyPI](#-pypi)
   - [🧪 Run Tests](#-run-tests)
   - [👤 Author](#-author)
   - [📄 License](#-license)
   - [🤝 Contributing](#-contributing)
   - [📚 Documentation \& Issues](#-documentation--issues)
-  - [📦 PyPI (Coming Soon)](#-pypi-coming-soon)
+
+---
 
 ## 🚀 Features
 
-- ✅ Organize files into folders based on their type (e.g., Images, Documents, Videos, Music, Others)
-- 📅 Optionally further sort files by their last modified date within each category
-- 📁 Optionally flatten subdirectories into a single folder
+* ✅ Automatically organizes files into folders based on type:
+
+  * Images, Documents, Videos, Music, Others
+* 📅 Optionally sort files by **last modified date** within each category
+* 📁 Optionally **flatten** subdirectories into a single level before sorting
 
 ---
 
 ## 🛠️ Installation
 
+### 📦 PyPI
+
+Install the package from PyPI:
+
+```bash
+pip install sortium
+```
+
+Alternatively, install from source:
+
 ```bash
 # Clone the repository
-git clone https://github.com/Sarthak-G0yal/SortPy.git
-cd SortPy
+git clone https://github.com/Sarthak-G0yal/Sortium.git
+cd Sortium
 
 # Install in editable mode
 pip install -e .
 ```
 
+---
+
 ## 🧪 Run Tests
 
+To run unit tests with coverage:
+
 ```bash
-pytest src/tests --cov=src/Structa
+pytest src/tests --cov
 ```
 
 ---
@@ -54,46 +73,27 @@ pytest src/tests --cov=src/Structa
 
 This project is licensed under the [GNU General Public License v3.0](LICENSE).
 
+---
+
 ## 🤝 Contributing
 
 Contributions are welcome and appreciated! 🎉
 
-If you'd like to improve this project, here's how to get started:
+To contribute:
 
-1. **Fork** the repository.  
-2. **Create a new branch** for your feature or fix.  
-3. **Write tests** for your changes.  
-4. **Commit** your changes with clear messages.  
-5. **Open a pull request** and describe what you’ve changed.
+1. **Fork** the repository
+2. **Create a new branch** (`feature/my-feature` or `fix/my-fix`)
+3. **Write tests** for your changes
+4. **Commit** with clear and conventional messages
+5. **Open a pull request** and describe your changes
 
-Please follow conventional commit guidelines and ensure your code is linted and tested before submitting.
+✅ Please follow [Conventional Commits](https://www.conventionalcommits.org/) and ensure your code is linted and tested before submitting.
 
 ---
 
 ## 📚 Documentation & Issues
 
-This project is documented using [Sphinx](https://www.sphinx-doc.org/).
+This project uses [Sphinx](https://www.sphinx-doc.org/) for documentation.
 
-- 📖 **Documentation**: Full documentation can be viewed in the HTML version in [`_build/html/`](./_build/html/index.html) after running `make html`.
-
-- 🐛 **Report Bugs / Request Features**: [Open an Issue](https://github.com/Sarthak-G0yal/SortPy/issues)
-
----
-
-## 📦 PyPI (Coming Soon)
-
-This project is not yet available on [PyPI](https://pypi.org), but you can install it locally:
-
-```bash
-git clone https://github.com/Sarthak-G0yal/SortPy.git
-cd SortPy
-pip install -e .
-```
-
-Once published, you’ll be able to install it with:
-
-```bash
-pip install sortpy
-```
-
-Stay tuned for updates! 🚀
+* 📖 **Documentation**: After running `make html`, view the docs at [`_build/html/index.html`](./_build/html/index.html)
+* 🐛 **Issues / Feature Requests**: [Open an issue](https://github.com/Sarthak-G0yal/Sortium/issues)
