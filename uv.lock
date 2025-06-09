@@ -180,7 +180,7 @@ wheels = [
 
 [[package]]
 name = "sortium"
-version = "1.4.0"
+version = "1.4.2"
 source = { editable = "." }
 dependencies = [
     { name = "pytest" },
