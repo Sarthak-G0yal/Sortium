@@ -19,6 +19,8 @@ dependencies = [
     "pytest>=8.3.5",
     "pytest-cov>=6.1.1",
     "setuptools>=80.1.0",
+    "sphinx>=7.4.7",
+    "sphinx-rtd-theme>=3.0.2",
     "wheel>=0.45.1",
 ]
 
@@ -36,3 +38,9 @@ where = ["src"]
 
 [tool.pytest.ini_options]
 testpaths = ["src/tests"]
+
+[project.optional-dependencies]
+docs = [
+    "sphinx",
+    "sphinx-rtd-theme>=3.0.2",
+]
