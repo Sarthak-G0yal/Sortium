@@ -95,6 +95,9 @@ To contribute:
 
 This project uses [Sphinx](https://www.sphinx-doc.org/) for documentation.
 
-* 📖 **Documentation**: After running `make html` from the `docs/` folder (`cd docs && make html`), view the docs at [`docs/_build/html/index.html`](docs/_build/html/index.html)
+* 📖 **Documentation**:
+  After running `make html` from the `docs/` folder (`cd docs && make html`), view the generated documentation at [`docs/_build/html/index.html`](docs/_build/html/index.html).
+  You can also view the hosted documentation here: [📄 View Online Documentation](https://sarthak-g0yal.github.io/Sortium)
 
-* 🐛 **Issues / Feature Requests**: [Open an issue](https://github.com/Sarthak-G0yal/Sortium/issues)
+* 🐛 **Issues / Feature Requests**:
+  [Open an issue](https://github.com/Sarthak-G0yal/Sortium/issues)
