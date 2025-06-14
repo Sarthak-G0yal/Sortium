@@ -10,7 +10,7 @@ It provides:
 - Utility functions for working with the file system:
   - `get_file_modified_date`
   - `get_subdirectories_names`
-  - `flatten_the_folder`
+  - `flatten_dir`
 
 Example usage::
 

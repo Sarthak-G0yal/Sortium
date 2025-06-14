@@ -454,7 +454,7 @@ wheels = [
 
 [[package]]
 name = "sortium"
-version = "1.4.2"
+version = "1.4.3"
 source = { editable = "." }
 dependencies = [
     { name = "pytest" },
@@ -467,15 +467,26 @@ dependencies = [
     { name = "wheel" },
 ]
 
+[package.optional-dependencies]
+docs = [
+    { name = "sphinx", version = "7.4.7", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.10'" },
+    { name = "sphinx", version = "8.1.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.10.*'" },
+    { name = "sphinx", version = "8.2.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
+    { name = "sphinx-rtd-theme" },
+]
+
 [package.metadata]
 requires-dist = [
     { name = "pytest", specifier = ">=8.3.5" },
     { name = "pytest-cov", specifier = ">=6.1.1" },
     { name = "setuptools", specifier = ">=80.1.0" },
     { name = "sphinx", specifier = ">=7.4.7" },
+    { name = "sphinx", marker = "extra == 'docs'" },
     { name = "sphinx-rtd-theme", specifier = ">=3.0.2" },
+    { name = "sphinx-rtd-theme", marker = "extra == 'docs'", specifier = ">=3.0.2" },
     { name = "wheel", specifier = ">=0.45.1" },
 ]
+provides-extras = ["docs"]
 
 [[package]]
 name = "sphinx"

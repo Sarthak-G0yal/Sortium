@@ -1,6 +1,6 @@
 import os
 import shutil
-from .file_utils import get_file_modified_date, get_subdirectories_names
+from .file_utils import _get_file_modified_date, _get_subdirectories_names
 from .config import DEFAULT_FILE_TYPES
 
 """
@@ -69,7 +69,7 @@ class Sorter:
             raise FileNotFoundError(f"The path '{folder_path}' does not exist.")
 
         try:
-            sub_dir_list = get_subdirectories_names(folder_path, ignore_dir)
+            sub_dir_list = _get_subdirectories_names(folder_path, ignore_dir)
             for sub_dir_name in sub_dir_list:
                 file_path = os.path.join(folder_path, sub_dir_name)
 
@@ -115,7 +115,7 @@ class Sorter:
                         if os.path.isfile(file_path):
                             try:
                                 # Get modified date and format it
-                                modified = get_file_modified_date(file_path)
+                                modified = _get_file_modified_date(file_path)
                                 date_folder = modified.strftime("%d-%b-%Y")
 
                                 # Create a subfolder for the date and move the file

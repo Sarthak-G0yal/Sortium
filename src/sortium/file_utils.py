@@ -3,7 +3,7 @@ from datetime import datetime
 import shutil
 
 
-def get_file_modified_date(file_path: str) -> datetime:
+def _get_file_modified_date(file_path: str) -> datetime:
     """
     Returns the last modified datetime of a file.
 
@@ -21,7 +21,7 @@ def get_file_modified_date(file_path: str) -> datetime:
     return datetime.fromtimestamp(os.stat(file_path).st_mtime)
 
 
-def get_subdirectories_names(
+def _get_subdirectories_names(
     folder_path: str, ignore_dir: list[str] = None
 ) -> list[str]:
     if ignore_dir is None:
@@ -34,8 +34,11 @@ def get_subdirectories_names(
     return sub_dir_list
 
 
-def flatten_the_folder(
-    folder_path: str, dest_folder_path: str, ignore_dir: list[str] = None
+def flatten_dir(
+    folder_path: str,
+    dest_folder_path: str,
+    ignore_dir: list[str] = None,
+    rm_subdir: bool = False,
 ) -> None:
     """
     Moves all files from subdirectories of a given folder into a destination folder.
@@ -47,6 +50,7 @@ def flatten_the_folder(
         folder_path (str): Path to the root folder containing subdirectories with files.
         dest_folder_path (str): Path to the folder where all files should be moved.
         ignore_dir (list[str]): Names of subdirectories within `folder_path` that should be ignored during processing.
+        rm_subdir (bool): If True, subdirectories will be removed after moving their contents.
 
     Raises:
         FileNotFoundError: If the root folder (`folder_path`) does not exist.
@@ -64,20 +68,27 @@ def flatten_the_folder(
         os.makedirs(dest_folder_path)
 
     try:
-        sub_dir_list = get_subdirectories_names(folder_path, ignore_dir)
+        # Get name of the sub directories ignoring the one in ignore_dir list.
+        sub_dir_list = _get_subdirectories_names(folder_path, ignore_dir)
+
+        # Get the list of files to be moved.
         file_list = [
             name
             for name in os.listdir(folder_path)
             if os.path.isfile(os.path.join(folder_path, name))
             and name not in (ignore_dir or [])
         ]
+
+        # If file_list empty then then return the function for sub_dir.
         if sub_dir_list and not file_list:
             for sub_dir_name in sub_dir_list:
-                flatten_the_folder(
+                flatten_dir(
                     os.path.join(folder_path, sub_dir_name),
                     dest_folder_path,
                     ignore_dir,
                 )
+
+        # Move the files in the file_list to the dest_folder and check for folder in sub_dir_list.
         elif file_list:
             for name in file_list:
                 source_item = os.path.join(folder_path, name)
@@ -88,10 +99,20 @@ def flatten_the_folder(
                     print(f"Failed to move '{source_item}' to '{dest_item}': {e}")
             if sub_dir_list:
                 for sub_dir_name in sub_dir_list:
-                    flatten_the_folder(
+                    flatten_dir(
                         os.path.join(folder_path, sub_dir_name),
                         dest_folder_path,
                         ignore_dir,
                     )
+
+                # Remove the sub directories if rm_subdir is True.
+                if rm_subdir:
+                    for sub_dir_name in sub_dir_list:
+                        sub_dir_path = os.path.join(folder_path, sub_dir_name)
+                        try:
+                            shutil.rmtree(sub_dir_path)
+                        except Exception as e:
+                            print(f"Failed to remove directory '{sub_dir_path}': {e}")
+
     except Exception as e:
         print(f"Error occurred while cleaning up folders: {e}")

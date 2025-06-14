@@ -1,24 +1,28 @@
 Sortium Documentation
 =====================
 
-Welcome to the documentation for **Sortium**, a Python utility for organizing files by type and modification date.
+Welcome to **Sortium**, a Python utility for organizing files by type and modification date.
 
 Sortium helps you:
 
-- Automatically sort files into categories (e.g., Images, Documents, Music)
+- Automatically sort files into categories (Images, Documents, Music, etc.)
 - Organize files within categories by their last modified date
 - Flatten deeply nested folder structures
-
-This documentation provides an overview of the library, its modules, and usage examples.
 
 .. contents::
    :local:
    :depth: 1
 
-Get Started
+Quick Start
 -----------
 
-Sortium can be used via the main ``Sorter`` class or utility functions:
+Install via pip:
+
+.. code-block:: console
+
+   pip install sortium
+
+Then:
 
 .. code-block:: python
 
@@ -28,19 +32,18 @@ Sortium can be used via the main ``Sorter`` class or utility functions:
    sorter.sort_by_type("/path/to/folder")
    sorter.sort_by_date("/path/to/folder", ["Images", "Documents"])
 
-Modules
--------
+API Reference
+-------------
 
 .. toctree::
    :maxdepth: 2
-   :caption: API Reference
+   :caption: Sortium Package
 
    modules
 
 Project Info
 ------------
 
-- Repository: https://github.com/Sarthak-G0yal/Sortium
-- License: MIT
-- Author: Sarthak Goyal
-
+- **Repository**: `GitHub – Sortium <https://github.com/Sarthak-G0yal/Sortium>`_
+- **License**: MIT
+- **Author**: Sarthak Goyal

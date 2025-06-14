@@ -2,8 +2,7 @@ import os
 import shutil
 import tempfile
 import pytest
-from datetime import datetime
-from sortium import flatten_the_folder, get_file_modified_date, get_subdirectories_names
+from sortium.file_utils import flatten_dir
 
 
 def create_temp_file(directory, name, content="test"):
@@ -17,6 +16,7 @@ def create_temp_file(directory, name, content="test"):
 def setup_test_dirs():
     base = tempfile.mkdtemp()
     dest = tempfile.mkdtemp()
+    dest_test = os.path.join(dest, "dest_test")
 
     sub1 = os.path.join(base, "sub1")
     sub2 = os.path.join(base, "sub2")
@@ -40,6 +40,7 @@ def setup_test_dirs():
     yield {
         "base": base,
         "dest": dest,
+        "dest_test": dest_test,
         "files": [file1, file2, file_outer],
         "ignored": ignored,
         "ignored_file": ignored_file,
@@ -48,29 +49,8 @@ def setup_test_dirs():
     shutil.rmtree(base)
 
 
-def test_get_file_modified_date(setup_test_dirs):
-    file_path = setup_test_dirs["files"][0]
-    modified_time = get_file_modified_date(file_path)
-    assert isinstance(modified_time, datetime)
-
-
-def test_get_file_modified_date_file_not_found(setup_test_dirs):
-    file_path = "./wrong_path"
-    with pytest.raises(FileNotFoundError):
-        get_file_modified_date(file_path)
-
-
-def test_get_subdirectories_names(setup_test_dirs):
-    base = setup_test_dirs["base"]
-    ignore = [os.path.basename(setup_test_dirs["ignored"])]
-    subdirs = get_subdirectories_names(base, ignore_dir=ignore)
-    assert "sub1" in subdirs
-    assert "sub2" in subdirs
-    assert "ignoreme" not in subdirs
-
-
-def test_flatten_the_folder_moves_files(setup_test_dirs):
-    flatten_the_folder(
+def test_flatten_dir_moves_files(setup_test_dirs):
+    flatten_dir(
         setup_test_dirs["base"], setup_test_dirs["dest"], ignore_dir=["ignoreme"]
     )
 
@@ -81,3 +61,11 @@ def test_flatten_the_folder_moves_files(setup_test_dirs):
 
     # Ignored file should still exist
     assert os.path.exists(setup_test_dirs["ignored_file"])
+
+
+def test_flatten_dir_create_dest_dir(setup_test_dirs):
+    flatten_dir(
+        setup_test_dirs["base"], setup_test_dirs["dest_test"], ignore_dir=["ignoreme"]
+    )
+
+    assert os.path.exists(setup_test_dirs["dest_test"])
