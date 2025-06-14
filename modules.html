@@ -1,0 +1,251 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sortium Package &mdash; Sortium  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/custom.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Sortium Documentation" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Sortium
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Sortium Package</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Sortium Package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-sortium.sorter">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#sortium.sorter.Sorter"><code class="docutils literal notranslate"><span class="pre">Sorter</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#sortium.sorter.Sorter.file_types_dict"><code class="docutils literal notranslate"><span class="pre">Sorter.file_types_dict</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sortium.sorter.Sorter.sort_by_date"><code class="docutils literal notranslate"><span class="pre">Sorter.sort_by_date()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sortium.sorter.Sorter.sort_by_type"><code class="docutils literal notranslate"><span class="pre">Sorter.sort_by_type()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#sortium.file_utils.flatten_dir"><code class="docutils literal notranslate"><span class="pre">flatten_dir()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sortium.config.DEFAULT_FILE_TYPES"><code class="docutils literal notranslate"><span class="pre">DEFAULT_FILE_TYPES</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Sortium</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Sortium Package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/modules.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="sortium-package">
+<h1>Sortium Package<a class="headerlink" href="#sortium-package" title="Link to this heading"></a></h1>
+<section id="module-sortium.sorter">
+<span id="submodules"></span><h2>Submodules<a class="headerlink" href="#module-sortium.sorter" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="sortium.sorter.Sorter">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sortium.sorter.</span></span><span class="sig-name descname"><span class="pre">Sorter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_types_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{'Documents':</span> <span class="pre">['.pdf',</span> <span class="pre">'.docx',</span> <span class="pre">'.txt'],</span> <span class="pre">'Images':</span> <span class="pre">['.jpg',</span> <span class="pre">'.jpeg',</span> <span class="pre">'.png',</span> <span class="pre">'.gif'],</span> <span class="pre">'Music':</span> <span class="pre">['.mp3',</span> <span class="pre">'.wav'],</span> <span class="pre">'Others':</span> <span class="pre">[],</span> <span class="pre">'Videos':</span> <span class="pre">['.mp4',</span> <span class="pre">'.avi']}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sortium/sorter.html#Sorter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sortium.sorter.Sorter" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Sorter class to organize files in a directory by file type and modification date.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="sortium.sorter.Sorter.file_types_dict">
+<span class="sig-name descname"><span class="pre">file_types_dict</span></span><a class="headerlink" href="#sortium.sorter.Sorter.file_types_dict" title="Link to this definition"></a></dt>
+<dd><p>A mapping of file category names (e.g., “Images”, “Documents”) to lists of associated file extensions (e.g., [“.jpg”, “.png”]). This dictionary is used to determine how files should be grouped during sorting. If not provided, the default mapping from <cite>DEFAULT_FILE_TYPES</cite> is used.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict[str, list[str]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">file_types</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s2">&quot;Images&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;.jpg&quot;</span><span class="p">,</span> <span class="s2">&quot;.jpeg&quot;</span><span class="p">,</span> <span class="s2">&quot;.png&quot;</span><span class="p">,</span> <span class="s2">&quot;.gif&quot;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="s2">&quot;Documents&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;.pdf&quot;</span><span class="p">,</span> <span class="s2">&quot;.docx&quot;</span><span class="p">,</span> <span class="s2">&quot;.txt&quot;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="s2">&quot;Videos&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;.mp4&quot;</span><span class="p">,</span> <span class="s2">&quot;.avi&quot;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="s2">&quot;Music&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;.mp3&quot;</span><span class="p">,</span> <span class="s2">&quot;.wav&quot;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="s2">&quot;Others&quot;</span><span class="p">:</span> <span class="p">[]</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sorter</span> <span class="o">=</span> <span class="n">Sorter</span><span class="p">(</span><span class="n">file_types</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sorter</span><span class="o">.</span><span class="n">sort_by_type</span><span class="p">(</span><span class="s1">&#39;/path/to/downloads&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sorter</span><span class="o">.</span><span class="n">sort_by_date</span><span class="p">(</span><span class="s1">&#39;/path/to/downloads&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Images&#39;</span><span class="p">,</span> <span class="s1">&#39;Documents&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="sortium.sorter.Sorter.sort_by_date">
+<span class="sig-name descname"><span class="pre">sort_by_date</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">folder_types</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/sortium/sorter.html#Sorter.sort_by_date"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sortium.sorter.Sorter.sort_by_date" title="Link to this definition"></a></dt>
+<dd><p>Sorts files inside specified category folders into subfolders based on their last modified date.</p>
+<p>Each file is moved into a subfolder named by the modification date in the format “DD-MMM-YYYY”.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>folder_path</strong> (<em>str</em>) – Root directory path containing the category folders.</p></li>
+<li><p><strong>folder_types</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – List of category folder names to process (e.g., [‘Images’, ‘Documents’]).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>FileNotFoundError</strong> – If the root folder (<cite>folder_path</cite>) does not exist.</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>If a category folder in <cite>folder_types</cite> does not exist, it will be skipped with a printed message.</p></li>
+<li><p>Errors during moving individual files are caught and printed but do not stop the process.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sortium.sorter.Sorter.sort_by_type">
+<span class="sig-name descname"><span class="pre">sort_by_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/sortium/sorter.html#Sorter.sort_by_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sortium.sorter.Sorter.sort_by_type" title="Link to this definition"></a></dt>
+<dd><p>Sorts files in a directory into subdirectories by file type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>folder_path</strong> (<em>str</em>) – Path to the directory containing unsorted files.</p></li>
+<li><p><strong>ignore_dir</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – Names of subdirectories within <cite>folder_path</cite> that should be ignored during processing.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>FileNotFoundError</strong> – If the specified folder does not exist.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function" id="module-sortium.file_utils">
+<dt class="sig sig-object py" id="sortium.file_utils.flatten_dir">
+<span class="sig-prename descclassname"><span class="pre">sortium.file_utils.</span></span><span class="sig-name descname"><span class="pre">flatten_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dest_folder_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rm_subdir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/sortium/file_utils.html#flatten_dir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sortium.file_utils.flatten_dir" title="Link to this definition"></a></dt>
+<dd><p>Moves all files from subdirectories of a given folder into a destination folder.</p>
+<p>This is useful for flattening a directory structure by collecting all files
+from nested folders and moving them into one target folder.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>folder_path</strong> (<em>str</em>) – Path to the root folder containing subdirectories with files.</p></li>
+<li><p><strong>dest_folder_path</strong> (<em>str</em>) – Path to the folder where all files should be moved.</p></li>
+<li><p><strong>ignore_dir</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – Names of subdirectories within <cite>folder_path</cite> that should be ignored during processing.</p></li>
+<li><p><strong>rm_subdir</strong> (<em>bool</em>) – If True, subdirectories will be removed after moving their contents.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>FileNotFoundError</strong> – If the root folder (<cite>folder_path</cite>) does not exist.</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>Any errors encountered while moving files or removing subdirectories are
+caught and printed, but not raised.</p></li>
+<li><p>Fails silently (with printed messages) on permission issues, missing files, or non-empty directories during deletion.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py data" id="module-sortium.config">
+<dt class="sig sig-object py" id="sortium.config.DEFAULT_FILE_TYPES">
+<span class="sig-prename descclassname"><span class="pre">sortium.config.</span></span><span class="sig-name descname"><span class="pre">DEFAULT_FILE_TYPES</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'Documents':</span> <span class="pre">['.pdf',</span> <span class="pre">'.docx',</span> <span class="pre">'.txt'],</span> <span class="pre">'Images':</span> <span class="pre">['.jpg',</span> <span class="pre">'.jpeg',</span> <span class="pre">'.png',</span> <span class="pre">'.gif'],</span> <span class="pre">'Music':</span> <span class="pre">['.mp3',</span> <span class="pre">'.wav'],</span> <span class="pre">'Others':</span> <span class="pre">[],</span> <span class="pre">'Videos':</span> <span class="pre">['.mp4',</span> <span class="pre">'.avi']}</span></em><a class="headerlink" href="#sortium.config.DEFAULT_FILE_TYPES" title="Link to this definition"></a></dt>
+<dd><p>Default file type categories and their associated file extensions.</p>
+<p>This dictionary maps human-readable category names to lists of common file
+extensions that belong to each category. It is used by the Sorter class to
+determine how files should be categorized and organized during sorting.</p>
+<dl class="simple">
+<dt>Type:</dt><dd><p>dict[str, list[str]]</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">DEFAULT_FILE_TYPES</span><span class="p">[</span><span class="s2">&quot;Images&quot;</span><span class="p">]</span>
+<span class="go">[&#39;.jpg&#39;, &#39;.jpeg&#39;, &#39;.png&#39;, &#39;.gif&#39;]</span>
+</pre></div>
+</div>
+<dl class="simple">
+<dt>Categories:</dt><dd><ul class="simple">
+<li><p>“Images”: Common image file formats.</p></li>
+<li><p>“Documents”: Text and document file formats.</p></li>
+<li><p>“Videos”: Video file formats.</p></li>
+<li><p>“Music”: Audio file formats.</p></li>
+<li><p>“Others”: Files that do not match any of the above categories.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Sortium Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Sarthak Goyal.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
