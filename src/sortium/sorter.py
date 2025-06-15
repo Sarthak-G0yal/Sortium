@@ -1,6 +1,6 @@
-import os
 import shutil
-from .file_utils import _get_file_modified_date, _get_subdirectories_names
+from pathlib import Path
+from .file_utils import get_file_modified_date, get_subdirectories_names
 from .config import DEFAULT_FILE_TYPES
 
 """
@@ -64,26 +64,24 @@ class Sorter:
         Raises:
             FileNotFoundError: If the specified folder does not exist.
         """
-
-        if not os.path.exists(folder_path):
-            raise FileNotFoundError(f"The path '{folder_path}' does not exist.")
+        folder = Path(folder_path)
+        if not folder.exists():
+            raise FileNotFoundError(f"The path '{folder}' does not exist.")
 
         try:
-            sub_dir_list = _get_subdirectories_names(folder_path, ignore_dir)
+            sub_dir_list = get_subdirectories_names(str(folder), ignore_dir)
             for sub_dir_name in sub_dir_list:
-                file_path = os.path.join(folder_path, sub_dir_name)
+                file_path = folder / sub_dir_name
 
-                if os.path.isfile(file_path):
-                    _, ext = os.path.splitext(sub_dir_name)
-                    category = self.__get_category(ext)
-
-                    dest_folder = os.path.join(folder_path, category)
-                    os.makedirs(dest_folder, exist_ok=True)
+                if file_path.is_file():
+                    category = self.__get_category(file_path.suffix)
+                    dest_folder = folder / category
+                    dest_folder.mkdir(parents=True, exist_ok=True)
 
                     try:
-                        shutil.move(file_path, os.path.join(dest_folder, sub_dir_name))
+                        shutil.move(str(file_path), str(dest_folder / file_path.name))
                     except Exception as e:
-                        print(f"Error moving file '{sub_dir_name}': {e}")
+                        print(f"Error moving file '{file_path.name}': {e}")
         except Exception as e:
             print(f"An error occurred while sorting by type: {e}")
 
@@ -104,31 +102,32 @@ class Sorter:
             - If a category folder in `folder_types` does not exist, it will be skipped with a printed message.
             - Errors during moving individual files are caught and printed but do not stop the process.
         """
-        if not os.path.exists(folder_path):
-            raise FileNotFoundError(f"The folder path '{folder_path}' does not exist.")
+        folder = Path(folder_path)
+        if not folder.exists():
+            raise FileNotFoundError(f"The folder path '{folder}' does not exist.")
         for folder_type in folder_types:
-            sub_folder_path = os.path.join(folder_path, folder_type)
-            if os.path.exists(sub_folder_path):
+            sub_folder = folder / folder_type
+            if sub_folder.exists():
                 try:
-                    for filename in os.listdir(sub_folder_path):
-                        file_path = os.path.join(sub_folder_path, filename)
-                        if os.path.isfile(file_path):
+                    for file_path in sub_folder.iterdir():
+                        if file_path.is_file():
                             try:
                                 # Get modified date and format it
-                                modified = _get_file_modified_date(file_path)
-                                date_folder = modified.strftime("%d-%b-%Y")
+                                modified = get_file_modified_date(str(file_path))
+                                date_folder = sub_folder / modified.strftime("%d-%b-%Y")
 
                                 # Create a subfolder for the date and move the file
-                                dest_folder = os.path.join(sub_folder_path, date_folder)
-                                os.makedirs(dest_folder, exist_ok=True)
+                                date_folder.mkdir(parents=True, exist_ok=True)
                                 shutil.move(
-                                    file_path, os.path.join(dest_folder, filename)
+                                    str(file_path), str(date_folder / file_path.name)
                                 )
                             except Exception as e:
-                                print(f"Error sorting file '{filename}' by date: {e}")
+                                print(
+                                    f"Error sorting file '{file_path.name}' by date: {e}"
+                                )
                 except Exception as e:
                     print(
-                        f"An error occurred while processing folder '{sub_folder_path}': {e}"
+                        f"An error occurred while processing folder '{sub_folder}': {e}"
                     )
             else:
-                print(f"Sub-folder '{sub_folder_path}' not found, skipping.")
+                print(f"Sub-folder '{sub_folder}' not found, skipping.")

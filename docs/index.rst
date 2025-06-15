@@ -45,5 +45,5 @@ Project Info
 ------------
 
 - **Repository**: `GitHub – Sortium <https://github.com/Sarthak-G0yal/Sortium>`_
-- **License**: MIT
+- **License**: GNU v3.0
 - **Author**: Sarthak Goyal
