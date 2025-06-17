@@ -2,8 +2,9 @@ import os
 import shutil
 import tempfile
 import pytest
-from sortium.file_utils import flatten_dir
+from sortium.file_utils import FileUtils
 
+file_utiles = FileUtils()
 
 def create_temp_file(directory, name, content="test"):
     path = os.path.join(directory, name)
@@ -34,6 +35,7 @@ def setup_test_dirs():
 
     file1 = create_temp_file(sub_sub1, "file1.txt", "data1")
     file2 = create_temp_file(sub_sub2, "file2.txt", "data2")
+    
     file_outer = create_temp_file(sub1, "file_outer.txt", "outer_file")
     ignored_file = create_temp_file(ignored, "ignored.txt", "ignored")
 
@@ -50,7 +52,7 @@ def setup_test_dirs():
 
 
 def test_flatten_dir_moves_files(setup_test_dirs):
-    flatten_dir(
+    file_utiles.flatten_dir(
         setup_test_dirs["base"], setup_test_dirs["dest"], ignore_dir=["ignoreme"]
     )
 
@@ -64,8 +66,10 @@ def test_flatten_dir_moves_files(setup_test_dirs):
 
 
 def test_flatten_dir_create_dest_dir(setup_test_dirs):
-    flatten_dir(
+    file_utiles.flatten_dir(
         setup_test_dirs["base"], setup_test_dirs["dest_test"], ignore_dir=["ignoreme"]
     )
 
     assert os.path.exists(setup_test_dirs["dest_test"])
+
+

@@ -1,6 +1,6 @@
 import shutil
 from pathlib import Path
-from .file_utils import get_file_modified_date, get_subdirectories_names
+from .file_utils import FileUtils
 from .config import DEFAULT_FILE_TYPES
 
 """
@@ -35,8 +35,20 @@ class Sorter:
         >>> sorter.sort_by_date('/path/to/downloads', ['Images', 'Documents'])
     """
 
-    def __init__(self, file_types_dict: dict[str, list[str]] = DEFAULT_FILE_TYPES):
+    def __init__(
+        self,
+        file_types_dict: dict[str, list[str]] = DEFAULT_FILE_TYPES,
+        file_utils: FileUtils = None
+    ):
+        """
+        Initializes an instance of the Sorter class.
+
+        Args:
+            file_types_dict (dict[str, list[str]], optional): A dictionary mapping file category names to lists of associated file extensions. Defaults to DEFAULT_FILE_TYPES if not provided.
+            file_utils (FileUtils, optional): An instance of FileUtils to use for file utilities. Defaults to FileUtils() if not provided.
+        """
         self.file_types_dict = file_types_dict
+        self.file_utils = file_utils or FileUtils()
 
     def __get_category(self, extension: str) -> str:
         """
@@ -69,7 +81,7 @@ class Sorter:
             raise FileNotFoundError(f"The path '{folder}' does not exist.")
 
         try:
-            sub_dir_list = get_subdirectories_names(str(folder), ignore_dir)
+            sub_dir_list = self.file_utils.get_subdirectories_names(str(folder), ignore_dir)
             for sub_dir_name in sub_dir_list:
                 file_path = folder / sub_dir_name
 
@@ -113,7 +125,7 @@ class Sorter:
                         if file_path.is_file():
                             try:
                                 # Get modified date and format it
-                                modified = get_file_modified_date(str(file_path))
+                                modified = self.file_utils.get_file_modified_date(str(file_path))
                                 date_folder = sub_folder / modified.strftime("%d-%b-%Y")
 
                                 # Create a subfolder for the date and move the file
