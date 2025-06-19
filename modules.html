@@ -53,7 +53,13 @@
 <li class="toctree-l4"><a class="reference internal" href="#sortium.sorter.Sorter.sort_by_type"><code class="docutils literal notranslate"><span class="pre">Sorter.sort_by_type()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#sortium.file_utils.flatten_dir"><code class="docutils literal notranslate"><span class="pre">flatten_dir()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sortium.file_utils.FileUtils"><code class="docutils literal notranslate"><span class="pre">FileUtils</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#sortium.file_utils.FileUtils.find_unique_extensions"><code class="docutils literal notranslate"><span class="pre">FileUtils.find_unique_extensions()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sortium.file_utils.FileUtils.flatten_dir"><code class="docutils literal notranslate"><span class="pre">FileUtils.flatten_dir()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sortium.file_utils.FileUtils.get_file_modified_date"><code class="docutils literal notranslate"><span class="pre">FileUtils.get_file_modified_date()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sortium.file_utils.FileUtils.get_subdirectories_names"><code class="docutils literal notranslate"><span class="pre">FileUtils.get_subdirectories_names()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#sortium.config.DEFAULT_FILE_TYPES"><code class="docutils literal notranslate"><span class="pre">DEFAULT_FILE_TYPES</span></code></a></li>
 </ul>
 </li>
@@ -91,7 +97,7 @@
 <span id="submodules"></span><h2>Submodules<a class="headerlink" href="#module-sortium.sorter" title="Link to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="sortium.sorter.Sorter">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sortium.sorter.</span></span><span class="sig-name descname"><span class="pre">Sorter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_types_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{'Documents':</span> <span class="pre">['.pdf',</span> <span class="pre">'.docx',</span> <span class="pre">'.txt'],</span> <span class="pre">'Images':</span> <span class="pre">['.jpg',</span> <span class="pre">'.jpeg',</span> <span class="pre">'.png',</span> <span class="pre">'.gif'],</span> <span class="pre">'Music':</span> <span class="pre">['.mp3',</span> <span class="pre">'.wav'],</span> <span class="pre">'Others':</span> <span class="pre">[],</span> <span class="pre">'Videos':</span> <span class="pre">['.mp4',</span> <span class="pre">'.avi']}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sortium/sorter.html#Sorter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sortium.sorter.Sorter" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sortium.sorter.</span></span><span class="sig-name descname"><span class="pre">Sorter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_types_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{'Documents':</span> <span class="pre">['.pdf',</span> <span class="pre">'.docx',</span> <span class="pre">'.txt'],</span> <span class="pre">'Images':</span> <span class="pre">['.jpg',</span> <span class="pre">'.jpeg',</span> <span class="pre">'.png',</span> <span class="pre">'.gif'],</span> <span class="pre">'Music':</span> <span class="pre">['.mp3',</span> <span class="pre">'.wav'],</span> <span class="pre">'Others':</span> <span class="pre">[],</span> <span class="pre">'Videos':</span> <span class="pre">['.mp4',</span> <span class="pre">'.avi']}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_utils</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#sortium.file_utils.FileUtils" title="sortium.file_utils.FileUtils"><span class="pre">FileUtils</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sortium/sorter.html#Sorter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sortium.sorter.Sorter" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Sorter class to organize files in a directory by file type and modification date.</p>
 <dl class="py attribute">
@@ -160,9 +166,38 @@
 
 </dd></dl>
 
-<dl class="py function" id="module-sortium.file_utils">
-<dt class="sig sig-object py" id="sortium.file_utils.flatten_dir">
-<span class="sig-prename descclassname"><span class="pre">sortium.file_utils.</span></span><span class="sig-name descname"><span class="pre">flatten_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dest_folder_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rm_subdir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/sortium/file_utils.html#flatten_dir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sortium.file_utils.flatten_dir" title="Link to this definition"></a></dt>
+<dl class="py class" id="module-sortium.file_utils">
+<dt class="sig sig-object py" id="sortium.file_utils.FileUtils">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sortium.file_utils.</span></span><span class="sig-name descname"><span class="pre">FileUtils</span></span><a class="reference internal" href="_modules/sortium/file_utils.html#FileUtils"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sortium.file_utils.FileUtils" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>FileUtils class for file utilities that provides various methods for working with files and directories and also are used in the Sorter class.
+A Custom FileUtils class can be provided to the Sorter class to satisfy the specific requirements.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="sortium.file_utils.FileUtils.find_unique_extensions">
+<span class="sig-name descname"><span class="pre">find_unique_extensions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Set</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/sortium/file_utils.html#FileUtils.find_unique_extensions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sortium.file_utils.FileUtils.find_unique_extensions" title="Link to this definition"></a></dt>
+<dd><p>Recursively finds all unique file extensions in a given directory and its subdirectories.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source_path</strong> (<em>str</em>) – Path to the root directory.</p></li>
+<li><p><strong>ignore_dir</strong> (<em>list</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – List of directory names to ignore. Defaults to None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A set of unique file extensions found in the directory tree.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Set[str]</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>FileNotFoundError</strong> – If the source_path does not exist.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sortium.file_utils.FileUtils.flatten_dir">
+<span class="sig-name descname"><span class="pre">flatten_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dest_folder_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rm_subdir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/sortium/file_utils.html#FileUtils.flatten_dir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sortium.file_utils.FileUtils.flatten_dir" title="Link to this definition"></a></dt>
 <dd><p>Moves all files from subdirectories of a given folder into a destination folder.</p>
 <p>This is useful for flattening a directory structure by collecting all files
 from nested folders and moving them into one target folder.</p>
@@ -172,7 +207,7 @@ from nested folders and moving them into one target folder.</p>
 <li><p><strong>folder_path</strong> (<em>str</em>) – Path to the root folder containing subdirectories with files.</p></li>
 <li><p><strong>dest_folder_path</strong> (<em>str</em>) – Path to the folder where all files should be moved.</p></li>
 <li><p><strong>ignore_dir</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – Names of subdirectories within <cite>folder_path</cite> that should be ignored during processing.</p></li>
-<li><p><strong>rm_subdir</strong> (<em>bool</em>) – If True, subdirectories will be removed after moving their contents.</p></li>
+<li><p><strong>rm_subdir</strong> (<em>bool</em>) – If True, subdirectories will be removed after moving their contents. Default is False.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
@@ -181,10 +216,51 @@ from nested folders and moving them into one target folder.</p>
 </dl>
 <p class="rubric">Notes</p>
 <ul class="simple">
-<li><p>Any errors encountered while moving files or removing subdirectories are
-caught and printed, but not raised.</p></li>
-<li><p>Fails silently (with printed messages) on permission issues, missing files, or non-empty directories during deletion.</p></li>
+<li><p>Any errors encountered while moving files or removing subdirectories are caught and printed, but not raised.</p></li>
+<li><p>Fails silently (with printed messages) on permission issuesmissing files, or non-empty directories during deletion.</p></li>
 </ul>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sortium.file_utils.FileUtils.get_file_modified_date">
+<span class="sig-name descname"><span class="pre">get_file_modified_date</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">datetime</span></span></span><a class="reference internal" href="_modules/sortium/file_utils.html#FileUtils.get_file_modified_date"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sortium.file_utils.FileUtils.get_file_modified_date" title="Link to this definition"></a></dt>
+<dd><p>Returns the last modified datetime of a file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file_path</strong> (<em>str</em>) – Full path to the file.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Datetime object representing the last modification time.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>datetime</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>FileNotFoundError</strong> – If the file does not exist.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sortium.file_utils.FileUtils.get_subdirectories_names">
+<span class="sig-name descname"><span class="pre">get_subdirectories_names</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/sortium/file_utils.html#FileUtils.get_subdirectories_names"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sortium.file_utils.FileUtils.get_subdirectories_names" title="Link to this definition"></a></dt>
+<dd><p>Returns a list of subdirectory names in a given folder, excluding any specified to be ignored.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>folder_path</strong> (<em>str</em>) – Full path to the folder.</p></li>
+<li><p><strong>ignore_dir</strong> (<em>list</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – List of subdirectory names to ignore. Defaults to [] if not provided.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of subdirectory names.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py data" id="module-sortium.config">

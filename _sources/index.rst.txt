@@ -16,6 +16,11 @@ Sortium helps you:
 Quick Start
 -----------
 
+.. warning::
+
+   **Always make a backup of your files before running Sortium.**
+   This utility moves files and modifies folder structures, which may lead to data loss if misused.
+
 Install via pip:
 
 .. code-block:: console
@@ -45,5 +50,5 @@ Project Info
 ------------
 
 - **Repository**: `GitHub – Sortium <https://github.com/Sarthak-G0yal/Sortium>`_
-- **License**: MIT
+- **License**: GNU v3.0
 - **Author**: Sarthak Goyal

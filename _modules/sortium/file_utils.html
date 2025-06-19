@@ -71,126 +71,223 @@
            <div itemprop="articleBody">
              
   <h1>Source code for sortium.file_utils</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Set</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">_get_file_modified_date</span><span class="p">(</span><span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="p">:</span>
+<div class="viewcode-block" id="FileUtils">
+<a class="viewcode-back" href="../../modules.html#sortium.file_utils.FileUtils">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">FileUtils</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Returns the last modified datetime of a file.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        file_path (str): Full path to the file.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        datetime: Datetime object representing the last modification time.</span>
-
-<span class="sd">    Raises:</span>
-<span class="sd">        FileNotFoundError: If the file does not exist.</span>
+<span class="sd">    FileUtils class for file utilities that provides various methods for working with files and directories and also are used in the Sorter class.</span>
+<span class="sd">    A Custom FileUtils class can be provided to the Sorter class to satisfy the specific requirements.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;File does not exist: </span><span class="si">{</span><span class="n">file_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">stat</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span><span class="o">.</span><span class="n">st_mtime</span><span class="p">)</span>
 
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes an instance of the FileUtils class.</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">_get_subdirectories_names</span><span class="p">(</span>
-    <span class="n">folder_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ignore_dir</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-    <span class="k">if</span> <span class="n">ignore_dir</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">ignore_dir</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">sub_dir_list</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="n">name</span>
-        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">folder_path</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">folder_path</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span> <span class="ow">and</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ignore_dir</span>
-    <span class="p">]</span>
-    <span class="k">return</span> <span class="n">sub_dir_list</span>
-
-
-<div class="viewcode-block" id="flatten_dir">
-<a class="viewcode-back" href="../../modules.html#sortium.file_utils.flatten_dir">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">flatten_dir</span><span class="p">(</span>
-    <span class="n">folder_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">dest_folder_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">ignore_dir</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">rm_subdir</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Moves all files from subdirectories of a given folder into a destination folder.</span>
-
-<span class="sd">    This is useful for flattening a directory structure by collecting all files</span>
-<span class="sd">    from nested folders and moving them into one target folder.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        folder_path (str): Path to the root folder containing subdirectories with files.</span>
-<span class="sd">        dest_folder_path (str): Path to the folder where all files should be moved.</span>
-<span class="sd">        ignore_dir (list[str]): Names of subdirectories within `folder_path` that should be ignored during processing.</span>
-<span class="sd">        rm_subdir (bool): If True, subdirectories will be removed after moving their contents.</span>
-
-<span class="sd">    Raises:</span>
-<span class="sd">        FileNotFoundError: If the root folder (`folder_path`) does not exist.</span>
-
-<span class="sd">    Notes:</span>
-
-<span class="sd">        - Any errors encountered while moving files or removing subdirectories are</span>
-<span class="sd">          caught and printed, but not raised.</span>
-<span class="sd">        - Fails silently (with printed messages) on permission issues, missing files, or non-empty directories during deletion.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">folder_path</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The folder path &#39;</span><span class="si">{</span><span class="n">folder_path</span><span class="si">}</span><span class="s2">&#39; does not exist.&quot;</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">dest_folder_path</span><span class="p">):</span>
-        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">dest_folder_path</span><span class="p">)</span>
-
-    <span class="k">try</span><span class="p">:</span>
+<span class="sd">        This constructor currently does not perform any specific actions</span>
+<span class="sd">        upon instantiation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_files_and_sub_dir</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">folder_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">ignore_dir</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+        <span class="n">source_root</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">folder_path</span><span class="p">)</span>
         <span class="c1"># Get name of the sub directories ignoring the one in ignore_dir list.</span>
-        <span class="n">sub_dir_list</span> <span class="o">=</span> <span class="n">_get_subdirectories_names</span><span class="p">(</span><span class="n">folder_path</span><span class="p">,</span> <span class="n">ignore_dir</span><span class="p">)</span>
+        <span class="n">sub_dir_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_subdirectories_names</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">source_root</span><span class="p">),</span> <span class="n">ignore_dir</span><span class="p">)</span>
 
         <span class="c1"># Get the list of files to be moved.</span>
         <span class="n">file_list</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="n">name</span>
-            <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">folder_path</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">folder_path</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
-            <span class="ow">and</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="n">ignore_dir</span> <span class="ow">or</span> <span class="p">[])</span>
+            <span class="n">item</span><span class="o">.</span><span class="n">name</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">source_root</span><span class="o">.</span><span class="n">iterdir</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span> <span class="ow">and</span> <span class="n">item</span><span class="o">.</span><span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="n">ignore_dir</span> <span class="ow">or</span> <span class="p">[])</span>
         <span class="p">]</span>
 
-        <span class="c1"># If file_list empty then then return the function for sub_dir.</span>
-        <span class="k">if</span> <span class="n">sub_dir_list</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">file_list</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">sub_dir_name</span> <span class="ow">in</span> <span class="n">sub_dir_list</span><span class="p">:</span>
-                <span class="n">flatten_dir</span><span class="p">(</span>
-                    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">folder_path</span><span class="p">,</span> <span class="n">sub_dir_name</span><span class="p">),</span>
-                    <span class="n">dest_folder_path</span><span class="p">,</span>
-                    <span class="n">ignore_dir</span><span class="p">,</span>
-                <span class="p">)</span>
+        <span class="k">return</span> <span class="n">sub_dir_list</span><span class="p">,</span> <span class="n">file_list</span>
+    
+<div class="viewcode-block" id="FileUtils.get_file_modified_date">
+<a class="viewcode-back" href="../../modules.html#sortium.file_utils.FileUtils.get_file_modified_date">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_file_modified_date</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the last modified datetime of a file.</span>
 
-        <span class="c1"># Move the files in the file_list to the dest_folder and check for folder in sub_dir_list.</span>
-        <span class="k">elif</span> <span class="n">file_list</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">file_list</span><span class="p">:</span>
-                <span class="n">source_item</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">folder_path</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
-                <span class="n">dest_item</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dest_folder_path</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
-                <span class="k">try</span><span class="p">:</span>
-                    <span class="n">shutil</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">source_item</span><span class="p">,</span> <span class="n">dest_item</span><span class="p">)</span>
-                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to move &#39;</span><span class="si">{</span><span class="n">source_item</span><span class="si">}</span><span class="s2">&#39; to &#39;</span><span class="si">{</span><span class="n">dest_item</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">sub_dir_list</span><span class="p">:</span>
+<span class="sd">        Args:</span>
+<span class="sd">            file_path (str): Full path to the file.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            datetime: Datetime object representing the last modification time.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            FileNotFoundError: If the file does not exist.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;File does not exist: </span><span class="si">{</span><span class="n">file_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">stat</span><span class="p">()</span><span class="o">.</span><span class="n">st_mtime</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="FileUtils.get_subdirectories_names">
+<a class="viewcode-back" href="../../modules.html#sortium.file_utils.FileUtils.get_subdirectories_names">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_subdirectories_names</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">folder_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ignore_dir</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a list of subdirectory names in a given folder, excluding any specified to be ignored.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            folder_path (str): Full path to the folder.</span>
+<span class="sd">            ignore_dir (list[str], optional): List of subdirectory names to ignore. Defaults to [] if not provided.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list[str]: List of subdirectory names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">folder</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">folder_path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ignore_dir</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ignore_dir</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">sub_dir_list</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">item</span><span class="o">.</span><span class="n">name</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">folder</span><span class="o">.</span><span class="n">iterdir</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">is_dir</span><span class="p">()</span> <span class="ow">and</span> <span class="n">item</span><span class="o">.</span><span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ignore_dir</span>
+        <span class="p">]</span>
+        <span class="k">return</span> <span class="n">sub_dir_list</span></div>
+
+
+<div class="viewcode-block" id="FileUtils.flatten_dir">
+<a class="viewcode-back" href="../../modules.html#sortium.file_utils.FileUtils.flatten_dir">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">flatten_dir</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">folder_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">dest_folder_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">ignore_dir</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">rm_subdir</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Moves all files from subdirectories of a given folder into a destination folder.</span>
+
+<span class="sd">        This is useful for flattening a directory structure by collecting all files</span>
+<span class="sd">        from nested folders and moving them into one target folder.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            folder_path (str): Path to the root folder containing subdirectories with files.</span>
+<span class="sd">            dest_folder_path (str): Path to the folder where all files should be moved.</span>
+<span class="sd">            ignore_dir (list[str]): Names of subdirectories within `folder_path` that should be ignored during processing.</span>
+<span class="sd">            rm_subdir (bool): If True, subdirectories will be removed after moving their contents. Default is False.</span>
+<span class="sd">        Raises:</span>
+<span class="sd">            FileNotFoundError: If the root folder (`folder_path`) does not exist.</span>
+
+<span class="sd">        Notes:</span>
+
+<span class="sd">            - Any errors encountered while moving files or removing subdirectories are caught and printed, but not raised.</span>
+<span class="sd">            - Fails silently (with printed messages) on permission issuesmissing files, or non-empty directories during deletion.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">source_root</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">folder_path</span><span class="p">)</span>
+        <span class="n">dest_root</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">dest_folder_path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">source_root</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The folder path &#39;</span><span class="si">{</span><span class="n">folder_path</span><span class="si">}</span><span class="s2">&#39; does not exist.&quot;</span><span class="p">)</span>
+
+        <span class="n">dest_root</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Get the list of files and sub directories.</span>
+            <span class="n">sub_dir_list</span><span class="p">,</span> <span class="n">file_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_files_and_sub_dir</span><span class="p">(</span>
+                <span class="n">folder_path</span><span class="p">,</span> <span class="n">ignore_dir</span>
+            <span class="p">)</span>
+
+            <span class="c1"># If file_list empty then then return the function for sub_dir.</span>
+            <span class="k">if</span> <span class="n">sub_dir_list</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">file_list</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">sub_dir_name</span> <span class="ow">in</span> <span class="n">sub_dir_list</span><span class="p">:</span>
-                    <span class="n">flatten_dir</span><span class="p">(</span>
-                        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">folder_path</span><span class="p">,</span> <span class="n">sub_dir_name</span><span class="p">),</span>
-                        <span class="n">dest_folder_path</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">flatten_dir</span><span class="p">(</span>
+                        <span class="nb">str</span><span class="p">(</span><span class="n">source_root</span> <span class="o">/</span> <span class="n">sub_dir_name</span><span class="p">),</span>
+                        <span class="nb">str</span><span class="p">(</span><span class="n">dest_root</span><span class="p">),</span>
                         <span class="n">ignore_dir</span><span class="p">,</span>
                     <span class="p">)</span>
 
-                <span class="c1"># Remove the sub directories if rm_subdir is True.</span>
-                <span class="k">if</span> <span class="n">rm_subdir</span><span class="p">:</span>
+            <span class="c1"># Move the files in the file_list to the dest_folder and check for folder in sub_dir_list.</span>
+            <span class="k">elif</span> <span class="n">file_list</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">file_list</span><span class="p">:</span>
+                    <span class="n">source_item</span> <span class="o">=</span> <span class="n">source_root</span> <span class="o">/</span> <span class="n">name</span>
+                    <span class="n">dest_item</span> <span class="o">=</span> <span class="n">dest_root</span> <span class="o">/</span> <span class="n">name</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">shutil</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">source_item</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">dest_item</span><span class="p">))</span>
+                    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to move &#39;</span><span class="si">{</span><span class="n">source_item</span><span class="si">}</span><span class="s2">&#39; to &#39;</span><span class="si">{</span><span class="n">dest_item</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">sub_dir_list</span><span class="p">:</span>
                     <span class="k">for</span> <span class="n">sub_dir_name</span> <span class="ow">in</span> <span class="n">sub_dir_list</span><span class="p">:</span>
-                        <span class="n">sub_dir_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">folder_path</span><span class="p">,</span> <span class="n">sub_dir_name</span><span class="p">)</span>
-                        <span class="k">try</span><span class="p">:</span>
-                            <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">sub_dir_path</span><span class="p">)</span>
-                        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to remove directory &#39;</span><span class="si">{</span><span class="n">sub_dir_path</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">flatten_dir</span><span class="p">(</span>
+                            <span class="nb">str</span><span class="p">(</span><span class="n">source_root</span> <span class="o">/</span> <span class="n">sub_dir_name</span><span class="p">),</span>
+                            <span class="nb">str</span><span class="p">(</span><span class="n">dest_root</span><span class="p">),</span>
+                            <span class="n">ignore_dir</span><span class="p">,</span>
+                        <span class="p">)</span>
 
-    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error occurred while cleaning up folders: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+                    <span class="c1"># Remove the sub directories if rm_subdir is True.</span>
+            <span class="k">if</span> <span class="n">rm_subdir</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">sub_dir_name</span> <span class="ow">in</span> <span class="n">sub_dir_list</span><span class="p">:</span>
+                    <span class="n">sub_dir_path</span> <span class="o">=</span> <span class="n">source_root</span> <span class="o">/</span> <span class="n">sub_dir_name</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">sub_dir_path</span> <span class="o">!=</span> <span class="n">dest_root</span><span class="p">:</span>
+                            <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">sub_dir_path</span><span class="p">)</span>
+                    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span>
+                            <span class="sa">f</span><span class="s2">&quot;Failed to remove directory &#39;</span><span class="si">{</span><span class="n">sub_dir_path</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span>
+                        <span class="p">)</span>   
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error occurred while cleaning up folders: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="FileUtils.find_unique_extensions">
+<a class="viewcode-back" href="../../modules.html#sortium.file_utils.FileUtils.find_unique_extensions">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">find_unique_extensions</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">source_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ignore_dir</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Recursively finds all unique file extensions in a given directory and its subdirectories.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            source_path (str): Path to the root directory.</span>
+<span class="sd">            ignore_dir (list[str], optional): List of directory names to ignore. Defaults to None.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Set[str]: A set of unique file extensions found in the directory tree.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            FileNotFoundError: If the source_path does not exist.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">source_root</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">source_path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">source_root</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;The folder path &#39;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">source_root</span><span class="p">)</span><span class="si">}</span><span class="s2">&#39; does not exist.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="n">extension_list</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">sub_dir_list</span><span class="p">,</span> <span class="n">file_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_files_and_sub_dir</span><span class="p">(</span>
+                <span class="nb">str</span><span class="p">(</span><span class="n">source_root</span><span class="p">),</span> <span class="n">ignore_dir</span>
+            <span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">file_list</span><span class="p">:</span>
+                <span class="n">source_item</span> <span class="o">=</span> <span class="n">source_root</span> <span class="o">/</span> <span class="n">name</span>
+                <span class="n">extension_list</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">source_item</span><span class="o">.</span><span class="n">suffix</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+
+            <span class="k">for</span> <span class="n">sub_dir_name</span> <span class="ow">in</span> <span class="n">sub_dir_list</span><span class="p">:</span>
+                <span class="n">sub_dir_path</span> <span class="o">=</span> <span class="n">source_root</span> <span class="o">/</span> <span class="n">sub_dir_name</span>
+                <span class="n">extension_list</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">find_unique_extensions</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">sub_dir_path</span><span class="p">),</span> <span class="n">ignore_dir</span><span class="p">)</span>
+                <span class="p">)</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error occurred while finding unique extensions: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">extension_list</span></div>
+</div>
 
 </pre></div>
 
