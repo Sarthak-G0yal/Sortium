@@ -1,103 +1,107 @@
-# 🗂️ Sortium
+# Sortium
 
-A Python utility to **automatically sort files** in a folder by their **type** (e.g., Images, Documents, Videos, etc.) and their **last modified date**.
-
----
-
-## 📚 Table of Contents
-
-- [🗂️ Sortium](#️-sortium)
-  - [📚 Table of Contents](#-table-of-contents)
-  - [🚀 Features](#-features)
-  - [🛠️ Installation](#️-installation)
-    - [📦 PyPI](#-pypi)
-  - [🧪 Run Tests](#-run-tests)
-  - [👤 Author](#-author)
-  - [📄 License](#-license)
-  - [🤝 Contributing](#-contributing)
-  - [📚 Documentation \& Issues](#-documentation--issues)
+**Sortium** is a Python utility that automatically organizes files in a directory based on their type (e.g., Images, Documents, Videos, etc.) and optionally by their last modified date.
 
 ---
 
-## 🚀 Features
+## Table of Contents
 
-* ✅ Automatically organizes files into folders based on type:
+* [Features](#features)
+* [Installation](#installation)
+  * [PyPI](#pypi)
+* [Running Tests](#running-tests)
+* [Author](#author)
+* [License](#license)
+* [Contributing](#contributing)
+* [Documentation and Issues](#documentation-and-issues)
 
+---
+
+## Features
+
+* Automatically organizes files into folders by type:
   * Images, Documents, Videos, Music, Others
-* 📅 Optionally sort files by **last modified date** within each category
-* 📁 Optionally **flatten** subdirectories into a single level before sorting
+* Optional sorting by last modified date within each category
+* Optional flattening of subdirectories into a single level before sorting
 
 ---
 
-## 🛠️ Installation
+## Installation
 
-### 📦 PyPI
+### PyPI
 
-Install the package from PyPI:
+To install from PyPI:
 
 ```bash
 pip install sortium
 ```
 
-Alternatively, install from source:
+To install from source:
 
 ```bash
-# Clone the repository
 git clone https://github.com/Sarthak-G0yal/Sortium.git
 cd Sortium
-
-# Install in editable mode
 pip install -e .
 ```
 
 ---
 
-## 🧪 Run Tests
+## Running Tests
 
-To run unit tests with coverage:
+To run the test suite with coverage reporting:
 
 ```bash
-pytest src/tests --cov
+pytest src/tests --cov=src/sortium
 ```
 
+Refer to the [Test Suite README](./src/tests/README.md) for test structure and guidelines.
+
 ---
 
-## 👤 Author
+## Author
 
 **Sarthak Goyal**
-📧 [sarthakgoyal487@gmail.com](mailto:sarthakgoyal487@gmail.com)
+Email: [sarthakgoyal487@gmail.com](mailto:sarthakgoyal487@gmail.com)
 
 ---
 
-## 📄 License
+## License
 
 This project is licensed under the [GNU General Public License v3.0](LICENSE).
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
-Contributions are welcome and appreciated! 🎉
+Contributions are welcome.
 
 To contribute:
 
-1. **Fork** the repository
-2. **Create a new branch** (`feature/my-feature` or `fix/my-fix`)
-3. **Write tests** for your changes
-4. **Commit** with clear and conventional messages
-5. **Open a pull request** and describe your changes
+1. Fork the repository
+2. Create a new branch (`feature/my-feature` or `fix/my-fix`)
+3. Write tests for your changes
+4. Commit with clear, conventional messages
+5. Open a pull request with a description of your changes
 
-✅ Please follow [Conventional Commits](https://www.conventionalcommits.org/) and ensure your code is linted and tested before submitting.
+Please follow the [Conventional Commits](https://www.conventionalcommits.org/) specification. Ensure all code is linted and tested before submitting.
 
 ---
 
-## 📚 Documentation & Issues
+## Documentation and Issues
 
 This project uses [Sphinx](https://www.sphinx-doc.org/) for documentation.
 
-* 📖 **Documentation**:
-  After running `make html` from the `docs/` folder (`cd docs && make html`), view the generated documentation at [`docs/_build/html/index.html`](docs/_build/html/index.html).
-  You can also view the hosted documentation here: [📄 View Online Documentation](https://sarthak-g0yal.github.io/Sortium)
+* To build the documentation locally:
 
-* 🐛 **Issues / Feature Requests**:
-  [Open an issue](https://github.com/Sarthak-G0yal/Sortium/issues)
+  ```bash
+  cd docs
+  make html
+  ```
+
+  View the generated files at `docs/_build/html/index.html`.
+
+* Online documentation: [View Documentation](https://sarthak-g0yal.github.io/Sortium)
+
+* For issues and feature requests: [Open an issue](https://github.com/Sarthak-G0yal/Sortium/issues)
+
+---

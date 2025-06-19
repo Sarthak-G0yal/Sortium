@@ -16,6 +16,11 @@ Sortium helps you:
 Quick Start
 -----------
 
+.. warning::
+
+   **Always make a backup of your files before running Sortium.**
+   This utility moves files and modifies folder structures, which may lead to data loss if misused.
+
 Install via pip:
 
 .. code-block:: console

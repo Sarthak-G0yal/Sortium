@@ -38,7 +38,7 @@ class Sorter:
     def __init__(
         self,
         file_types_dict: dict[str, list[str]] = DEFAULT_FILE_TYPES,
-        file_utils: FileUtils = None
+        file_utils: FileUtils = None,
     ):
         """
         Initializes an instance of the Sorter class.
@@ -81,7 +81,9 @@ class Sorter:
             raise FileNotFoundError(f"The path '{folder}' does not exist.")
 
         try:
-            sub_dir_list = self.file_utils.get_subdirectories_names(str(folder), ignore_dir)
+            sub_dir_list = self.file_utils.get_subdirectories_names(
+                str(folder), ignore_dir
+            )
             for sub_dir_name in sub_dir_list:
                 file_path = folder / sub_dir_name
 
@@ -125,7 +127,9 @@ class Sorter:
                         if file_path.is_file():
                             try:
                                 # Get modified date and format it
-                                modified = self.file_utils.get_file_modified_date(str(file_path))
+                                modified = self.file_utils.get_file_modified_date(
+                                    str(file_path)
+                                )
                                 date_folder = sub_folder / modified.strftime("%d-%b-%Y")
 
                                 # Create a subfolder for the date and move the file

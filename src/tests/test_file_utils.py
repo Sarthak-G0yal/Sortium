@@ -1,75 +1,51 @@
 import os
-import shutil
-import tempfile
-import pytest
+from .test_file_tree import setup_test_dirs
 from sortium.file_utils import FileUtils
+import pytest
 
 file_utiles = FileUtils()
-
-def create_temp_file(directory, name, content="test"):
-    path = os.path.join(directory, name)
-    with open(path, "w") as f:
-        f.write(content)
-    return path
+test_tree = setup_test_dirs
 
 
-@pytest.fixture
-def setup_test_dirs():
-    base = tempfile.mkdtemp()
-    dest = tempfile.mkdtemp()
-    dest_test = os.path.join(dest, "dest_test")
 
-    sub1 = os.path.join(base, "sub1")
-    sub2 = os.path.join(base, "sub2")
-    os.mkdir(sub1)
-    os.mkdir(sub2)
+# Tests for flatten_dir
+def test_flatten_dir_moves_files(test_tree):
+    file_utiles.flatten_dir(test_tree["base"], test_tree["dest"])
 
-    sub_sub1 = os.path.join(sub1, "sub_sub1")
-    sub_sub2 = os.path.join(sub2, "sub_sub2")
-    os.mkdir(sub_sub1)
-    os.mkdir(sub_sub2)
-
-    # Ignored dir
-    ignored = os.path.join(base, "ignoreme")
-    os.mkdir(ignored)
-
-    file1 = create_temp_file(sub_sub1, "file1.txt", "data1")
-    file2 = create_temp_file(sub_sub2, "file2.txt", "data2")
-    
-    file_outer = create_temp_file(sub1, "file_outer.txt", "outer_file")
-    ignored_file = create_temp_file(ignored, "ignored.txt", "ignored")
-
-    yield {
-        "base": base,
-        "dest": dest,
-        "dest_test": dest_test,
-        "files": [file1, file2, file_outer],
-        "ignored": ignored,
-        "ignored_file": ignored_file,
-    }
-
-    shutil.rmtree(base)
+    dest_files = os.listdir(test_tree["dest"])
+    setup_dest_files = test_tree["files"]
+    for file in setup_dest_files:
+        assert file in dest_files
+    assert test_tree["ignored_file"] in dest_files
 
 
-def test_flatten_dir_moves_files(setup_test_dirs):
+def test_flatten_dir_moves_files_ignored(test_tree):
     file_utiles.flatten_dir(
-        setup_test_dirs["base"], setup_test_dirs["dest"], ignore_dir=["ignoreme"]
+        test_tree["base"], test_tree["dest_test"], ignore_dir=test_tree["ignored_file"]
     )
 
-    dest_files = os.listdir(setup_test_dirs["dest"])
-    assert "file1.txt" in dest_files
-    assert "file2.txt" in dest_files
-    assert "file_outer.txt" in dest_files
+    dest_files = os.listdir(test_tree["dest_test"])
+    setup_dest_files = test_tree["files"]
+    for file in setup_dest_files:
+        assert file in dest_files
+    assert os.path.exists(test_tree["dest_test"])
+    assert test_tree["ignored_file"] not in dest_files
 
-    # Ignored file should still exist
-    assert os.path.exists(setup_test_dirs["ignored_file"])
+def test_flatten_dir_moves_files_source_error(test_tree):
+    with pytest.raises(FileNotFoundError):
+        file_utiles.flatten_dir("wrong_path", test_tree["dest"], ignore_dir=test_tree["ignored_file"])
+
+def test_flatten_dir_remove_subdir(test_tree):
+    file_utiles.flatten_dir(test_tree["base"], test_tree["dest"], rm_subdir=True)
+    assert not os.path.exists(test_tree["sub1"])
 
 
-def test_flatten_dir_create_dest_dir(setup_test_dirs):
-    file_utiles.flatten_dir(
-        setup_test_dirs["base"], setup_test_dirs["dest_test"], ignore_dir=["ignoreme"]
-    )
+# Test for find_unique_extensions
+def test_find_unique_extensions(test_tree):
+    unique_extensions = file_utiles.find_unique_extensions(test_tree["base"])
+    for ext in unique_extensions:
+        assert ext in test_tree["unique_extensions"]
 
-    assert os.path.exists(setup_test_dirs["dest_test"])
-
-
+def test_find_unique_extensions_error(test_tree):
+    with pytest.raises(FileNotFoundError):
+        file_utiles.find_unique_extensions("wrong_path")
