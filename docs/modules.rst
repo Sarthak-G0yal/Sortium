@@ -1,9 +1,6 @@
 Sortium Package
 ===============
 
-Submodules
-----------
-
 .. automodule:: sortium.sorter
    :members:
    :undoc-members:

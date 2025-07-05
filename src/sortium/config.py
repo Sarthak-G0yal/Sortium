@@ -1,4 +1,6 @@
-DEFAULT_FILE_TYPES: dict[str, list[str]] = {
+from typing import List, Dict
+
+DEFAULT_FILE_TYPES: Dict[str, List[str]] = {
     "Images": [".jpg", ".jpeg", ".png", ".gif"],
     "Documents": [".pdf", ".docx", ".txt"],
     "Videos": [".mp4", ".avi"],
@@ -13,7 +15,7 @@ extensions that belong to each category. It is used by the Sorter class to
 determine how files should be categorized and organized during sorting.
 
 Type:
-    dict[str, list[str]]
+    Dict[str, List[str]]
 
 Example:
     >>> DEFAULT_FILE_TYPES["Images"]    

@@ -18,11 +18,11 @@ class FileUtils:
         upon instantiation.
         """
         pass
-    
+
     def _get_files_and_sub_dir(
         self,
         folder_path: str,
-        ignore_dir: list[str] | None = None,
+        ignore_dir: List[str] | None = None,
     ) -> tuple[List[str], List[str]]:
         source_root: Path = Path(folder_path)
         # Get name of the sub directories ignoring the one in ignore_dir list.
@@ -36,7 +36,7 @@ class FileUtils:
         ]
 
         return sub_dir_list, file_list
-    
+
     def get_file_modified_date(self, file_path: str) -> datetime:
         """
         Returns the last modified datetime of a file.
@@ -56,17 +56,17 @@ class FileUtils:
         return datetime.fromtimestamp(path.stat().st_mtime)
 
     def get_subdirectories_names(
-        self, folder_path: str, ignore_dir: list[str] = None
-    ) -> list[str]:
+        self, folder_path: str, ignore_dir: List[str] | None = None
+    ) -> List[str]:
         """
-        Returns a list of subdirectory names in a given folder, excluding any specified to be ignored.
+        Returns a List of subdirectory names in a given folder, excluding any specified to be ignored.
 
         Args:
             folder_path (str): Full path to the folder.
-            ignore_dir (list[str], optional): List of subdirectory names to ignore. Defaults to [] if not provided.
+            ignore_dir (List[str], optional): List of subdirectory names to ignore. Defaults to [] if not provided.
 
         Returns:
-            list[str]: List of subdirectory names.
+            List[str]: List of subdirectory names.
         """
         folder: Path = Path(folder_path)
         if ignore_dir is None:
@@ -82,7 +82,7 @@ class FileUtils:
         self,
         folder_path: str,
         dest_folder_path: str,
-        ignore_dir: list[str] | None = None,
+        ignore_dir: List[str] | None = None,
         rm_subdir: bool = False,
     ) -> None:
         """
@@ -94,7 +94,7 @@ class FileUtils:
         Args:
             folder_path (str): Path to the root folder containing subdirectories with files.
             dest_folder_path (str): Path to the folder where all files should be moved.
-            ignore_dir (list[str]): Names of subdirectories within `folder_path` that should be ignored during processing.
+            ignore_dir (List[str]): Names of subdirectories within `folder_path` that should be ignored during processing.
             rm_subdir (bool): If True, subdirectories will be removed after moving their contents. Default is False.
         Raises:
             FileNotFoundError: If the root folder (`folder_path`) does not exist.
@@ -151,22 +151,20 @@ class FileUtils:
                         if sub_dir_path != dest_root:
                             shutil.rmtree(sub_dir_path)
                     except Exception as e:
-                        print(
-                            f"Failed to remove directory '{sub_dir_path}': {e}"
-                        )   
+                        print(f"Failed to remove directory '{sub_dir_path}': {e}")
 
         except Exception as e:
             print(f"Error occurred while cleaning up folders: {e}")
 
     def find_unique_extensions(
-        self, source_path: str, ignore_dir: list[str] | None = None
+        self, source_path: str, ignore_dir: List[str] | None = None
     ) -> Set[str]:
         """
         Recursively finds all unique file extensions in a given directory and its subdirectories.
 
         Args:
             source_path (str): Path to the root directory.
-            ignore_dir (list[str], optional): List of directory names to ignore. Defaults to None.
+            ignore_dir (List[str], optional): List of directory names to ignore. Defaults to None.
 
         Returns:
             Set[str]: A set of unique file extensions found in the directory tree.

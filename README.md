@@ -1,28 +1,34 @@
 # Sortium
 
-**Sortium** is a Python utility that automatically organizes files in a directory based on their type (e.g., Images, Documents, Videos, etc.) and optionally by their last modified date.
+**Sortium** is a Python utility designed to automatically organize files within a directory based on the following criteria:
+
+- File type (e.g., Images, Videos, Audio, Documents)
+- Creation date
+- Custom-defined regular expression patterns
+
+It streamlines file management by categorizing and sorting files for improved accessibility and organization.
 
 ---
 
 ## Table of Contents
 
-* [Features](#features)
-* [Installation](#installation)
-  * [PyPI](#pypi)
-* [Running Tests](#running-tests)
-* [Author](#author)
-* [License](#license)
-* [Contributing](#contributing)
-* [Documentation and Issues](#documentation-and-issues)
+- [Features](#features)
+- [Installation](#installation)
+  - [PyPI](#pypi)
+- [Running Tests](#running-tests)
+- [Author](#author)
+- [License](#license)
+- [Contributing](#contributing)
+- [Documentation and Issues](#documentation-and-issues)
 
 ---
 
 ## Features
 
-* Automatically organizes files into folders by type:
-  * Images, Documents, Videos, Music, Others
-* Optional sorting by last modified date within each category
-* Optional flattening of subdirectories into a single level before sorting
+- Organizes files into categorized folders:
+  - Images, Documents, Videos, Music, Others
+- Sorts files within each category by last modified date
+- Flattens all subdirectories into a single-level structure before sorting
 
 ---
 
@@ -91,7 +97,7 @@ Please follow the [Conventional Commits](https://www.conventionalcommits.org/) s
 
 This project uses [Sphinx](https://www.sphinx-doc.org/) for documentation.
 
-* To build the documentation locally:
+- To build the documentation locally:
 
   ```bash
   cd docs
@@ -100,8 +106,8 @@ This project uses [Sphinx](https://www.sphinx-doc.org/) for documentation.
 
   View the generated files at `docs/_build/html/index.html`.
 
-* Online documentation: [View Documentation](https://sarthak-g0yal.github.io/Sortium)
+- Online documentation: [View Documentation](https://sarthak-g0yal.github.io/Sortium)
 
-* For issues and feature requests: [Open an issue](https://github.com/Sarthak-G0yal/Sortium/issues)
+- For issues and feature requests: [Open an issue](https://github.com/Sarthak-G0yal/Sortium/issues)
 
 ---

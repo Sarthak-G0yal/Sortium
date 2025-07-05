@@ -1,18 +1,17 @@
 import os
-import shutil
-import tempfile
 import pytest
 from datetime import datetime
 from sortium.sorter import Sorter
-from .test_file_tree import setup_type_sort, setup_date_sort
+from .test_file_tree import setup_type_sort, setup_date_sort, setup_regex_tree
 
 type_sort_tree = setup_type_sort
 date_sort_tree = setup_date_sort
+regex_tree = setup_regex_tree
 
 sorter = Sorter()
 
+
 def test_sort_by_type_moves_files_to_categories(type_sort_tree):
-    
     sorter.sort_by_type(type_sort_tree["base"])
 
     for category in ["Documents", "Images", "Music", "Others"]:
@@ -49,3 +48,25 @@ def test_sort_by_date_missing_category_skips_gracefully(date_sort_tree):
 def test_sort_by_date_invalid_root_raises():
     with pytest.raises(FileNotFoundError):
         sorter.sort_by_date("invalid_path", ["Images"])
+
+
+def test_sort_by_regex(regex_tree):
+    sorter.sort_by_regex(
+        regex_tree["base"],
+        regex_tree["re_patterns"],  # Dict[str, str]
+        regex_tree["dest"],
+    )
+
+    dest = regex_tree["dest"]
+
+    for category, expected_files in regex_tree["files_types"].items():
+        category_path = os.path.join(dest, category)
+        assert os.path.exists(category_path), (
+            f"Expected folder '{category_path}' to exist."
+        )
+
+        actual_files = set(os.listdir(category_path))
+        for file in expected_files:
+            assert file in actual_files, (
+                f"Expected file '{file}' in '{category_path}', but it was not found."
+            )

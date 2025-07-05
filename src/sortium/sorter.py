@@ -2,49 +2,38 @@ import shutil
 from pathlib import Path
 from .file_utils import FileUtils
 from .config import DEFAULT_FILE_TYPES
-
-"""
-This module defines the Sorter class for organizing files within directories.
-
-The Sorter class helps sort files based on their type (e.g., Images, Documents)
-and their last modification date. It can move files into categorized folders,
-further organize them by modification date, and flatten nested directories by
-moving files out.
-"""
+from typing import Dict, List
+import re
 
 # Main sorter class.
 
 
 class Sorter:
     """
-    Sorter class to organize files in a directory by file type and modification date.
+    Module defining the Sorter class for organizing files within directories.
+
+    The Sorter class provides methods to sort files based on their type,
+    modification date, and custom regex patterns. It can categorize files
+    into folders, organize them by last modified date and sort files using
+    user-defined regex patterns.
 
     Attributes:
-        file_types_dict (dict[str, list[str]]): A mapping of file category names (e.g., "Images", "Documents") to lists of associated file extensions (e.g., [".jpg", ".png"]). This dictionary is used to determine how files should be grouped during sorting. If not provided, the default mapping from `DEFAULT_FILE_TYPES` is used.
-
-    Example:
-        >>> file_types = {
-        ...     "Images": [".jpg", ".jpeg", ".png", ".gif"],
-        ...     "Documents": [".pdf", ".docx", ".txt"],
-        ...     "Videos": [".mp4", ".avi"],
-        ...     "Music": [".mp3", ".wav"],
-        ...     "Others": []
-        ... }
-        >>> sorter = Sorter(file_types)
-        >>> sorter.sort_by_type('/path/to/downloads')
-        >>> sorter.sort_by_date('/path/to/downloads', ['Images', 'Documents'])
+        file_types_dict (Dict[str, List[str]]): A mapping of file category names
+            (e.g., "Images", "Documents") to lists of associated file extensions
+            (e.g., [".jpg", ".png"]). Used to classify files during sorting. Defaults
+            to `DEFAULT_FILE_TYPES` if not provided.
     """
 
     def __init__(
         self,
-        file_types_dict: dict[str, list[str]] = DEFAULT_FILE_TYPES,
+        file_types_dict: Dict[str, List[str]] = DEFAULT_FILE_TYPES,
         file_utils: FileUtils = None,
     ):
         """
         Initializes an instance of the Sorter class.
 
         Args:
-            file_types_dict (dict[str, list[str]], optional): A dictionary mapping file category names to lists of associated file extensions. Defaults to DEFAULT_FILE_TYPES if not provided.
+            file_types_dict (Dict[str, List[str]], optional): A dictionary mapping file category names to lists of associated file extensions. Defaults to DEFAULT_FILE_TYPES if not provided.
             file_utils (FileUtils, optional): An instance of FileUtils to use for file utilities. Defaults to FileUtils() if not provided.
         """
         self.file_types_dict = file_types_dict
@@ -65,13 +54,15 @@ class Sorter:
                 return category
         return "Others"
 
-    def sort_by_type(self, folder_path: str, ignore_dir: list[str] = None) -> None:
+    def sort_by_type(
+        self, folder_path: str, ignore_dir: List[str] | None = None
+    ) -> None:
         """
         Sorts files in a directory into subdirectories by file type.
 
         Args:
             folder_path (str): Path to the directory containing unsorted files.
-            ignore_dir (list[str]): Names of subdirectories within `folder_path` that should be ignored during processing.
+            ignore_dir (List[str]): Names of subdirectories within `folder_path` that should be ignored during processing.
 
         Raises:
             FileNotFoundError: If the specified folder does not exist.
@@ -99,7 +90,7 @@ class Sorter:
         except Exception as e:
             print(f"An error occurred while sorting by type: {e}")
 
-    def sort_by_date(self, folder_path: str, folder_types: list[str]) -> None:
+    def sort_by_date(self, folder_path: str, folder_types: List[str]) -> None:
         """
         Sorts files inside specified category folders into subfolders based on their last modified date.
 
@@ -107,7 +98,7 @@ class Sorter:
 
         Args:
             folder_path (str): Root directory path containing the category folders.
-            folder_types (list[str]): List of category folder names to process (e.g., ['Images', 'Documents']).
+            folder_types (List[str]): List of category folder names to process (e.g., ['Images', 'Documents']).
 
         Raises:
             FileNotFoundError: If the root folder (`folder_path`) does not exist.
@@ -147,3 +138,41 @@ class Sorter:
                     )
             else:
                 print(f"Sub-folder '{sub_folder}' not found, skipping.")
+
+    def sort_by_regex(
+        self, folder_path: str, regex: Dict[str, str], dest_folder_path: str
+    ) -> None:
+        """
+        Sorts files in a directory (recursively) into category subfolders based on matching regex patterns.
+
+        Args:
+            folder_path (str): Path to the directory containing unsorted files.
+            regex (Dict[str, str]): A dictionary mapping category names to single regex patterns. The name of the category will be used as the subfolder name.
+            dest_folder_path (str): Path to the base directory where sorted files will be moved.
+
+        Raises:
+            FileNotFoundError: If the specified folder does not exist.
+            RuntimeError: If an error occurs during sorting.
+        """
+        source_path = Path(folder_path)
+        dest_base_path = Path(dest_folder_path)
+
+        if not source_path.exists():
+            raise FileNotFoundError(f"The path '{source_path}' does not exist.")
+
+        try:
+            for item in source_path.iterdir():
+                if item.is_file():
+                    for category, pattern in regex.items():
+                        if re.match(pattern, item.name):
+                            dest_folder = dest_base_path / category
+                            dest_folder.mkdir(parents=True, exist_ok=True)
+                            shutil.move(str(item), str(dest_folder / item.name))
+                            break
+
+            for subdir in source_path.iterdir():
+                if subdir.is_dir():
+                    self.sort_by_regex(str(subdir), regex, str(dest_base_path))
+
+        except Exception as e:
+            raise RuntimeError(f"An error occurred while sorting files: {e}")

@@ -1,13 +1,17 @@
 Sortium Documentation
 =====================
 
-Welcome to **Sortium**, a Python utility for organizing files by type and modification date.
+Welcome to **Sortium**, a Python utility for organizing files by type, modification date, and custom patterns.
 
-Sortium helps you:
+**Sortium** enables efficient file management by:
 
-- Automatically sort files into categories (Images, Documents, Music, etc.)
-- Organize files within categories by their last modified date
-- Flatten deeply nested folder structures
+- Categorizing files into folders such as Images, Documents, Music, Videos, and Others
+
+- Organizing files within each category based on their last modified date
+
+- Flattening nested directory structures into a single-level hierarchy before sorting
+
+- Supporting custom file organization using user-defined regular expression (regex) patterns
 
 .. contents::
    :local:
@@ -34,15 +38,26 @@ Then:
    from sortium import Sorter
 
    sorter = Sorter()
+
+   # Sort files by type into categorized folders
    sorter.sort_by_type("/path/to/folder")
+
+   # Further sort files inside specific category folders by their last modified date
    sorter.sort_by_date("/path/to/folder", ["Images", "Documents"])
+
+   # Sort files using custom regex patterns
+   regex_patterns = {
+       "Reports": r"^report_.*\.pdf$",
+       "Logs": r".*\.log$"
+   }
+   sorter.sort_by_regex("/path/to/source", regex_patterns, "/path/to/destination")
+
 
 API Reference
 -------------
 
 .. toctree::
    :maxdepth: 2
-   :caption: Sortium Package
 
    modules
 
