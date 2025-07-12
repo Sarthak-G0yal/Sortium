@@ -1,30 +1,51 @@
 from typing import List, Dict
 
 DEFAULT_FILE_TYPES: Dict[str, List[str]] = {
-    "Images": [".jpg", ".jpeg", ".png", ".gif"],
-    "Documents": [".pdf", ".docx", ".txt"],
-    "Videos": [".mp4", ".avi"],
-    "Music": [".mp3", ".wav"],
+    "Images": [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tiff", ".webp"],
+    "Documents": [".pdf", ".doc", ".docx", ".txt", ".odt", ".rtf", ".md"],
+    "Spreadsheets": [".xls", ".xlsx", ".csv", ".ods"],
+    "Presentations": [".ppt", ".pptx", ".odp", ".key"],
+    "Videos": [".mp4", ".avi", ".mov", ".wmv", ".mkv", ".flv", ".webm"],
+    "Music": [".mp3", ".wav", ".aac", ".flac", ".ogg", ".wma"],
+    "Archives": [".zip", ".rar", ".7z", ".tar", ".gz", ".bz2"],
+    "Code": [
+        ".py",
+        ".js",
+        ".html",
+        ".css",
+        ".java",
+        ".cpp",
+        ".c",
+        ".ts",
+        ".json",
+        ".xml",
+        ".sql",
+    ],
+    "Executables": [".exe", ".msi", ".apk", ".bat", ".sh", ".bin"],
+    "Fonts": [".ttf", ".otf", ".woff", ".woff2"],
+    "Design": [".psd", ".ai", ".xd", ".sketch", ".fig"],
     "Others": [],
 }
 
 """Default file type categories and their associated file extensions.
 
-This dictionary maps human-readable category names to lists of common file
-extensions that belong to each category. It is used by the Sorter class to
-determine how files should be categorized and organized during sorting.
+Used to map file extensions to logical categories during file sorting.
 
-Type:
-    Dict[str, List[str]]
-
-Example:
-    >>> DEFAULT_FILE_TYPES["Images"]    
+Examples:
+    >>> DEFAULT_FILE_TYPES["Images"]
     ['.jpg', '.jpeg', '.png', '.gif']
 
-Categories:
-    - "Images": Common image file formats.
-    - "Documents": Text and document file formats.
-    - "Videos": Video file formats.
-    - "Music": Audio file formats.
-    - "Others": Files that do not match any of the above categories.
+Categories include:
+    - Images
+    - Documents
+    - Spreadsheets
+    - Presentations
+    - Videos
+    - Music
+    - Archives
+    - Code
+    - Executables
+    - Fonts
+    - Design
+    - Others
 """

@@ -11,7 +11,5 @@ Sortium Package
    :undoc-members:
    :show-inheritance:
 
-.. automodule:: sortium.config
-   :members:
-   :undoc-members:
-   :show-inheritance:
+.. autodata:: sortium.config.DEFAULT_FILE_TYPES
+   :no-value:

@@ -1,7 +1,7 @@
 import shutil
 from pathlib import Path
 from datetime import datetime
-from typing import List, Set
+from typing import List, Set, Generator, Sequence
 
 
 class FileUtils:
@@ -9,33 +9,6 @@ class FileUtils:
     FileUtils class for file utilities that provides various methods for working with files and directories and also are used in the Sorter class.
     A Custom FileUtils class can be provided to the Sorter class to satisfy the specific requirements.
     """
-
-    def __init__(self) -> None:
-        """
-        Initializes an instance of the FileUtils class.
-
-        This constructor currently does not perform any specific actions
-        upon instantiation.
-        """
-        pass
-
-    def _get_files_and_sub_dir(
-        self,
-        folder_path: str,
-        ignore_dir: List[str] | None = None,
-    ) -> tuple[List[str], List[str]]:
-        source_root: Path = Path(folder_path)
-        # Get name of the sub directories ignoring the one in ignore_dir list.
-        sub_dir_list = self.get_subdirectories_names(str(source_root), ignore_dir)
-
-        # Get the list of files to be moved.
-        file_list = [
-            item.name
-            for item in source_root.iterdir()
-            if item.is_file() and item.name not in (ignore_dir or [])
-        ]
-
-        return sub_dir_list, file_list
 
     def get_file_modified_date(self, file_path: str) -> datetime:
         """
@@ -55,34 +28,52 @@ class FileUtils:
             raise FileNotFoundError(f"File does not exist: {file_path}")
         return datetime.fromtimestamp(path.stat().st_mtime)
 
-    def get_subdirectories_names(
-        self, folder_path: str, ignore_dir: List[str] | None = None
-    ) -> List[str]:
+    def iter_files_and_sub_dirs(
+        self, folder_path: str, ignore_dir: Sequence[str] | None = None
+    ) -> tuple[Generator[str, None, None], Generator[str, None, None]]:
         """
-        Returns a List of subdirectory names in a given folder, excluding any specified to be ignored.
+        Yields two generators: one for subdirectories and one for files in a given folder.
 
         Args:
-            folder_path (str): Full path to the folder.
-            ignore_dir (List[str], optional): List of subdirectory names to ignore. Defaults to [] if not provided.
+            folder_path (str): Path to the folder to iterate.
+            ignore_dir (List[str] | None, optional): Names of subdirectories to ignore.
 
-        Returns:
-            List[str]: List of subdirectory names.
+        Yields:
+            tuple[Generator[str, None, None], Generator[str, None, None]]:
+                A tuple containing two generators. The first one yields subdirectories
+                and the second one yields files.
         """
-        folder: Path = Path(folder_path)
-        if ignore_dir is None:
-            ignore_dir = []
-        sub_dir_list = [
-            item.name
-            for item in folder.iterdir()
-            if item.is_dir() and item.name not in ignore_dir
-        ]
-        return sub_dir_list
+        source_root = Path(folder_path)
+        ignore_set = set(ignore_dir or [])
+
+        def splitter() -> Generator[tuple[str, str], None, None]:
+            for item in source_root.iterdir():
+                if item.name in ignore_set:
+                    continue
+                if item.is_symlink():
+                    continue
+                if item.is_dir():
+                    yield "dir", item.name
+                elif item.is_file():
+                    yield "file", item.name
+
+        def subdirs():
+            for kind, name in splitter():
+                if kind == "dir":
+                    yield name
+
+        def files():
+            for kind, name in splitter():
+                if kind == "file":
+                    yield name
+
+        return subdirs(), files()
 
     def flatten_dir(
         self,
         folder_path: str,
         dest_folder_path: str,
-        ignore_dir: List[str] | None = None,
+        ignore_dir: Sequence[str] | None = None,
         rm_subdir: bool = False,
     ) -> None:
         """
@@ -102,7 +93,7 @@ class FileUtils:
         Notes:
 
             - Any errors encountered while moving files or removing subdirectories are caught and printed, but not raised.
-            - Fails silently (with printed messages) on permission issuesmissing files, or non-empty directories during deletion.
+            - Fails silently (with printed messages) on permission issues, missing files, or non-empty directories.
         """
         source_root: Path = Path(folder_path)
         dest_root: Path = Path(dest_folder_path)
@@ -110,40 +101,32 @@ class FileUtils:
             raise FileNotFoundError(f"The folder path '{folder_path}' does not exist.")
 
         dest_root.mkdir(parents=True, exist_ok=True)
+        ignore_set = set(ignore_dir or [])
 
         try:
             # Get the list of files and sub directories.
-            sub_dir_list, file_list = self._get_files_and_sub_dir(
+            sub_dir_gen, file_gen = self.iter_files_and_sub_dirs(
                 folder_path, ignore_dir
             )
+            sub_dir_list = [d for d in sub_dir_gen if d not in ignore_set]
+            file_list = list(file_gen)
 
-            # If file_list empty then then return the function for sub_dir.
-            if sub_dir_list and not file_list:
-                for sub_dir_name in sub_dir_list:
-                    self.flatten_dir(
-                        str(source_root / sub_dir_name),
-                        str(dest_root),
-                        ignore_dir,
-                    )
+            for name in file_list:
+                source_item = source_root / name
+                dest_item = dest_root / name
+                try:
+                    shutil.move(str(source_item), str(dest_item))
+                except Exception as e:
+                    print(f"Failed to move '{source_item}' to '{dest_item}': {e}")
 
-            # Move the files in the file_list to the dest_folder and check for folder in sub_dir_list.
-            elif file_list:
-                for name in file_list:
-                    source_item = source_root / name
-                    dest_item = dest_root / name
-                    try:
-                        shutil.move(str(source_item), str(dest_item))
-                    except Exception as e:
-                        print(f"Failed to move '{source_item}' to '{dest_item}': {e}")
-                if sub_dir_list:
-                    for sub_dir_name in sub_dir_list:
-                        self.flatten_dir(
-                            str(source_root / sub_dir_name),
-                            str(dest_root),
-                            ignore_dir,
-                        )
+            for sub_dir_name in sub_dir_list:
+                self.flatten_dir(
+                    str(source_root / sub_dir_name),
+                    str(dest_root),
+                    ignore_dir,
+                    rm_subdir,
+                )
 
-                    # Remove the sub directories if rm_subdir is True.
             if rm_subdir:
                 for sub_dir_name in sub_dir_list:
                     sub_dir_path = source_root / sub_dir_name
@@ -152,7 +135,6 @@ class FileUtils:
                             shutil.rmtree(sub_dir_path)
                     except Exception as e:
                         print(f"Failed to remove directory '{sub_dir_path}': {e}")
-
         except Exception as e:
             print(f"Error occurred while cleaning up folders: {e}")
 
@@ -181,13 +163,12 @@ class FileUtils:
         extension_list: Set[str] = set()
 
         try:
-            sub_dir_list, file_list = self._get_files_and_sub_dir(
+            sub_dir_list, file_list = self.iter_files_and_sub_dirs(
                 str(source_root), ignore_dir
             )
 
             for name in file_list:
-                source_item = source_root / name
-                extension_list.add(source_item.suffix.lower())
+                extension_list.add(Path(name).suffix.lower())
 
             for sub_dir_name in sub_dir_list:
                 sub_dir_path = source_root / sub_dir_name
