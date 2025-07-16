@@ -19,7 +19,8 @@ classifiers=[
     "Topic :: System :: Filesystems"
 ]
 
-dependencies = []
+dependencies = [
+]
 
 [project.urls]
 repository = 'https://github.com/Sarthak-G0yal/Sortium'
@@ -40,6 +41,6 @@ testpaths = ["src/tests"]
 [project.optional-dependencies]
 docs = [
     "sphinx",
-    "sphinx-rtd-theme>=3.0.2",
+    "furo>=2024.8.6",
 ]
 test = ['pytest', 'pytest-cov']

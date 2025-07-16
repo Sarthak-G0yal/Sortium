@@ -30,7 +30,6 @@ _build/
 *.ttf
 *.svg
 *.eot
-*.png
 
 # Editor directories and files
 .vscode/
@@ -68,7 +67,6 @@ coverage.xml
 *.obj
 
 # Sphinx _static and _templates if auto-generated
-_static/
 _templates/
 
 # pytest generated files

@@ -13,9 +13,15 @@ Welcome to **Sortium**, a Python utility for organizing files by type, modificat
 
 - Supporting custom file organization using user-defined regular expression (regex) patterns
 
-.. contents::
-   :local:
-   :depth: 1
+.. note::
+
+   This documentation covers installation, usage, and the complete API reference for Sortium.
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents
+
+   modules
 
 Quick Start
 -----------
@@ -51,15 +57,6 @@ Then:
        "Logs": r".*\.log$"
    }
    sorter.sort_by_regex("/path/to/source", regex_patterns, "/path/to/destination")
-
-
-API Reference
--------------
-
-.. toctree::
-   :maxdepth: 2
-
-   modules
 
 Project Info
 ------------

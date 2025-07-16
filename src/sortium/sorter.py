@@ -4,8 +4,19 @@ from .file_utils import FileUtils
 from .config import DEFAULT_FILE_TYPES
 from typing import Dict, List
 import re
+from concurrent.futures import ProcessPoolExecutor, as_completed
 
-# Main sorter class.
+
+def move_file_by_type(file_path_str: str, category: str, folder_path_str: str) -> str:
+    try:
+        file_path = Path(file_path_str)
+        folder_path = Path(folder_path_str)
+        dest_folder = folder_path / category
+        dest_folder.mkdir(parents=True, exist_ok=True)
+        shutil.move(str(file_path), str(dest_folder / file_path.name))
+        return ""
+    except Exception as e:
+        return f"Error moving file '{file_path_str}': {e}"
 
 
 class Sorter:
@@ -26,7 +37,7 @@ class Sorter:
 
     def __init__(
         self,
-        file_types_dict: Dict[str, List[str]] = DEFAULT_FILE_TYPES,
+        file_types_dict: Dict[str, List[str]] = None,
         file_utils: FileUtils = None,
     ):
         """
@@ -36,8 +47,13 @@ class Sorter:
             file_types_dict (Dict[str, List[str]], optional): A dictionary mapping file category names to lists of associated file extensions. Defaults to DEFAULT_FILE_TYPES if not provided.
             file_utils (FileUtils, optional): An instance of FileUtils to use for file utilities. Defaults to FileUtils() if not provided.
         """
-        self.file_types_dict = file_types_dict
+        self.file_types_dict = file_types_dict or DEFAULT_FILE_TYPES
         self.file_utils = file_utils or FileUtils()
+        self.extension_to_category = {
+            ext.lower(): category
+            for category, extensions in self.file_types_dict.items()
+            for ext in extensions
+        }
 
     def __get_category(self, extension: str) -> str:
         """
@@ -49,10 +65,7 @@ class Sorter:
         Returns:
             str: Category of the file based on the file_types_dict.
         """
-        for category, extensions in self.file_types_dict.items():
-            if extension.lower() in extensions:
-                return category
-        return "Others"
+        return self.extension_to_category.get(extension.lower(), "Others")
 
     def sort_by_type(
         self, folder_path: str, ignore_dir: List[str] | None = None
@@ -72,7 +85,7 @@ class Sorter:
             raise FileNotFoundError(f"The path '{folder}' does not exist.")
 
         try:
-            sub_dir_list = self.file_utils.get_subdirectories_names(
+            sub_dir_list = self.file_utils.iter_files_and_sub_dirs(
                 str(folder), ignore_dir
             )
             for sub_dir_name in sub_dir_list:
@@ -89,6 +102,45 @@ class Sorter:
                         print(f"Error moving file '{file_path.name}': {e}")
         except Exception as e:
             print(f"An error occurred while sorting by type: {e}")
+
+    def sort_by_type_parallel(
+        self, folder_path: str, ignore_dir: List[str] | None = None
+    ) -> None:
+        """
+        Sorts files in a directory into subdirectories by file type using multiprocessing.
+
+        Args:
+            folder_path (str): Path to the directory containing unsorted files.
+            ignore_dir (List[str], optional): Names of subdirectories within `folder_path` to ignore.
+
+        Raises:
+            FileNotFoundError: If the specified folder does not exist.
+        """
+        folder = Path(folder_path)
+        if not folder.exists():
+            raise FileNotFoundError(f"The path '{folder}' does not exist.")
+
+        if ignore_dir is None:
+            ignore_dir = []
+
+        file_utils = self.file_utils
+        tasks = []
+        for sub_dir_name in file_utils.iter_files_and_sub_dirs(str(folder), ignore_dir):
+            file_path = folder / sub_dir_name
+            if not file_path.is_file():
+                continue
+            category = self.__get_category(file_path.suffix)
+            tasks.append((str(file_path), category, str(folder)))
+
+        with ProcessPoolExecutor() as executor:
+            futures = [
+                executor.submit(move_file_by_type, fp, cat, folder_str)
+                for fp, cat, folder_str in tasks
+            ]
+            for future in as_completed(futures):
+                error = future.result()
+                if error:
+                    print(error)
 
     def sort_by_date(self, folder_path: str, folder_types: List[str]) -> None:
         """
