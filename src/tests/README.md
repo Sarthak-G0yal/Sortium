@@ -1,17 +1,17 @@
 # 🧪 `sortium` Test Suite
 
-This directory contains a complete suite of tests for the `sortium` Python library — a utility for organizing and sorting files by type and date, along with file flattening and extension discovery utilities.
+This directory contains a complete suite of tests for the `sortium` Python library—a utility for organizing and sorting files in parallel.
 
-The test suite ensures correctness, robustness, and graceful handling of errors across core features of the library.
+The test suite ensures correctness, robustness, and graceful handling of errors across the library's core features, including parallel file operations, recursive file scanning, and name collision avoidance.
 
 ## 📁 Directory Overview
 
 ```
 tests/
 │
-├── test_sorter.py         # Tests for the core Sorter class
-├── test_file_utils.py     # Tests for file utility functions
-└── test_file_tree.py      # Fixtures and temporary file structures used in tests
+├── conftest.py            # Shared fixtures, including the primary `file_tree` structure.
+├── test_sorter.py         # Tests for the core Sorter class and its sorting logic.
+└── test_file_utils.py     # Tests for file system utilities (generators, flattening, etc.).
 ```
 
 ---
@@ -20,180 +20,139 @@ tests/
 
 ### `test_sorter.py`
 
-Tests the `Sorter` class, responsible for organizing files by type or date.
+Tests the `Sorter` class, which is responsible for the main file organization logic.
 
-* **`sort_by_type()`**
+*   **`sort_by_type()`**
+    *   Correctly categorizes files into folders like `Images`, `Documents`, etc.
+    *   Successfully sorts files to a **separate destination directory**.
+    *   Gracefully handles **file name collisions** by creating unique names (e.g., `file (1).txt`).
+    *   Raises `FileNotFoundError` for invalid source paths.
 
-  * Categorizes files into `Documents`, `Images`, `Music`, and `Others`.
-  * Verifies movement of files into appropriate category folders.
-  * Handles invalid/non-existent paths with a `FileNotFoundError`.
+*   **`sort_by_date()`**
+    *   Sorts files within existing category folders into date-stamped subfolders (e.g., `01-Jan-2023`).
+    *   Verifies correct placement of files within the new date folders.
+    *   Skips non-existent category folders without error.
 
-* **`sort_by_date()`**
-
-  * Sorts files inside specified folders into subfolders by the current date.
-  * Verifies creation of date-based folders and correct placement of files.
-  * Skips gracefully when specified folders don't exist.
-  * Raises `FileNotFoundError` for an invalid root directory.
+*   **`sort_by_regex()`**
+    *   Performs **recursive** scanning to find matching files in nested directories.
+    *   Categorizes files based on complex regex patterns.
+    *   Verifies that files from deep subdirectories are correctly moved.
 
 ---
 
 ### `test_file_utils.py`
 
-Tests the `FileUtils` class for operations like flattening directory trees and discovering file extensions.
+Tests the `FileUtils` class and its helper functions, which provide the building blocks for file system operations.
 
-* **`flatten_dir()`**
+*   **File Iterators (`iter_shallow_files` & `iter_all_files_recursive`)**
+    *   Verifies that the generators yield the correct files.
+    *   Confirms that `ignore_dir` properly excludes specified directories.
+    *   Ensures recursive iteration correctly traverses the entire directory tree.
 
-  * Moves all files from nested subdirectories into a single destination directory.
-  * Supports ignoring certain directories during flattening.
-  * Validates removal of subdirectories when `rm_subdir=True`.
-  * Raises `FileNotFoundError` on invalid source paths.
+*   **`flatten_dir()`**
+    *   Moves all files from a nested directory structure into a single destination folder.
+    *   Correctly respects the `ignore_dir` parameter.
+    *   Raises `FileNotFoundError` for invalid source paths.
 
-* **`find_unique_extensions()`**
+*   **`find_unique_extensions()`**
+    *   Accurately detects and returns all unique file extensions from a directory tree.
+    *   Validates that ignored directories are excluded from the scan.
 
-  * Detects and returns all unique file extensions from a directory tree.
-  * Validates against expected extensions.
-  * Handles invalid root paths correctly by raising `FileNotFoundError`.
-
----
-
-## 🧪 Fixtures Breakdown
-
-### `setup_test_dirs`
-
-Creates a deeply nested file structure to test `flatten_dir()` and `find_unique_extensions()`.
-
-```
-base/
-├── sub1/
-│   ├── sub_sub1/
-│   │   ├── file1.txt
-│   │   └── image1.jpg
-│   ├── file_outer.txt
-│   └── video1.mp4
-├── sub2/
-│   ├── sub_sub2/
-│   │   ├── file2.txt
-│   │   └── page1.html
-│   └── audio1.mp3
-└── ignoreme/
-    └── ignored.txt
-
-dest/
-└── dest_test/              # Destination for flattened files
-```
-
-Files:
-
-* Various formats: `.txt`, `.jpg`, `.html`, `.mp4`, `.mp3`
-* Used to validate flattening, ignoring paths, and detecting extensions
+*   **Helper Functions**
+    *   Tests `get_file_modified_date()` for correctness.
+    *   Validates the name collision logic in `_generate_unique_path()`.
 
 ---
 
-### `setup_type_sort`
+## 🧪 Primary Test Fixture: `file_tree`
 
-Creates a flat directory with mixed file types to test file sorting by type.
+To ensure consistent and isolated tests, a primary fixture named `file_tree` is defined in `conftest.py`. It creates a temporary directory with a standard nested structure for most tests to use.
 
 ```
-base/
-├── doc.txt        # → Documents
-├── image.jpg      # → Images
-├── music.mp3      # → Music
-└── random.xyz     # → Others
+<tmp_path>/
+├── empty_dir/
+├── sub_dir/
+│   ├── nested_image.png
+│   ├── nested_doc.pdf
+│   └── deep_dir/
+│       └── deep_archive.zip
+├── ignore_this_dir/
+│   └── secret.txt
+├── main_image.jpg
+├── main_doc.txt
+├── main_archive.rar
+├── script.py
+└── data_report_2023.csv
 ```
+
+This structure allows tests to validate shallow scanning, deep recursion, and directory exclusion logic using a single, reliable setup.
 
 ---
 
-### `setup_date_sort`
+## ➕ Adding New Tests
 
-Creates category folders (`Images`, `Documents`) containing files to be sorted into date folders.
-
-```
-base/
-├── Images/
-│   └── photo.png       # → Images/<current_date>/
-└── Documents/
-    └── report.pdf      # → Documents/<current_date>/
-```
-
----
-Here’s a cleaner, shorter version of the “Adding Tests” section for your `README.md`:
-
----
-
-## ➕ Adding Tests
-
-To extend the test suite follow these quick steps:
+To extend the test suite, follow these steps:
 
 ### 1. **Pick the Right File**
 
-| Target           | Test File            |
-| ---------------- | -------------------- |
-| `Sorter` methods | `test_sorter.py`     |
-| `FileUtils`      | `test_file_utils.py` |
-| Fixtures/setup   | `test_file_tree.py`  |
+| If you are testing...    | Add your test to...      |
+| ------------------------ | ------------------------ |
+| `Sorter` class logic     | `test_sorter.py`         |
+| `FileUtils` or helpers   | `test_file_utils.py`     |
+| New shared fixtures      | `conftest.py`            |
 
----
+### 2. **Write a Test Function**
 
-### 2. **Add Your Test**
-
-Create a new `def test_...` function using pytest style.
-
-Example:
+Create a new function starting with `test_`. Use the `file_tree` fixture or create a new one if a different structure is needed.
 
 ```python
-def test_sort_by_size_creates_folders(size_tree):
-    sorter.sort_by_size(size_tree["base"])
-    assert "Small" in os.listdir(size_tree["base"])
-    assert "Large" in os.listdir(size_tree["base"])
+# In test_sorter.py
+def test_new_feature_moves_files(sorter_instance, file_tree):
+    # 1. Call the function you are testing
+    sorter_instance.new_feature(str(file_tree))
+    
+    # 2. Assert that the outcome is what you expect
+    assert (file_tree / "New_Category" / "script.py").is_file()
+    assert not (file_tree / "script.py").exists()
 ```
 
----
+### 3. **Create a Fixture (If Needed)**
 
-### 3. **Write a Fixture (if needed)**
-
-Put fixtures in `test_file_tree.py`:
+If your test requires a unique file structure, add a new fixture in `conftest.py`.
 
 ```python
+# In conftest.py
 @pytest.fixture
-def size_tree():
-    base = tempfile.mkdtemp()
-    create_temp_file(base, "tiny.txt", "123")
-    create_temp_file(base, "movie.mkv", "0" * 10_000_000)
-    yield {"base": base}
-    shutil.rmtree(base)
+def custom_tree(tmp_path):
+    (tmp_path / "file-01.log").touch()
+    (tmp_path / "file-02.log").touch()
+    return tmp_path
 ```
-
----
-
-### ✅ Test Expectations
-
-* Files/folders are in expected locations
-* Invalid inputs raise proper errors (`FileNotFoundError`, etc.)
-* Temporary files are cleaned up
-* Tests are small, clear, and isolated
 
 ---
 
 ## 🧪 Running the Tests
 
-Make sure `pytest` is installed:
+First, ensure you have `pytest` and `pytest-cov` (for coverage reporting) installed:
 
 ```bash
-pip install pytest
+pip install pytest pytest-cov
 ```
 
-Then run in root folder:
+From the root directory of the project, run one of the following commands:
 
+**Run all tests:**
 ```bash
-pytest src/tests --cov=src/sortium
+pytest
+```
+
+**Run tests with a coverage report:**
+```bash
+pytest --cov=sortium
 ```
 
 ---
 
 ## 📦 Note
 
-This test suite is designed for the `sortium` library hosted on [PyPI](https://pypi.org/), and ensures comprehensive validation for deployed versions of the package.
-
-All file system changes are safely performed in temporary directories, and cleaned up automatically after test execution.
-
----
+All tests are designed to be completely isolated. They operate exclusively within temporary directories created and automatically destroyed by `pytest`, ensuring that no changes are made to your actual file system.

@@ -49,4 +49,3 @@ html_theme_options = {
         "color-sidebar-link-text--active": "#f25c2e",
     },
 }
-

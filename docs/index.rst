@@ -1,66 +1,118 @@
-Sortium Documentation
-=====================
+.. sorter documentation master file, created by
+   sphinx-quickstart on Sat Jan 01 00:00:00 2024.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
 
-Welcome to **Sortium**, a Python utility for organizing files by type, modification date, and custom patterns.
+#######################################
+Welcome to Sortium's Documentation
+#######################################
 
-**Sortium** enables efficient file management by:
+**Sortium** is a high-performance, parallelized Python utility designed for rapidly organizing file systems. It leverages multiple CPU cores to sort thousands of files into clean, categorized directories based on type, modification date, or custom regex patterns.
 
-- Categorizing files into folders such as Images, Documents, Music, Videos, and Others
+Designed for both speed and safety, it is memory-efficient for handling massive directories and automatically prevents file overwrites.
 
-- Organizing files within each category based on their last modified date
+Core Features
+-------------
 
-- Flattening nested directory structures into a single-level hierarchy before sorting
+*   **High-Performance Parallel Processing**: Utilizes a ``ProcessPoolExecutor`` to dramatically speed up file moving and organization, especially in large directories.
 
-- Supporting custom file organization using user-defined regular expression (regex) patterns
+*   **Versatile Sorting Logic**:
+    *   **By Type**: Organize files into categories like ``Images``, ``Documents``, ``Archives``, etc.
+    *   **By Date**: Further organize categorized files into date-stamped folders (e.g., ``01-Jan-2023``).
+    *   **By Regex**: Use powerful, custom regex patterns to categorize files recursively.
+
+*   **Safe and Controlled Operations**:
+    *   Automatically handles file name collisions to prevent accidental data loss.
+    *   Sort files in-place or move them to a completely separate destination directory.
+
+*   **Memory-Efficient Design**: Employs generators to process files one by one, ensuring a tiny memory footprint even with millions of files.
+
 
 .. note::
 
-   This documentation covers installation, usage, and the complete API reference for Sortium.
+   This documentation provides installation instructions, usage examples, and the complete API reference for the Sortium library.
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents
+   :caption: Contents:
 
    modules
 
-Quick Start
------------
+
+A 30-Second Guide
+-----------------
 
 .. warning::
 
-   **Always make a backup of your files before running Sortium.**
-   This utility moves files and modifies folder structures, which may lead to data loss if misused.
+   **Always back up your files before running Sortium.**
+   This utility performs file move operations that modify your directory structure. Misuse could lead to data loss.
 
-Install via pip:
+First, install the library via pip:
 
 .. code-block:: console
 
    pip install sortium
 
-Then:
+
+**Example 1: Basic Sorting by Type (In-Place)**
+
+This is the simplest use case. It organizes all files in a folder into subdirectories like ``Images``, ``Documents``, and ``Videos``.
 
 .. code-block:: python
 
-   from sortium import Sorter
+   from sortium.sorter import Sorter
+
+   # The folder you want to clean up
+   my_folder = "/path/to/my_messy_downloads"
+
+   # Create a Sorter instance and run the sort
+   sorter = Sorter()
+   sorter.sort_by_type(my_folder)
+
+
+**Example 2: Sorting to a New Destination**
+
+Organize files from a source folder and move the categorized results to a separate, clean location.
+
+.. code-block:: python
+
+   from sortium.sorter import Sorter
+
+   source_dir = "/path/to/source_files"
+   destination_dir = "/path/to/organized_archive"
 
    sorter = Sorter()
 
-   # Sort files by type into categorized folders
-   sorter.sort_by_type("/path/to/folder")
+   # Files from source_dir will be moved to categorized folders inside destination_dir
+   sorter.sort_by_type(source_dir, dest_folder_path=destination_dir)
 
-   # Further sort files inside specific category folders by their last modified date
-   sorter.sort_by_date("/path/to/folder", ["Images", "Documents"])
 
-   # Sort files using custom regex patterns
+**Example 3: Advanced Sorting with Regex**
+
+Recursively scan a directory and sort files based on custom patterns. This is great for organizing project files, logs, or datasets.
+
+.. code-block:: python
+
+   from sortium.sorter import Sorter
+
+   project_folder = "/path/to/data_science_project"
+   sorted_output = "/path/to/sorted_project_files"
+
+   # Define categories and their corresponding regex patterns
    regex_patterns = {
-       "Reports": r"^report_.*\.pdf$",
-       "Logs": r".*\.log$"
+       "Datasets": r".*\.csv$",
+       "Notebooks": r".*\.ipynb$",
+       "Final_Reports": r"final_report_.*\.pdf$"
    }
-   sorter.sort_by_regex("/path/to/source", regex_patterns, "/path/to/destination")
+
+   sorter = Sorter()
+   sorter.sort_by_regex(project_folder, regex_patterns, sorted_output)
+
 
 Project Info
 ------------
 
 - **Repository**: `GitHub – Sortium <https://github.com/Sarthak-G0yal/Sortium>`_
-- **License**: GNU v3.0
+- **PyPI Project**: `Sortium on PyPI <https://pypi.org/project/sortium/>`_
+- **License**: GNU General Public License v3.0
 - **Author**: Sarthak Goyal

@@ -1,182 +1,219 @@
 import shutil
 from pathlib import Path
 from datetime import datetime
-from typing import List, Set, Generator, Sequence
+from typing import Set, Generator, Sequence, List
+from concurrent.futures import ProcessPoolExecutor
+
+
+def _generate_unique_path(dest_path: Path) -> Path:
+    """Creates a unique path to avoid overwriting existing files.
+
+    If a file or directory already exists at ``dest_path``, this function
+    appends a counter (e.g., " (1)", " (2)") to the file stem until a
+    unique path is found.
+
+    Args:
+        dest_path: The desired destination path.
+
+    Returns:
+        A unique, non-existent path.
+    """
+    if not dest_path.exists():
+        return dest_path
+
+    parent, stem, suffix = dest_path.parent, dest_path.stem, dest_path.suffix
+    counter = 1
+    while True:
+        new_path = parent / f"{stem} ({counter}){suffix}"
+        if not new_path.exists():
+            return new_path
+        counter += 1
+
+
+def _move_file_safely(source_path_str: str, dest_folder_str: str) -> str:
+    """Moves a single file, handling name collisions. Intended for worker processes.
+
+    This function is designed to be the target for a ``ProcessPoolExecutor``,
+    as it is a top-level function that can be pickled.
+
+    Args:
+        source_path_str: The full path of the file to move.
+        dest_folder_str: The path of the folder to move the file into.
+
+    Returns:
+        An empty string on success, or an error message string on failure.
+    """
+    try:
+        source_path = Path(source_path_str)
+        dest_folder = Path(dest_folder_str)
+        dest_folder.mkdir(parents=True, exist_ok=True)
+        final_dest_path = _generate_unique_path(dest_folder / source_path.name)
+        shutil.move(str(source_path), str(final_dest_path))
+        return ""
+    except Exception as e:
+        return f"Error moving file '{source_path_str}': {e}"
+
+
+def _move_file_safely_wrapper(args):
+    """
+    Helper to unpack arguments for use with 'executor.map'.
+    This allows passing multiple arguments to the target function.
+    """
+    return _move_file_safely(*args)
 
 
 class FileUtils:
-    """
-    FileUtils class for file utilities that provides various methods for working with files and directories and also are used in the Sorter class.
-    A Custom FileUtils class can be provided to the Sorter class to satisfy the specific requirements.
-    """
+    """Provides memory-efficient utilities for file and directory manipulation."""
 
     def get_file_modified_date(self, file_path: str) -> datetime:
-        """
-        Returns the last modified datetime of a file.
+        """Returns the last modified datetime of a file.
 
         Args:
-            file_path (str): Full path to the file.
+            file_path: Full path to the file.
 
         Returns:
-            datetime: Datetime object representing the last modification time.
+            A datetime object for the last modification time.
 
         Raises:
             FileNotFoundError: If the file does not exist.
         """
-        path: Path = Path(file_path)
-        if not path.exists():
+        path = Path(file_path)
+        if not path.is_file():
             raise FileNotFoundError(f"File does not exist: {file_path}")
         return datetime.fromtimestamp(path.stat().st_mtime)
 
-    def iter_files_and_sub_dirs(
+    def iter_shallow_files(
         self, folder_path: str, ignore_dir: Sequence[str] | None = None
-    ) -> tuple[Generator[str, None, None], Generator[str, None, None]]:
-        """
-        Yields two generators: one for subdirectories and one for files in a given folder.
+    ) -> Generator[Path, None, None]:
+        """Yields files in the top level of a directory.
+
+        This is a non-recursive generator.
 
         Args:
-            folder_path (str): Path to the folder to iterate.
-            ignore_dir (List[str] | None, optional): Names of subdirectories to ignore.
+            folder_path: Path to the folder to iterate.
+            ignore_dir (Sequence[str], optional): Names of directories or files to ignore.
 
         Yields:
-            tuple[Generator[str, None, None], Generator[str, None, None]]:
-                A tuple containing two generators. The first one yields subdirectories
-                and the second one yields files.
+            A generator of ``Path`` objects for each file.
         """
         source_root = Path(folder_path)
         ignore_set = set(ignore_dir or [])
-
-        def splitter() -> Generator[tuple[str, str], None, None]:
+        try:
             for item in source_root.iterdir():
                 if item.name in ignore_set:
                     continue
-                if item.is_symlink():
+                if item.is_file():
+                    yield item
+        except FileNotFoundError:
+            print(f"Directory not found: {folder_path}")
+        except PermissionError:
+            print(f"Permission denied for directory: {folder_path}")
+
+    def iter_all_files_recursive(
+        self, folder_path: str, ignore_dir: Sequence[str] | None = None
+    ) -> Generator[Path, None, None]:
+        """Recursively yields all files in a directory and its subdirectories.
+
+        This is a memory-efficient generator that does not load the entire
+        file list into memory.
+
+        Args:
+            folder_path: Path to the root directory to scan.
+            ignore_dir (Sequence[str], optional): Directory names to ignore.
+
+        Yields:
+            A generator of ``Path`` objects for each file found.
+        """
+        source_root = Path(folder_path)
+        if not source_root.is_dir():
+            return
+
+        ignore_set = set(ignore_dir or [])
+
+        try:
+            for item in source_root.iterdir():
+                if item.name in ignore_set:
                     continue
                 if item.is_dir():
-                    yield "dir", item.name
+                    yield from self.iter_all_files_recursive(str(item), ignore_dir)
                 elif item.is_file():
-                    yield "file", item.name
-
-        def subdirs():
-            for kind, name in splitter():
-                if kind == "dir":
-                    yield name
-
-        def files():
-            for kind, name in splitter():
-                if kind == "file":
-                    yield name
-
-        return subdirs(), files()
+                    yield item
+        except PermissionError:
+            print(f"Permission denied for directory: {folder_path}")
 
     def flatten_dir(
         self,
         folder_path: str,
         dest_folder_path: str,
         ignore_dir: Sequence[str] | None = None,
-        rm_subdir: bool = False,
     ) -> None:
-        """
-        Moves all files from subdirectories of a given folder into a destination folder.
+        """Moves all files from a directory tree into a single destination folder.
 
-        This is useful for flattening a directory structure by collecting all files
-        from nested folders and moving them into one target folder.
+        This method recursively finds all files in ``folder_path`` and moves
+        them to ``dest_folder_path``. It does not preserve the original
+        directory structure. It does not delete the original empty folders.
+
+        .. warning:: This operation is parallelized but does not currently
+                     support removing the original subdirectories due to the
+                     complexities of doing so safely in parallel.
 
         Args:
-            folder_path (str): Path to the root folder containing subdirectories with files.
-            dest_folder_path (str): Path to the folder where all files should be moved.
-            ignore_dir (List[str]): Names of subdirectories within `folder_path` that should be ignored during processing.
-            rm_subdir (bool): If True, subdirectories will be removed after moving their contents. Default is False.
+            folder_path: Path to the root folder to flatten.
+            dest_folder_path: Path to the single folder where all files will be moved.
+            ignore_dir (Sequence[str], optional): Directory names to ignore.
+
         Raises:
-            FileNotFoundError: If the root folder (`folder_path`) does not exist.
-
-        Notes:
-
-            - Any errors encountered while moving files or removing subdirectories are caught and printed, but not raised.
-            - Fails silently (with printed messages) on permission issues, missing files, or non-empty directories.
+            FileNotFoundError: If ``folder_path`` does not exist.
         """
-        source_root: Path = Path(folder_path)
-        dest_root: Path = Path(dest_folder_path)
+        source_root = Path(folder_path)
+        dest_root = Path(dest_folder_path)
         if not source_root.exists():
             raise FileNotFoundError(f"The folder path '{folder_path}' does not exist.")
 
         dest_root.mkdir(parents=True, exist_ok=True)
-        ignore_set = set(ignore_dir or [])
 
-        try:
-            # Get the list of files and sub directories.
-            sub_dir_gen, file_gen = self.iter_files_and_sub_dirs(
-                folder_path, ignore_dir
-            )
-            sub_dir_list = [d for d in sub_dir_gen if d not in ignore_set]
-            file_list = list(file_gen)
+        def generate_tasks():
+            for file_path in self.iter_all_files_recursive(
+                str(source_root), ignore_dir
+            ):
+                yield (str(file_path), str(dest_root))
 
-            for name in file_list:
-                source_item = source_root / name
-                dest_item = dest_root / name
-                try:
-                    shutil.move(str(source_item), str(dest_item))
-                except Exception as e:
-                    print(f"Failed to move '{source_item}' to '{dest_item}': {e}")
-
-            for sub_dir_name in sub_dir_list:
-                self.flatten_dir(
-                    str(source_root / sub_dir_name),
-                    str(dest_root),
-                    ignore_dir,
-                    rm_subdir,
-                )
-
-            if rm_subdir:
-                for sub_dir_name in sub_dir_list:
-                    sub_dir_path = source_root / sub_dir_name
-                    try:
-                        if sub_dir_path != dest_root:
-                            shutil.rmtree(sub_dir_path)
-                    except Exception as e:
-                        print(f"Failed to remove directory '{sub_dir_path}': {e}")
-        except Exception as e:
-            print(f"Error occurred while cleaning up folders: {e}")
+        print("Starting directory flattening...")
+        with ProcessPoolExecutor() as executor:
+            # Use the robust 'map' with the wrapper function
+            results = executor.map(_move_file_safely_wrapper, generate_tasks())
+            for error_msg in results:
+                if error_msg:
+                    print(error_msg)
+        print("Flattening complete.")
 
     def find_unique_extensions(
         self, source_path: str, ignore_dir: List[str] | None = None
     ) -> Set[str]:
-        """
-        Recursively finds all unique file extensions in a given directory and its subdirectories.
+        """Recursively finds all unique file extensions in a directory.
+
+        This method is memory-efficient, scanning the directory tree without
+        loading all paths into memory at once.
 
         Args:
-            source_path (str): Path to the root directory.
-            ignore_dir (List[str], optional): List of directory names to ignore. Defaults to None.
+            source_path: Path to the root directory to scan.
+            ignore_dir (List[str], optional): Directory names to ignore.
 
         Returns:
-            Set[str]: A set of unique file extensions found in the directory tree.
+            A set of unique file extensions (e.g., {".txt", ".jpg"}).
 
         Raises:
-            FileNotFoundError: If the source_path does not exist.
+            FileNotFoundError: If ``source_path`` does not exist.
         """
-        source_root: Path = Path(source_path)
+        source_root = Path(source_path)
         if not source_root.exists():
-            raise FileNotFoundError(
-                f"The folder path '{str(source_root)}' does not exist."
-            )
+            raise FileNotFoundError(f"The path '{source_root}' does not exist.")
 
-        extension_list: Set[str] = set()
+        extensions: Set[str] = set()
+        file_generator = self.iter_all_files_recursive(str(source_root), ignore_dir)
 
-        try:
-            sub_dir_list, file_list = self.iter_files_and_sub_dirs(
-                str(source_root), ignore_dir
-            )
+        for file_path in file_generator:
+            if file_path.suffix:
+                extensions.add(file_path.suffix.lower())
 
-            for name in file_list:
-                extension_list.add(Path(name).suffix.lower())
-
-            for sub_dir_name in sub_dir_list:
-                sub_dir_path = source_root / sub_dir_name
-                extension_list.update(
-                    self.find_unique_extensions(str(sub_dir_path), ignore_dir)
-                )
-
-        except Exception as e:
-            print(f"Error occurred while finding unique extensions: {e}")
-
-        return extension_list
+        return extensions
