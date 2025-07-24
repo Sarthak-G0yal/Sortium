@@ -1,6 +1,6 @@
 # Sortium
 
-[![PyPI version](https://badge.fury.io/py/sortium.svg)](https://badge.fury.io/py/sortium)
+[![PyPI version](https://badge.fury.io/py/sortium.svg?cache-bust=1)](https://badge.fury.io/py/sortium)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 **Sortium** is a high-performance, parallelized Python utility for rapidly organizing file systems. It leverages multiple CPU cores to sort thousands of files into clean, categorized directories based on type, modification date, or custom regex patterns.
