@@ -198,3 +198,38 @@ class Sorter:
             self._execute_sort(generate_tasks(), "by regex")
         except Exception as e:
             raise RuntimeError(f"An error occurred during parallel sorting: {e}")
+
+    def sort_by_extension(
+        self,
+        folder_path: str,
+        dest_folder_path: str | None = None,
+        ignore_dir: List[str] | None = None,
+    ) -> None:
+        """Sorts files by extension and moves them into subdirectories.
+
+        Args:
+            folder_path: Path to the directory containing unsorted files.
+            dest_folder_path (str, optional): Base directory for the sorted
+                category folders. If ``None``, ``folder_path`` is used.
+            ignore_dir (List[str], optional): Directory names to ignore.
+
+        Raises:
+            FileNotFoundError: If ``folder_path`` does not exist.
+        """
+        source_folder = Path(folder_path)
+        if not source_folder.exists():
+            raise FileNotFoundError(f"The path '{source_folder}' does not exist.")
+        dest_base_folder = Path(dest_folder_path) if dest_folder_path else source_folder
+
+        def generate_tasks():
+            for item in self.file_utils.iter_all_files_recursive(
+                str(source_folder), ignore_dir
+            ):
+                extension = item.suffix.lower().lstrip(".")
+                dest_folder = dest_base_folder / extension
+                yield (str(item), str(dest_folder))
+
+        try:
+            self._execute_sort(generate_tasks(), "by extension")
+        except Exception as e:
+            raise RuntimeError(f"An error occurred during parallel sorting: {e}")

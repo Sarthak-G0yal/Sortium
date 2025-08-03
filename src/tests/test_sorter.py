@@ -132,3 +132,16 @@ def test_sort_by_regex(sorter_instance: Sorter, file_tree: Path):
     # Check that unmatched files were NOT moved
     assert (file_tree / "main_doc.txt").is_file()
     assert (file_tree / "sub_dir" / "deep_dir" / "deep_archive.zip").is_file()
+
+
+def test_sort_by_extension(sorter_instance: Sorter, file_tree: Path):
+    """Tests sorting files by their extension."""
+    sorter_instance.sort_by_extension(str(file_tree))
+    assert (file_tree / "jpg" / "main_image.jpg").is_file()
+    assert (file_tree / "txt" / "main_doc.txt").is_file()
+    assert (file_tree / "rar" / "main_archive.rar").is_file()
+    assert (file_tree / "py" / "script.py").is_file()
+    assert (file_tree / "csv" / "data_report_2023.csv").is_file()
+    assert (file_tree / "png" / "nested_image.png").is_file()
+    assert (file_tree / "pdf" / "nested_doc.pdf").is_file()
+    assert (file_tree / "zip" / "deep_archive.zip").is_file()

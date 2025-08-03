@@ -1,6 +1,7 @@
 # src/tests/conftest.py
 import pytest
 from pathlib import Path
+import shutil
 
 
 @pytest.fixture
@@ -46,4 +47,5 @@ def file_tree(tmp_path: Path):
     (deep_dir / "deep_archive.zip").touch()
     (ignore_dir / "secret.txt").touch()
 
-    return tmp_path
+    yield tmp_path
+    shutil.rmtree(tmp_path)
