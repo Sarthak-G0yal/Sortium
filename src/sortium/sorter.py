@@ -145,20 +145,23 @@ class Sorter:
         def generate_tasks():
             for folder_type in folder_types:
                 category_folder = source_root / folder_type
-                if category_folder.is_dir():
-                    for file_path in category_folder.iterdir():
-                        if file_path.is_file():
-                            try:
-                                modified = self.file_utils.get_file_modified_date(
-                                    str(file_path)
-                                )
-                                date_str = modified.strftime("%d-%b-%Y")
-                                final_dest_folder = dest_root / folder_type / date_str
-                                yield (str(file_path), str(final_dest_folder))
-                            except Exception as e:
-                                print(f"Could not prepare file '{file_path.name}': {e}")
-                else:
+                if not category_folder.is_dir():
                     print(f"Category folder '{category_folder}' not found, skipping.")
+                    continue
+
+                for file_path in category_folder.iterdir():
+                    if not file_path.is_file():
+                        continue
+
+                    try:
+                        modified = self.file_utils.get_file_modified_date(
+                            str(file_path)
+                        )
+                        date_str = modified.strftime("%d-%b-%Y")
+                        final_dest_folder = dest_root / folder_type / date_str
+                        yield (str(file_path), str(final_dest_folder))
+                    except Exception as e:
+                        print(f"Could not prepare file '{file_path.name}': {e}")
 
         self._execute_sort(generate_tasks(), "by date")
 
