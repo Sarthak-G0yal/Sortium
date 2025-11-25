@@ -1,4 +1,5 @@
 # src/tests/test_file_utils.py
+import json
 import pytest
 from pathlib import Path
 from datetime import datetime, timedelta
@@ -152,3 +153,50 @@ def test_flatten_dir_with_ignore(file_tree: Path):
 
     # Other files should be moved
     assert (dest_path / "main_image.jpg").exists()
+
+
+def test_iter_all_files_recursive_default_ignore(tmp_path: Path):
+    """Ensures built-in ignore entries are always skipped."""
+    visible = tmp_path / "keep.txt"
+    visible.write_text("ok")
+
+    hidden_dir = tmp_path / ".git"
+    hidden_dir.mkdir()
+    (hidden_dir / "config").write_text("secret")
+
+    files = {
+        p.name for p in file_utils.iter_all_files_recursive(str(tmp_path))
+    }
+
+    assert "keep.txt" in files
+    assert "config" not in files
+
+
+def test_export_directory_structure(tmp_path: Path):
+    """Exports the directory tree as JSON with ignore handling."""
+    (tmp_path / "top.txt").write_text("root")
+    nested_dir = tmp_path / "docs"
+    nested_dir.mkdir()
+    (nested_dir / "guide.md").write_text("# hi")
+
+    hidden_dir = tmp_path / ".git"
+    hidden_dir.mkdir()
+    (hidden_dir / "config").write_text("secret")
+
+    output_file = tmp_path / "structure.json"
+    exported = file_utils.export_directory_structure(
+        str(tmp_path), str(output_file)
+    )
+
+    assert exported == output_file
+    assert output_file.exists()
+
+    data = json.loads(output_file.read_text())
+    assert data["type"] == "directory"
+
+    child_names = {child["name"]: child for child in data["children"]}
+    assert "top.txt" in child_names
+    assert child_names["top.txt"]["type"] == "file"
+    assert "docs" in child_names
+    assert child_names["docs"]["type"] == "directory"
+    assert ".git" not in child_names

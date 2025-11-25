@@ -1,3 +1,4 @@
+import json
 import shutil
 from pathlib import Path
 from datetime import datetime
@@ -228,3 +229,85 @@ class FileUtils:
                 extensions.add(file_path.suffix.lower())
 
         return extensions
+
+    def export_directory_structure(
+        self,
+        folder_path: str,
+        output_file: str,
+        ignore_dir: Sequence[str] | None = None,
+    ) -> Path:
+        """Writes the directory tree rooted at ``folder_path`` to a JSON file.
+
+        Args:
+            folder_path: Directory whose structure should be traced.
+            output_file: Destination JSON file path.
+            ignore_dir: Optional iterable of directory or file names to skip.
+
+        Returns:
+            Path to the generated JSON file.
+
+        Raises:
+            FileNotFoundError: If ``folder_path`` does not exist.
+            NotADirectoryError: If ``folder_path`` is not a directory.
+        """
+
+        source_root = Path(folder_path)
+        if not source_root.exists():
+            raise FileNotFoundError(
+                f"The path '{folder_path}' does not exist and cannot be exported."
+            )
+        if not source_root.is_dir():
+            raise NotADirectoryError(
+                f"The path '{folder_path}' is not a directory and cannot be exported."
+            )
+
+        ignore_set = _build_ignore_set(ignore_dir)
+
+        def build_node(current_path: Path) -> dict:
+            if current_path.is_file():
+                try:
+                    size = current_path.stat().st_size
+                except (PermissionError, OSError):
+                    size = None
+                return {
+                    "name": current_path.name,
+                    "path": str(current_path),
+                    "type": "file",
+                    "size": size,
+                }
+
+            children = []
+            try:
+                for child in sorted(
+                    current_path.iterdir(), key=lambda p: (p.is_file(), p.name.lower())
+                ):
+                    if child.name in ignore_set:
+                        continue
+                    child_snapshot = build_node(child)
+                    if child_snapshot is not None:
+                        children.append(child_snapshot)
+            except PermissionError:
+                # Surface the permission error at this directory level.
+                return {
+                    "name": current_path.name,
+                    "path": str(current_path),
+                    "type": "directory",
+                    "children": [],
+                    "error": "permission-denied",
+                }
+
+            return {
+                "name": current_path.name,
+                "path": str(current_path),
+                "type": "directory",
+                "children": children,
+            }
+
+        snapshot = build_node(source_root)
+
+        output_path = Path(output_file)
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        with output_path.open("w", encoding="utf-8") as json_file:
+            json.dump(snapshot, json_file, indent=2)
+
+        return output_path
