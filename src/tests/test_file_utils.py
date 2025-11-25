@@ -155,6 +155,45 @@ def test_flatten_dir_with_ignore(file_tree: Path):
     assert (dest_path / "main_image.jpg").exists()
 
 
+def test_apply_move_plan_forward_and_reverse(tmp_path: Path):
+    """Validates applying and reversing a generated move plan."""
+    source_dir = tmp_path / "source"
+    dest_dir = tmp_path / "dest"
+    source_dir.mkdir()
+    dest_dir.mkdir()
+
+    original_file = source_dir / "example.txt"
+    original_file.write_text("content")
+
+    plan_payload = {
+        "plan_id": "test",
+        "version": 1,
+        "strategy": "type",
+        "source_root": str(source_dir),
+        "destination_root": str(dest_dir),
+        "entry_count": 1,
+        "entries": [
+            {
+                "source_path": str(original_file),
+                "destination_path": str(dest_dir / "example.txt"),
+            }
+        ],
+    }
+
+    plan_file = tmp_path / "plan.json"
+    plan_file.write_text(json.dumps(plan_payload, indent=2))
+
+    forward_summary = file_utils.apply_move_plan(str(plan_file))
+    assert forward_summary["moved"] == 1
+    assert (dest_dir / "example.txt").is_file()
+    assert not original_file.exists()
+
+    reverse_summary = file_utils.apply_move_plan(str(plan_file), reverse=True)
+    assert reverse_summary["moved"] == 1
+    assert original_file.is_file()
+    assert not (dest_dir / "example.txt").exists()
+
+
 def test_iter_all_files_recursive_default_ignore(tmp_path: Path):
     """Ensures built-in ignore entries are always skipped."""
     visible = tmp_path / "keep.txt"

@@ -1,18 +1,21 @@
+import json
 import re
+from datetime import datetime, timezone
 from pathlib import Path
-from concurrent.futures import ProcessPoolExecutor
-from typing import Dict, List, Generator, Tuple
+from typing import Any, Dict, List
+from uuid import uuid4
+
 from .config import DEFAULT_FILE_TYPES
-from .file_utils import FileUtils, _move_file_safely_wrapper
+from .file_utils import FileUtils
 
 
 class Sorter:
     """Organizes files into directories based on various criteria.
 
-    The Sorter class provides parallelized, memory-efficient methods to sort
-    files based on their type, modification date, or custom regex patterns.
-    It is designed to handle very large numbers of files without consuming
-    excessive memory.
+    Each public method emits a JSON move plan describing every file's source
+    and destination so you can review, edit, or auto-apply the workflow. The
+    class stays memory-efficient while handling large trees by relying on
+    generators and incremental planning.
 
     Attributes:
         file_types_dict (Dict[str, List[str]]): A mapping of file category
@@ -53,51 +56,98 @@ class Sorter:
         """
         return self.extension_to_category.get(extension.lower(), "Others")
 
-    def _execute_sort(
-        self,
-        task_generator: Generator[Tuple[str, str], None, None],
-        description: str,
-    ) -> None:
-        """Executes a sorting operation in parallel using a task generator.
-
-        This private helper method encapsulates the ``ProcessPoolExecutor`` logic,
-        consuming tasks from a generator to ensure memory efficiency.
+    def _resolve_plan_path(
+        self, base_folder: Path, strategy: str, plan_output: str | None
+    ) -> Path:
+        """Determines where a plan JSON should be written.
 
         Args:
-            task_generator: A generator that yields tuples of
-                (source_path, destination_folder_path).
-            description: A string describing the sort operation for logging.
-        """
-        print(f"Starting sort {description}...")
-        with ProcessPoolExecutor() as executor:
-            # Use the robust 'map' method with the wrapper function.
-            results = executor.map(_move_file_safely_wrapper, task_generator)
+            base_folder: Folder whose name seeds the default plan location.
+            strategy: The sorting strategy name (e.g., "type").
+            plan_output: Optional explicit path supplied by the caller.
 
-            # Process results as they are completed by worker processes
-            for error_msg in results:
-                if error_msg:
-                    print(error_msg)
-        print(f"Sorting {description} complete.")
+        Returns:
+            Absolute path where the JSON plan will be saved.
+        """
+
+        if plan_output:
+            return Path(plan_output)
+        timestamp = datetime.utcnow().strftime("%Y%m%d_%H%M%S")
+        return base_folder / f"sortium_plan_{strategy}_{timestamp}.json"
+
+    def _write_plan(
+        self,
+        strategy: str,
+        source_root: Path,
+        destination_root: Path,
+        entries: List[Dict[str, Any]],
+        plan_output: str | None,
+        extra_metadata: Dict[str, Any] | None = None,
+    ) -> Path:
+        """Persists a move plan to disk and returns the resulting path.
+
+        Args:
+            strategy: Sorting strategy identifier (type/date/regex/extension).
+            source_root: Root directory scanned when generating the plan.
+            destination_root: Base directory files will ultimately move into.
+            entries: List of per-file plan entries.
+            plan_output: Optional custom path for the output JSON file.
+            extra_metadata: Optional dictionary merged into the plan payload.
+
+        Returns:
+            Path to the serialized JSON plan on disk.
+        """
+
+        plan_payload: Dict[str, Any] = {
+            "plan_id": str(uuid4()),
+            "version": 1,
+            "strategy": strategy,
+            "generated_at": datetime.now(timezone.utc).isoformat(),
+            "source_root": str(source_root),
+            "destination_root": str(destination_root),
+            "entry_count": len(entries),
+            "entries": entries,
+        }
+        if extra_metadata:
+            plan_payload["metadata"] = extra_metadata
+
+        plan_path = self._resolve_plan_path(source_root, strategy, plan_output)
+        plan_path.parent.mkdir(parents=True, exist_ok=True)
+        with plan_path.open("w", encoding="utf-8") as plan_file:
+            json.dump(plan_payload, plan_file, indent=2)
+
+        print(
+            f"Sort plan for strategy '{strategy}' written to '{plan_path}'."
+        )
+        return plan_path
 
     def sort_by_type(
         self,
         folder_path: str,
         dest_folder_path: str | None = None,
         ignore_dir: List[str] | None = None,
-    ) -> None:
-        """Sorts files into subdirectories by file type in parallel.
+        plan_output: str | None = None,
+        auto_apply: bool = False,
+    ) -> Path:
+        """Generates a plan to sort files into subdirectories by file type.
 
-        Files in the top level of ``folder_path`` are moved into subdirectories
-        (e.g., "Images", "Documents") inside ``dest_folder_path``.
+        Files in the top level of ``folder_path`` are mapped into subdirectories
+        (e.g., "Images", "Documents") inside ``dest_folder_path``. The plan is
+        written to JSON so it can be inspected or edited before execution.
 
         .. note:: This method is memory-efficient and suitable for sorting
                   directories with a very large number of files.
 
         Args:
             folder_path: Path to the directory containing unsorted files.
-            dest_folder_path (str, optional): Base directory for the sorted
-                category folders. If ``None``, ``folder_path`` is used.
-            ignore_dir (List[str], optional): Directory names to ignore.
+            dest_folder_path: Base directory for the sorted category folders.
+                Falls back to ``folder_path`` when ``None``.
+            ignore_dir: Optional directory names to skip when scanning.
+            plan_output: Optional JSON path override for the emitted plan.
+            auto_apply: If ``True``, immediately executes the generated plan.
+
+        Returns:
+            Path to the JSON plan file.
 
         Raises:
             FileNotFoundError: If ``folder_path`` does not exist.
@@ -107,32 +157,63 @@ class Sorter:
             raise FileNotFoundError(f"The path '{source_folder}' does not exist.")
         dest_base_folder = Path(dest_folder_path) if dest_folder_path else source_folder
 
-        def generate_tasks():
-            for item in self.file_utils.iter_shallow_files(
-                str(source_folder), ignore_dir
-            ):
-                category = self._get_category(item.suffix)
-                dest_folder = dest_base_folder / category
-                yield (str(item), str(dest_folder))
+        entries: List[Dict[str, Any]] = []
+        for item in self.file_utils.iter_shallow_files(
+            str(source_folder), ignore_dir
+        ):
+            category = self._get_category(item.suffix)
+            dest_folder = dest_base_folder / category
+            planned_path = self.file_utils.plan_destination_path(
+                str(item), str(dest_folder)
+            )
+            entries.append(
+                {
+                    "source_path": str(item),
+                    "destination_path": str(planned_path),
+                    "category": category,
+                    "extension": item.suffix.lower(),
+                }
+            )
 
-        self._execute_sort(generate_tasks(), "by type")
+        plan_path = self._write_plan(
+            strategy="type",
+            source_root=source_folder,
+            destination_root=dest_base_folder,
+            entries=entries,
+            plan_output=plan_output,
+            extra_metadata={
+                "ignored": list(ignore_dir or []),
+                "file_types": self.file_types_dict,
+            },
+        )
+
+        if auto_apply:
+            self.file_utils.apply_move_plan(str(plan_path))
+
+        return plan_path
 
     def sort_by_date(
         self,
         folder_path: str,
         folder_types: List[str],
         dest_folder_path: str | None = None,
-    ) -> None:
-        """Sorts files within category folders by their modification date.
+        plan_output: str | None = None,
+        auto_apply: bool = False,
+    ) -> Path:
+        """Generates a plan to sort files within categories by modification date.
 
         Files are moved into date-stamped subfolders (e.g., "01-Jan-2023").
 
         Args:
             folder_path: Root directory containing the category folders to process.
             folder_types: List of category folder names (e.g., ['Images']).
-            dest_folder_path (str, optional): Base directory for the sorted
-                folders. If ``None``, files are sorted within their current
-                category folders.
+            dest_folder_path: Base directory for the sorted folders. Defaults
+                to ``folder_path`` when ``None``.
+            plan_output: Optional JSON path override for the emitted plan.
+            auto_apply: If ``True``, immediately executes the generated plan.
+
+        Returns:
+            Path to the JSON plan file.
 
         Raises:
             FileNotFoundError: If ``folder_path`` does not exist.
@@ -142,33 +223,61 @@ class Sorter:
             raise FileNotFoundError(f"The path '{source_root}' does not exist.")
         dest_root = Path(dest_folder_path) if dest_folder_path else source_root
 
-        def generate_tasks():
-            for folder_type in folder_types:
-                category_folder = source_root / folder_type
-                if not category_folder.is_dir():
-                    print(f"Category folder '{category_folder}' not found, skipping.")
+        entries: List[Dict[str, Any]] = []
+        for folder_type in folder_types:
+            category_folder = source_root / folder_type
+            if not category_folder.is_dir():
+                print(f"Category folder '{category_folder}' not found, skipping.")
+                continue
+
+            for file_path in category_folder.iterdir():
+                if not file_path.is_file():
                     continue
 
-                for file_path in category_folder.iterdir():
-                    if not file_path.is_file():
-                        continue
+                try:
+                    modified = self.file_utils.get_file_modified_date(str(file_path))
+                except Exception as exc:
+                    print(f"Could not evaluate file '{file_path.name}': {exc}")
+                    continue
 
-                    try:
-                        modified = self.file_utils.get_file_modified_date(
-                            str(file_path)
-                        )
-                        date_str = modified.strftime("%d-%b-%Y")
-                        final_dest_folder = dest_root / folder_type / date_str
-                        yield (str(file_path), str(final_dest_folder))
-                    except Exception as e:
-                        print(f"Could not prepare file '{file_path.name}': {e}")
+                date_str = modified.strftime("%d-%b-%Y")
+                final_dest_folder = dest_root / folder_type / date_str
+                planned_path = self.file_utils.plan_destination_path(
+                    str(file_path), str(final_dest_folder)
+                )
+                entries.append(
+                    {
+                        "source_path": str(file_path),
+                        "destination_path": str(planned_path),
+                        "category": folder_type,
+                        "date_folder": date_str,
+                        "modified_at": modified.isoformat(),
+                    }
+                )
 
-        self._execute_sort(generate_tasks(), "by date")
+        plan_path = self._write_plan(
+            strategy="date",
+            source_root=source_root,
+            destination_root=dest_root,
+            entries=entries,
+            plan_output=plan_output,
+            extra_metadata={"folder_types": folder_types},
+        )
+
+        if auto_apply:
+            self.file_utils.apply_move_plan(str(plan_path))
+
+        return plan_path
 
     def sort_by_regex(
-        self, folder_path: str, regex: Dict[str, str], dest_folder_path: str
-    ) -> None:
-        """Sorts files recursively based on regex patterns.
+        self,
+        folder_path: str,
+        regex: Dict[str, str],
+        dest_folder_path: str,
+        plan_output: str | None = None,
+        auto_apply: bool = False,
+    ) -> Path:
+        """Generates a plan to sort files recursively based on regex patterns.
 
         Scans ``folder_path`` and its subdirectories for files whose names
         match the provided regex patterns, then moves them to categorized
@@ -178,43 +287,74 @@ class Sorter:
             folder_path: Path to the directory to scan recursively.
             regex: Dictionary mapping category names to regex patterns.
             dest_folder_path: Base directory where sorted files will be moved.
+            plan_output: Optional JSON path override for the emitted plan.
+            auto_apply: If ``True``, immediately executes the generated plan.
+
+        Returns:
+            Path to the JSON plan file.
 
         Raises:
             FileNotFoundError: If ``folder_path`` does not exist.
-            RuntimeError: If a critical error occurs during parallel sorting.
+            RuntimeError: If a critical error occurs while preparing the plan.
         """
         source_path = Path(folder_path)
         if not source_path.exists():
             raise FileNotFoundError(f"The path '{source_path}' does not exist.")
         dest_base_path = Path(dest_folder_path)
 
-        def generate_tasks():
-            file_generator = self.file_utils.iter_all_files_recursive(str(source_path))
-            for file_path in file_generator:
-                for category, pattern in regex.items():
-                    if re.match(pattern, file_path.name):
-                        dest_folder = dest_base_path / category
-                        yield (str(file_path), str(dest_folder))
-                        break  # Move to next file once a match is found
+        entries: List[Dict[str, Any]] = []
+        file_generator = self.file_utils.iter_all_files_recursive(str(source_path))
+        for file_path in file_generator:
+            for category, pattern in regex.items():
+                if re.match(pattern, file_path.name):
+                    dest_folder = dest_base_path / category
+                    planned_path = self.file_utils.plan_destination_path(
+                        str(file_path), str(dest_folder)
+                    )
+                    entries.append(
+                        {
+                            "source_path": str(file_path),
+                            "destination_path": str(planned_path),
+                            "category": category,
+                            "pattern": pattern,
+                        }
+                    )
+                    break
 
-        try:
-            self._execute_sort(generate_tasks(), "by regex")
-        except Exception as e:
-            raise RuntimeError(f"An error occurred during parallel sorting: {e}")
+        plan_path = self._write_plan(
+            strategy="regex",
+            source_root=source_path,
+            destination_root=dest_base_path,
+            entries=entries,
+            plan_output=plan_output,
+            extra_metadata={"regex": regex},
+        )
+
+        if auto_apply:
+            self.file_utils.apply_move_plan(str(plan_path))
+
+        return plan_path
 
     def sort_by_extension(
         self,
         folder_path: str,
         dest_folder_path: str | None = None,
         ignore_dir: List[str] | None = None,
-    ) -> None:
-        """Sorts files by extension and moves them into subdirectories.
+        plan_output: str | None = None,
+        auto_apply: bool = False,
+    ) -> Path:
+        """Generates a plan to sort files by extension into subdirectories.
 
         Args:
             folder_path: Path to the directory containing unsorted files.
-            dest_folder_path (str, optional): Base directory for the sorted
-                category folders. If ``None``, ``folder_path`` is used.
-            ignore_dir (List[str], optional): Directory names to ignore.
+            dest_folder_path: Base directory for the sorted category folders.
+                Falls back to ``folder_path`` when ``None``.
+            ignore_dir: Optional directory names to skip when scanning.
+            plan_output: Optional JSON path override for the emitted plan.
+            auto_apply: If ``True``, immediately executes the generated plan.
+
+        Returns:
+            Path to the JSON plan file.
 
         Raises:
             FileNotFoundError: If ``folder_path`` does not exist.
@@ -224,15 +364,33 @@ class Sorter:
             raise FileNotFoundError(f"The path '{source_folder}' does not exist.")
         dest_base_folder = Path(dest_folder_path) if dest_folder_path else source_folder
 
-        def generate_tasks():
-            for item in self.file_utils.iter_all_files_recursive(
-                str(source_folder), ignore_dir
-            ):
-                extension = item.suffix.lower().lstrip(".")
-                dest_folder = dest_base_folder / extension
-                yield (str(item), str(dest_folder))
+        entries: List[Dict[str, Any]] = []
+        for item in self.file_utils.iter_all_files_recursive(
+            str(source_folder), ignore_dir
+        ):
+            extension = item.suffix.lower().lstrip(".")
+            dest_folder = dest_base_folder / extension if extension else dest_base_folder
+            planned_path = self.file_utils.plan_destination_path(
+                str(item), str(dest_folder)
+            )
+            entries.append(
+                {
+                    "source_path": str(item),
+                    "destination_path": str(planned_path),
+                    "extension": extension,
+                }
+            )
 
-        try:
-            self._execute_sort(generate_tasks(), "by extension")
-        except Exception as e:
-            raise RuntimeError(f"An error occurred during parallel sorting: {e}")
+        plan_path = self._write_plan(
+            strategy="extension",
+            source_root=source_folder,
+            destination_root=dest_base_folder,
+            entries=entries,
+            plan_output=plan_output,
+            extra_metadata={"ignored": list(ignore_dir or [])},
+        )
+
+        if auto_apply:
+            self.file_utils.apply_move_plan(str(plan_path))
+
+        return plan_path

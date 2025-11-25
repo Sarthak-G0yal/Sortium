@@ -2,8 +2,7 @@ import json
 import shutil
 from pathlib import Path
 from datetime import datetime
-from typing import Set, Generator, Sequence, List
-from concurrent.futures import ProcessPoolExecutor
+from typing import Set, Generator, Sequence, List, Dict
 
 from .config import DEFAULT_IGNORE_ENTRIES
 
@@ -26,6 +25,7 @@ def _generate_unique_path(dest_path: Path) -> Path:
     Returns:
         A unique, non-existent path.
     """
+
     if not dest_path.exists():
         return dest_path
 
@@ -39,18 +39,8 @@ def _generate_unique_path(dest_path: Path) -> Path:
 
 
 def _move_file_safely(source_path_str: str, dest_folder_str: str) -> str:
-    """Moves a single file, handling name collisions. Intended for worker processes.
+    """Moves a single file while handling destination name collisions."""
 
-    This function is designed to be the target for a ``ProcessPoolExecutor``,
-    as it is a top-level function that can be pickled.
-
-    Args:
-        source_path_str: The full path of the file to move.
-        dest_folder_str: The path of the folder to move the file into.
-
-    Returns:
-        An empty string on success, or an error message string on failure.
-    """
     try:
         source_path = Path(source_path_str)
         dest_folder = Path(dest_folder_str)
@@ -58,16 +48,21 @@ def _move_file_safely(source_path_str: str, dest_folder_str: str) -> str:
         final_dest_path = _generate_unique_path(dest_folder / source_path.name)
         shutil.move(str(source_path), str(final_dest_path))
         return ""
-    except Exception as e:
-        return f"Error moving file '{source_path_str}': {e}"
+    except Exception as exc:  # pragma: no cover - surface error for caller
+        return f"Error moving file '{source_path_str}': {exc}"
 
 
-def _move_file_safely_wrapper(args):
-    """
-    Helper to unpack arguments for use with 'executor.map'.
-    This allows passing multiple arguments to the target function.
-    """
-    return _move_file_safely(*args)
+def _move_file_to_path(source_path_str: str, dest_path_str: str) -> str:
+    """Moves a file to an explicit destination path without renaming."""
+
+    try:
+        source_path = Path(source_path_str)
+        dest_path = Path(dest_path_str)
+        dest_path.parent.mkdir(parents=True, exist_ok=True)
+        shutil.move(str(source_path), str(dest_path))
+        return ""
+    except Exception as exc:  # pragma: no cover - error string used for diagnostics
+        return f"Error moving file '{source_path_str}' -> '{dest_path_str}': {exc}"
 
 
 class FileUtils:
@@ -99,7 +94,8 @@ class FileUtils:
 
         Args:
             folder_path: Path to the folder to iterate.
-            ignore_dir (Sequence[str], optional): Names of directories or files to ignore.
+            ignore_dir: Additional names to ignore alongside the
+                built-in defaults (``DEFAULT_IGNORE_ENTRIES``).
 
         Yields:
             A generator of ``Path`` objects for each file.
@@ -127,7 +123,8 @@ class FileUtils:
 
         Args:
             folder_path: Path to the root directory to scan.
-            ignore_dir (Sequence[str], optional): Directory names to ignore.
+            ignore_dir: Additional directory names to ignore alongside the
+                built-in defaults (``DEFAULT_IGNORE_ENTRIES``).
 
         Yields:
             A generator of ``Path`` objects for each file found.
@@ -161,14 +158,15 @@ class FileUtils:
         them to ``dest_folder_path``. It does not preserve the original
         directory structure. It does not delete the original empty folders.
 
-        .. warning:: This operation is parallelized but does not currently
-                     support removing the original subdirectories due to the
-                     complexities of doing so safely in parallel.
+        .. note::
+            This operation runs sequentially and does not remove the
+            original (now empty) subdirectories.
 
         Args:
             folder_path: Path to the root folder to flatten.
             dest_folder_path: Path to the single folder where all files will be moved.
-            ignore_dir (Sequence[str], optional): Directory names to ignore.
+            ignore_dir: Additional directory names to ignore alongside the
+                built-in defaults (``DEFAULT_IGNORE_ENTRIES``).
 
         Raises:
             FileNotFoundError: If ``folder_path`` does not exist.
@@ -182,19 +180,13 @@ class FileUtils:
 
         combined_ignore = tuple(_build_ignore_set(ignore_dir))
 
-        def generate_tasks():
-            for file_path in self.iter_all_files_recursive(
-                str(source_root), combined_ignore
-            ):
-                yield (str(file_path), str(dest_root))
-
         print("Starting directory flattening...")
-        with ProcessPoolExecutor() as executor:
-            # Use the robust 'map' with the wrapper function
-            results = executor.map(_move_file_safely_wrapper, generate_tasks())
-            for error_msg in results:
-                if error_msg:
-                    print(error_msg)
+        for file_path in self.iter_all_files_recursive(
+            str(source_root), combined_ignore
+        ):
+            error_msg = _move_file_safely(str(file_path), str(dest_root))
+            if error_msg:
+                print(error_msg)
         print("Flattening complete.")
 
     def find_unique_extensions(
@@ -207,7 +199,8 @@ class FileUtils:
 
         Args:
             source_path: Path to the root directory to scan.
-            ignore_dir (List[str], optional): Directory names to ignore.
+            ignore_dir: Additional directory names to ignore alongside the
+                built-in defaults (``DEFAULT_IGNORE_ENTRIES``).
 
         Returns:
             A set of unique file extensions (e.g., {".txt", ".jpg"}).
@@ -241,7 +234,8 @@ class FileUtils:
         Args:
             folder_path: Directory whose structure should be traced.
             output_file: Destination JSON file path.
-            ignore_dir: Optional iterable of directory or file names to skip.
+            ignore_dir: Optional iterable of additional directory or file names
+                to skip alongside ``DEFAULT_IGNORE_ENTRIES``.
 
         Returns:
             Path to the generated JSON file.
@@ -311,3 +305,88 @@ class FileUtils:
             json.dump(snapshot, json_file, indent=2)
 
         return output_path
+
+    def plan_destination_path(self, source_path: str, dest_folder_path: str) -> Path:
+        """Predicts the collision-safe destination path for a file move.
+
+        Args:
+            source_path: Current location of the file.
+            dest_folder_path: Folder where the file is planned to be moved.
+
+        Returns:
+            Path of the file at the destination, including any rename that
+            would be required to avoid collisions.
+        """
+
+        source = Path(source_path)
+        dest_folder = Path(dest_folder_path)
+        return _generate_unique_path(dest_folder / source.name)
+
+    def apply_move_plan(
+        self,
+        plan_file: str,
+        reverse: bool = False,
+        dry_run: bool = False,
+    ) -> Dict[str, int | List[str]]:
+        """Applies or reverses a JSON move plan produced by Sorter methods.
+
+        Args:
+            plan_file: Path to the JSON plan file to execute.
+            reverse: If ``True``, moves files back to their ``source_path``.
+            dry_run: If ``True``, validates the plan without moving files.
+
+        Returns:
+            A summary dictionary containing ``entries``, ``moved`` and
+            ``errors`` keys.
+
+        Raises:
+            FileNotFoundError: If ``plan_file`` does not exist.
+        """
+
+        plan_path = Path(plan_file)
+        if not plan_path.is_file():
+            raise FileNotFoundError(f"Plan file '{plan_file}' does not exist.")
+
+        with plan_path.open("r", encoding="utf-8") as plan_stream:
+            plan_payload = json.load(plan_stream)
+
+        entries = plan_payload.get("entries", [])
+        if dry_run:
+            return {"entries": len(entries), "moved": 0, "errors": []}
+
+        errors: List[str] = []
+        moved = 0
+
+        source_key = "destination_path" if reverse else "source_path"
+        dest_key = "source_path" if reverse else "destination_path"
+
+        for idx, entry in enumerate(entries):
+            if entry.get("skip"):
+                continue
+
+            source_val = entry.get(source_key)
+            dest_val = entry.get(dest_key)
+            if not source_val or not dest_val:
+                errors.append(
+                    f"Entry #{idx} is missing required keys '{source_key}' or '{dest_key}'."
+                )
+                continue
+
+            source = Path(source_val)
+            dest = Path(dest_val)
+            if not source.exists():
+                errors.append(f"Source path does not exist: {source}")
+                continue
+            if dest.exists():
+                errors.append(
+                    f"Destination already exists (plan stale?): {dest}"
+                )
+                continue
+
+            error_msg = _move_file_to_path(str(source), str(dest))
+            if error_msg:
+                errors.append(error_msg)
+            else:
+                moved += 1
+
+        return {"entries": len(entries), "moved": moved, "errors": errors}

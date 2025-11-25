@@ -3,7 +3,7 @@
 [![PyPI version](https://badge.fury.io/py/sortium.svg?cache-bust=1)](https://badge.fury.io/py/sortium)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
-**Sortium** is a high-performance, parallelized Python utility for rapidly organizing file systems. It leverages multiple CPU cores to sort thousands of files into clean, categorized directories based on type, modification date, or custom regex patterns.
+**Sortium** is a high-performance Python utility for rapidly organizing file systems. It emphasizes a safe, preview-first workflow that lets you plan and review categorized moves (by type, date, or regex) before anything changes on disk.
 
 Designed for both speed and safety, it is memory-efficient for handling massive directories and automatically prevents file overwrites.
 
@@ -24,15 +24,12 @@ Designed for both speed and safety, it is memory-efficient for handling massive 
 
 ## Key Features
 
-- ✅ **Parallel Processing**: Utilizes multiple CPU cores to dramatically speed up file moving and organization, especially in large directories.
-- ✅ **Memory-Efficient**: Employs generators to process files one by one, ensuring a tiny memory footprint even with millions of files.
-- ✅ **Flexible Sorting Methods**:
-  - `sort_by_type`: Organize files into categories like `Images`, `Documents`, `Archives`, etc.
-  - `sort_by_date`: Further organize categorized files into date-stamped folders (e.g., `01-Jan-2023`).
-  - `sort_by_regex`: Use powerful, custom regex patterns to categorize files recursively.
-- ✅ **Safe File Operations**: Automatically handles file name collisions by appending a counter (e.g., `image (1).jpg`), preventing accidental data loss.
-- ✅ **Sort In-Place or to a New Destination**: Choose to organize files within their current directory or move them to an entirely separate destination folder.
-- ✅ **Standalone Utilities**: Includes a `FileUtils` class with helpful methods like recursive file finding (`iter_all_files_recursive`) and directory flattening (`flatten_dir`).
+- **Plan-first workflow** – Every sort emits an editable JSON plan so you can audit, tweak, version, or share the intended moves before running them.
+- **Memory-efficient design** – Uses generators and streaming I/O so it scales to very large trees without exhausting RAM.
+- **Flexible sorting strategies** – Built-in helpers for sorting by file type, modification date, or arbitrary regex patterns.
+- **Collision-safe moves** – Automatically generates unique destination names (e.g., `image (1).jpg`) to avoid overwriting files.
+- **In-place or cross-volume moves** – Choose to tidy a directory in situ or relocate everything into a dedicated archive folder.
+- **Utility toolkit** – `FileUtils` exposes recursive scanners, directory flattening, tree export, and reversible plan execution.
 
 ---
 
@@ -64,7 +61,7 @@ Here are a few examples to get you started quickly.
 
 ### Example 1: Sort Files by Type
 
-This is the most common use case. It organizes all files in a folder into subdirectories like `Images`, `Documents`, `Videos`, etc.
+This is the most common use case. It now works in two phases: generate a plan, review/edit the JSON (optional), then apply it when you're ready.
 
 ```python
 from sortium.sorter import Sorter
@@ -75,10 +72,18 @@ source_directory = "./my_messy_downloads_folder"
 # Create a Sorter instance
 sorter = Sorter()
 
-# Run the sort!
-print(f"Sorting files in {source_directory} by type...")
-sorter.sort_by_type(source_directory)
-print("Done!")
+# Phase 1: Generate an editable JSON plan
+plan_path = sorter.sort_by_type(source_directory)
+
+# (Optional) Inspect / edit the JSON plan here
+# ...
+
+# Phase 2: Apply the plan when you're satisfied
+sorter.file_utils.apply_move_plan(str(plan_path))
+print(f"Applied plan {plan_path}")
+
+# Need to undo? Re-use the same plan with reverse=True
+sorter.file_utils.apply_move_plan(str(plan_path), reverse=True)
 ```
 
 ### Example 2: Sort Files to a Different Destination
@@ -93,8 +98,15 @@ destination_dir = "./organized_archive"
 
 sorter = Sorter()
 
-# Files from source_dir will be moved to categorized folders inside destination_dir
-sorter.sort_by_type(source_dir, dest_folder_path=destination_dir)
+# Generate plan targeted at `destination_dir`
+plan_path = sorter.sort_by_type(
+  source_dir,
+  dest_folder_path=destination_dir,
+  plan_output="./sorting_plan.json",
+)
+
+# Review/edit sorting_plan.json if needed, then execute
+sorter.file_utils.apply_move_plan(str(plan_path))
 ```
 
 ### Example 3: Advanced Sorting with Regex
@@ -116,7 +128,8 @@ regex_map = {
 }
 
 sorter = Sorter()
-sorter.sort_by_regex(project_folder, regex_map, sorted_output)
+plan_path = sorter.sort_by_regex(project_folder, regex_map, sorted_output)
+sorter.file_utils.apply_move_plan(str(plan_path))
 ```
 
 ---

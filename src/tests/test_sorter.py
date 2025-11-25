@@ -1,4 +1,5 @@
 # src/tests/test_sorter.py
+import json
 import pytest
 from pathlib import Path
 import time
@@ -34,7 +35,14 @@ def test_generate_unique_path(tmp_path: Path):
 
 def test_sort_by_type(sorter_instance: Sorter, file_tree: Path):
     """Tests sorting shallow files into category directories."""
-    sorter_instance.sort_by_type(str(file_tree))
+    plan_path = sorter_instance.sort_by_type(
+        str(file_tree), plan_output=str(file_tree / "plan_type.json")
+    )
+    assert plan_path.exists()
+    plan_data = json.loads(plan_path.read_text())
+    assert plan_data["entry_count"] == 5
+
+    sorter_instance.file_utils.apply_move_plan(str(plan_path))
 
     # Check that files were moved to correct category folders
     assert (file_tree / "Images" / "main_image.jpg").is_file()
@@ -54,7 +62,10 @@ def test_sort_by_type_to_destination(sorter_instance: Sorter, file_tree: Path):
     """Tests sorting files to a separate destination directory."""
     dest_path = file_tree / "sorted_output"
 
-    sorter_instance.sort_by_type(str(file_tree), dest_folder_path=str(dest_path))
+    plan_path = sorter_instance.sort_by_type(
+        str(file_tree), dest_folder_path=str(dest_path), plan_output=str(file_tree / "plan_dest.json")
+    )
+    sorter_instance.file_utils.apply_move_plan(str(plan_path))
 
     # Check files in the new destination
     assert (dest_path / "Images" / "main_image.jpg").is_file()
@@ -76,7 +87,14 @@ def test_sort_by_type_with_collision(sorter_instance: Sorter, tmp_path: Path):
     img_dir.mkdir()
     (img_dir / "image.jpg").touch()
 
-    sorter_instance.sort_by_type(str(tmp_path))
+    plan_path = sorter_instance.sort_by_type(
+        str(tmp_path), plan_output=str(tmp_path / "plan_collision.json")
+    )
+    plan_data = json.loads(plan_path.read_text())
+    destination_names = {Path(entry["destination_path"]).name for entry in plan_data["entries"]}
+    assert "image (1).jpg" in destination_names
+
+    sorter_instance.file_utils.apply_move_plan(str(plan_path))
 
     # The original should be moved and renamed
     assert (img_dir / "image (1).jpg").is_file()
@@ -85,14 +103,20 @@ def test_sort_by_type_with_collision(sorter_instance: Sorter, tmp_path: Path):
 def test_sort_by_date(sorter_instance: Sorter, file_tree: Path):
     """Tests sorting files by their modification date."""
     # First, sort by type to create category folders
-    sorter_instance.sort_by_type(str(file_tree))
+    type_plan = sorter_instance.sort_by_type(
+        str(file_tree), plan_output=str(file_tree / "plan_type.json")
+    )
+    sorter_instance.file_utils.apply_move_plan(str(type_plan))
 
     # Let's modify a file to have a distinct, older date
     doc_path = file_tree / "Documents" / "main_doc.txt"
     time.sleep(0.1)  # Ensure timestamp is different
     doc_path.touch()
 
-    sorter_instance.sort_by_date(str(file_tree), folder_types=["Images", "Documents"])
+    date_plan = sorter_instance.sort_by_date(
+        str(file_tree), folder_types=["Images", "Documents"], plan_output=str(file_tree / "plan_date.json")
+    )
+    sorter_instance.file_utils.apply_move_plan(str(date_plan))
 
     # Check that files are in date-stamped folders
     # Note: This can be brittle. A better test would mock the date.
@@ -121,7 +145,10 @@ def test_sort_by_regex(sorter_instance: Sorter, file_tree: Path):
         "All_Images": r".*\.(jpg|png|gif)$",
     }
 
-    sorter_instance.sort_by_regex(str(file_tree), regex_map, str(dest_path))
+    plan_path = sorter_instance.sort_by_regex(
+        str(file_tree), regex_map, str(dest_path), plan_output=str(file_tree / "plan_regex.json")
+    )
+    sorter_instance.file_utils.apply_move_plan(str(plan_path))
 
     # Check that files from all levels were moved and categorized
     assert (dest_path / "Reports" / "data_report_2023.csv").is_file()
@@ -136,7 +163,10 @@ def test_sort_by_regex(sorter_instance: Sorter, file_tree: Path):
 
 def test_sort_by_extension(sorter_instance: Sorter, file_tree: Path):
     """Tests sorting files by their extension."""
-    sorter_instance.sort_by_extension(str(file_tree))
+    plan_path = sorter_instance.sort_by_extension(
+        str(file_tree), plan_output=str(file_tree / "plan_ext.json")
+    )
+    sorter_instance.file_utils.apply_move_plan(str(plan_path))
     assert (file_tree / "jpg" / "main_image.jpg").is_file()
     assert (file_tree / "txt" / "main_doc.txt").is_file()
     assert (file_tree / "rar" / "main_archive.rar").is_file()
@@ -145,3 +175,21 @@ def test_sort_by_extension(sorter_instance: Sorter, file_tree: Path):
     assert (file_tree / "png" / "nested_image.png").is_file()
     assert (file_tree / "pdf" / "nested_doc.pdf").is_file()
     assert (file_tree / "zip" / "deep_archive.zip").is_file()
+
+
+def test_sort_plan_can_be_reversed(sorter_instance: Sorter, file_tree: Path):
+    """Ensures generated plans can restore files after execution."""
+    plan_path = sorter_instance.sort_by_type(
+        str(file_tree), plan_output=str(file_tree / "plan_restore.json")
+    )
+    sorter_instance.file_utils.apply_move_plan(str(plan_path))
+
+    # Confirm move happened
+    assert (file_tree / "Images" / "main_image.jpg").is_file()
+    assert not (file_tree / "main_image.jpg").exists()
+
+    sorter_instance.file_utils.apply_move_plan(str(plan_path), reverse=True)
+
+    # Files restored to original positions
+    assert (file_tree / "main_image.jpg").is_file()
+    assert not (file_tree / "Images" / "main_image.jpg").exists()
