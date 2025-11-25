@@ -7,30 +7,58 @@
 Welcome to Sortium's Documentation
 #######################################
 
-**Sortium** is a high-performance Python utility designed for rapidly organizing file systems. It emphasizes a plan-first workflow so you can preview, edit, and even reverse categorized moves (by type, date, or regex) before they touch disk.
+.. raw:: html
 
-Designed for both speed and safety, it is memory-efficient for handling massive directories and automatically prevents file overwrites.
+    <section class="sortium-hero">
+       <div class="sortium-hero__content">
+          <p class="hero-eyebrow">Plan-first file orchestration</p>
+          <h1>Preview every move before touching disk.</h1>
+          <p>Sortium scans millions of files without blowing up memory, builds human-readable JSON plans, and applies them only when you are ready. Audit, edit, or hand off the plan with confidence.</p>
+          <div class="sortium-hero__actions">
+             <a class="sortium-btn primary" href="https://pypi.org/project/sortium/">pip install sortium</a>
+             <a class="sortium-btn ghost" href="https://github.com/Sarthak-G0yal/Sortium">View on GitHub</a>
+          </div>
+       </div>
+       <div class="sortium-hero__stats">
+          <div class="sortium-stat-card">
+             <span>JSON</span>
+             Plan files you can diff and version.
+          </div>
+          <div class="sortium-stat-card">
+             <span>3+</span>
+             Sorting modes: type, date, regex.
+          </div>
+          <div class="sortium-stat-card">
+             <span>0</span>
+             Overwrites thanks to collision guards.
+          </div>
+       </div>
+    </section>
 
-Core Features
--------------
+.. raw:: html
 
-*   **Plan-First Workflow**: Generates editable JSON move plans so you can audit, tweak, or hand off the intended operations before applying them.
-
-*   **Versatile Sorting Logic**:
-    *   **By Type**: Organize files into categories like ``Images``, ``Documents``, ``Archives``, etc.
-    *   **By Date**: Further organize categorized files into date-stamped folders (e.g., ``01-Jan-2023``).
-    *   **By Regex**: Use powerful, custom regex patterns to categorize files recursively.
-
-*   **Safe and Controlled Operations**:
-    *   Automatically handles file name collisions to prevent accidental data loss.
-    *   Sort files in-place or move them to a completely separate destination directory.
-
-*   **Memory-Efficient Design**: Employs generators to process files one by one, ensuring a tiny memory footprint even with millions of files.
-
+    <section class="sortium-feature-grid">
+       <article class="sortium-feature">
+          <h3>Plan-First Workflow</h3>
+          <p>Generate editable JSON instructions and keep them under git to document every move.</p>
+       </article>
+       <article class="sortium-feature">
+          <h3>Flexible Categorization</h3>
+          <p>Mix file-type buckets, date partitions, and regex captures to shape exactly how archives look.</p>
+       </article>
+       <article class="sortium-feature">
+          <h3>Safety Nets Built-In</h3>
+          <p>Automatic collision avoidance, dry-run previews, and deterministic destination builders.</p>
+       </article>
+       <article class="sortium-feature">
+          <h3>Minimal Memory Footprint</h3>
+          <p>Streams directories with generators so even sprawling NAS shares stay manageable.</p>
+       </article>
+    </section>
 
 .. note::
 
-   This documentation provides installation instructions, usage examples, and the complete API reference for the Sortium library.
+    This documentation covers installation, usage guides, and the complete API reference for Sortium.
 
 .. toctree::
    :maxdepth: 2
@@ -102,16 +130,16 @@ Recursively scan a directory and sort files based on custom patterns. This is gr
    project_folder = "/path/to/data_science_project"
    sorted_output = "/path/to/sorted_project_files"
 
-      # Define categories and their corresponding regex patterns
-      regex_patterns = {
-         "Datasets": r".*\.csv$",
-         "Notebooks": r".*\.ipynb$",
-         "Final_Reports": r"final_report_.*\.pdf$"
-      }
+   # Define categories and their corresponding regex patterns
+   regex_patterns = {
+      "Datasets": r".*\.csv$",
+      "Notebooks": r".*\.ipynb$",
+      "Final_Reports": r"final_report_.*\.pdf$"
+   }
 
-      sorter = Sorter()
-      plan_path = sorter.sort_by_regex(project_folder, regex_patterns, sorted_output)
-      sorter.file_utils.apply_move_plan(str(plan_path))
+   sorter = Sorter()
+   plan_path = sorter.sort_by_regex(project_folder, regex_patterns, sorted_output)
+   sorter.file_utils.apply_move_plan(str(plan_path))
 
 
 Project Info

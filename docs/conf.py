@@ -33,19 +33,35 @@ napoleon_numpy_docstring = False
 
 html_static_path = ["_static"]
 html_favicon = "_static/images/sortium-favicon.ico"
-html_theme = "furo"
+html_logo = "_static/images/sortium-logo-full.png"
+html_theme = "pydata_sphinx_theme"
 
 html_theme_options = {
-    "light_logo": "images/sortium-logo-light.png",
-    "dark_logo": "images/sortium-logo.png",
-    "dark_css_variables": {
-        "color-foreground-primary": "#fdfdfd",
-        "color-background-primary": "#0e1116",
-        "color-brand-primary": "#f9aa1f",
-        "color-brand-content": "#f25c2e",
-        "color-sidebar-background": "#0e1116",
-        "color-sidebar-link-text": "#fdfdfd",
-        "color-sidebar-link-text--top-level": "#f9aa1f",
-        "color-sidebar-link-text--active": "#f25c2e",
+    "logo": {
+        "image_light": "images/sortium-logo-light.png",
+        "image_dark": "images/sortium-logo.png",
+        "text": "Sortium",
     },
+    "primary_sidebar_end": ["indices.html", "searchbox.html"],
+    "navbar_start": ["navbar-logo"],
+    "navbar_center": ["navbar-nav"],
+    "navbar_end": ["theme-switcher", "navbar-icon-links"],
+    "icon_links": [
+        {
+            "name": "GitHub",
+            "url": "https://github.com/Sarthak-G0yal/Sortium",
+            "icon": "fa-brands fa-github",
+        },
+        {
+            "name": "PyPI",
+            "url": "https://pypi.org/project/sortium/",
+            "icon": "fa-solid fa-box",
+        },
+    ],
+    "use_edit_page_button": False,
+    "show_nav_level": 2,
 }
+
+html_css_files = [
+    "styles/custom.css",
+]
