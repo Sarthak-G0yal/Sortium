@@ -1,4 +1,4 @@
-from typing import List, Dict
+from typing import Dict, List, Set
 
 DEFAULT_FILE_TYPES: Dict[str, List[str]] = {
     "Images": [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tiff", ".webp"],
@@ -49,3 +49,21 @@ Categories include:
     - Design
     - Others
 """
+
+
+DEFAULT_IGNORE_ENTRIES: Set[str] = {
+     ".git",
+     ".gitignore",
+     ".gitattributes",
+     ".gitmodules",
+     ".DS_Store",
+     "__pycache__",
+     "node_modules",
+     ".venv",
+     "venv",
+     ".idea",
+     ".vscode",
+     "Thumbs.db",
+}
+
+"""Default directory and file names to skip during bulk file operations."""

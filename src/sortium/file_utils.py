@@ -4,6 +4,13 @@ from datetime import datetime
 from typing import Set, Generator, Sequence, List
 from concurrent.futures import ProcessPoolExecutor
 
+from .config import DEFAULT_IGNORE_ENTRIES
+
+
+def _build_ignore_set(user_ignore: Sequence[str] | None) -> Set[str]:
+    """Combine built-in ignore entries with user supplied ones."""
+    return DEFAULT_IGNORE_ENTRIES.union(user_ignore or [])
+
 
 def _generate_unique_path(dest_path: Path) -> Path:
     """Creates a unique path to avoid overwriting existing files.
@@ -97,7 +104,7 @@ class FileUtils:
             A generator of ``Path`` objects for each file.
         """
         source_root = Path(folder_path)
-        ignore_set = set(ignore_dir or [])
+        ignore_set = _build_ignore_set(ignore_dir)
         try:
             for item in source_root.iterdir():
                 if item.name in ignore_set:
@@ -128,7 +135,7 @@ class FileUtils:
         if not source_root.is_dir():
             return
 
-        ignore_set = set(ignore_dir or [])
+        ignore_set = _build_ignore_set(ignore_dir)
 
         try:
             for item in source_root.iterdir():
@@ -172,9 +179,11 @@ class FileUtils:
 
         dest_root.mkdir(parents=True, exist_ok=True)
 
+        combined_ignore = tuple(_build_ignore_set(ignore_dir))
+
         def generate_tasks():
             for file_path in self.iter_all_files_recursive(
-                str(source_root), ignore_dir
+                str(source_root), combined_ignore
             ):
                 yield (str(file_path), str(dest_root))
 
@@ -210,7 +219,9 @@ class FileUtils:
             raise FileNotFoundError(f"The path '{source_root}' does not exist.")
 
         extensions: Set[str] = set()
-        file_generator = self.iter_all_files_recursive(str(source_root), ignore_dir)
+        file_generator = self.iter_all_files_recursive(
+            str(source_root), tuple(_build_ignore_set(ignore_dir))
+        )
 
         for file_path in file_generator:
             if file_path.suffix:
