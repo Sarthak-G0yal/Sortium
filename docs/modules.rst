@@ -1,4 +1,4 @@
-Sortium Package
+Documentation
 ===============
 
 .. automodule:: sortium.sorter

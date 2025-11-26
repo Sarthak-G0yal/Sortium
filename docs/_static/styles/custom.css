@@ -1,0 +1,157 @@
+:root {
+  --sortium-primary: #f25c2e;
+  --sortium-secondary: #0f1726;
+  --sortium-accent: #f9aa1f;
+}
+
+html[data-theme="light"] {
+  --pst-color-primary: var(--sortium-primary);
+  --pst-color-secondary: var(--sortium-secondary);
+  --pst-color-active-navigation: var(--sortium-primary);
+  --pst-font-size-base: 16px;
+}
+
+html[data-theme="dark"] {
+  --pst-color-primary: var(--sortium-accent);
+  --pst-color-secondary: #fdfdfd;
+  --pst-color-active-navigation: var(--sortium-accent);
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.navbar-brand img {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  padding: 4px;
+}
+
+.navbar-brand .navbar-brand-text {
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.sortium-hero {
+  background: linear-gradient(
+    135deg,
+    rgba(242, 92, 46, 0.95),
+    rgba(15, 23, 38, 0.95)
+  );
+  border-radius: 20px;
+  padding: 3rem;
+  margin-bottom: 2.5rem;
+  color: #fff;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2rem;
+}
+
+.hero-eyebrow {
+  font-size: 0.9rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.82);
+  margin-bottom: 0.3rem;
+}
+
+.sortium-hero__content h1 {
+  font-size: 2.2rem;
+  margin-bottom: 0.75rem;
+}
+
+.sortium-hero__content p {
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.sortium-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.sortium-btn {
+  border-radius: 999px;
+  padding: 0.65rem 1.6rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.sortium-btn.primary {
+  background: #fff;
+  color: var(--sortium-secondary);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+}
+
+.sortium-btn.ghost {
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  color: #fff;
+}
+
+.sortium-btn:hover {
+  transform: translateY(-2px);
+}
+
+.sortium-hero__stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 1rem;
+}
+
+.sortium-stat-card {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  padding: 1rem;
+  text-align: center;
+}
+
+.sortium-stat-card span {
+  display: block;
+  font-size: 1.75rem;
+  font-weight: 700;
+}
+
+.sortium-feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.sortium-feature {
+  border-radius: 16px;
+  padding: 1.5rem;
+  border: 1px solid rgba(242, 92, 46, 0.2);
+  background: rgba(242, 92, 46, 0.04);
+  min-height: 180px;
+}
+
+.sortium-feature h3 {
+  margin-top: 0;
+  font-size: 1.2rem;
+}
+
+.sortium-callout {
+  border-left: 4px solid var(--sortium-primary);
+  padding: 1rem 1.25rem;
+  border-radius: 12px;
+  background: rgba(242, 92, 46, 0.08);
+  margin: 2rem 0;
+}
+
+@media (max-width: 640px) {
+  .sortium-hero {
+    padding: 1.75rem;
+  }
+  .sortium-btn {
+    width: 100%;
+    text-align: center;
+  }
+}

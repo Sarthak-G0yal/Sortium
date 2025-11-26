@@ -38,8 +38,8 @@ html_theme = "pydata_sphinx_theme"
 
 html_theme_options = {
     "logo": {
-        "image_light": "images/sortium-logo-light.png",
-        "image_dark": "images/sortium-logo.png",
+        "image_light": "images/sortium-logo-full.png",
+        "image_dark": "images/sortium-logo-full.png",
         "text": "Sortium",
     },
     "primary_sidebar_end": ["indices.html", "searchbox.html"],

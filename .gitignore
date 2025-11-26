@@ -25,7 +25,6 @@ _build/
 *.pickle
 *.html
 *.js
-*.css
 *.woff
 *.ttf
 *.svg
