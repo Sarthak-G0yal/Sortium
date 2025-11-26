@@ -7,30 +7,62 @@
 Welcome to Sortium's Documentation
 #######################################
 
-**Sortium** is a high-performance, parallelized Python utility designed for rapidly organizing file systems. It leverages multiple CPU cores to sort thousands of files into clean, categorized directories based on type, modification date, or custom regex patterns.
+.. raw:: html
 
-Designed for both speed and safety, it is memory-efficient for handling massive directories and automatically prevents file overwrites.
+    <section class="sortium-hero">
+       <div class="sortium-hero__content">
+          <p class="hero-eyebrow">Plan-first file orchestration</p>
+          <h1>Preview every move before touching disk.</h1>
+          <p>Sortium scans millions of files without blowing up memory, builds human-readable JSON plans, and applies them only when you are ready. Audit, edit, or hand off the plan with confidence.</p>
+          <div class="sortium-hero__actions">
+             <a class="sortium-btn primary" href="https://pypi.org/project/sortium/">pip install sortium</a>
+             <a class="sortium-btn ghost" href="https://github.com/Sarthak-G0yal/Sortium">View on GitHub</a>
+          </div>
+       </div>
+       <div class="sortium-hero__stats">
+          <div class="sortium-stat-card">
+             <span>JSON</span>
+             Plan files you can diff and version.
+          </div>
+          <div class="sortium-stat-card">
+             <span>3+</span>
+             Sorting modes: type, date, regex.
+          </div>
+          <div class="sortium-stat-card">
+             <span>0</span>
+             Overwrites thanks to collision guards.
+          </div>
+       </div>
+    </section>
 
-Core Features
--------------
+.. raw:: html
 
-*   **High-Performance Parallel Processing**: Utilizes a ``ProcessPoolExecutor`` to dramatically speed up file moving and organization, especially in large directories.
-
-*   **Versatile Sorting Logic**:
-    *   **By Type**: Organize files into categories like ``Images``, ``Documents``, ``Archives``, etc.
-    *   **By Date**: Further organize categorized files into date-stamped folders (e.g., ``01-Jan-2023``).
-    *   **By Regex**: Use powerful, custom regex patterns to categorize files recursively.
-
-*   **Safe and Controlled Operations**:
-    *   Automatically handles file name collisions to prevent accidental data loss.
-    *   Sort files in-place or move them to a completely separate destination directory.
-
-*   **Memory-Efficient Design**: Employs generators to process files one by one, ensuring a tiny memory footprint even with millions of files.
-
+    <section class="sortium-feature-grid">
+       <article class="sortium-feature">
+          <h3>Plan-First Workflow</h3>
+          <p>Generate editable JSON instructions and keep them under git to document every move.</p>
+       </article>
+       <article class="sortium-feature">
+          <h3>Flexible Categorization</h3>
+          <p>Mix file-type buckets, date partitions, and regex captures to shape exactly how archives look.</p>
+       </article>
+       <article class="sortium-feature">
+          <h3>Safety Nets Built-In</h3>
+          <p>Automatic collision avoidance, dry-run previews, and deterministic destination builders.</p>
+       </article>
+       <article class="sortium-feature">
+          <h3>Minimal Memory Footprint</h3>
+          <p>Streams directories with generators so even sprawling NAS shares stay manageable.</p>
+       </article>
+       <article class="sortium-feature">
+          <h3>Recursive On-Demand</h3>
+          <p>Flip a ``recursive=True`` flag on any strategy to pull nested files into the plan—or leave it off for shallow sweeps.</p>
+       </article>
+    </section>
 
 .. note::
 
-   This documentation provides installation instructions, usage examples, and the complete API reference for the Sortium library.
+    This documentation covers installation, usage guides, and the complete API reference for Sortium.
 
 .. toctree::
    :maxdepth: 2
@@ -65,9 +97,16 @@ This is the simplest use case. It organizes all files in a folder into subdirect
    # The folder you want to clean up
    my_folder = "/path/to/my_messy_downloads"
 
-   # Create a Sorter instance and run the sort
+   # Create a Sorter instance and produce a plan
    sorter = Sorter()
-   sorter.sort_by_type(my_folder)
+   plan_path = sorter.sort_by_type(my_folder, recursive=True)
+
+   # Inspect/edit the JSON if desired, then apply it
+   sorter.file_utils.apply_move_plan(str(plan_path))
+
+.. tip::
+
+   Drop ``recursive=True`` (the default) if you only want to move files living directly inside ``my_folder``.
 
 
 **Example 2: Sorting to a New Destination**
@@ -83,8 +122,13 @@ Organize files from a source folder and move the categorized results to a separa
 
    sorter = Sorter()
 
-   # Files from source_dir will be moved to categorized folders inside destination_dir
-   sorter.sort_by_type(source_dir, dest_folder_path=destination_dir)
+   # Prepare a plan that moves files into categorized folders inside destination_dir
+   plan_path = sorter.sort_by_type(
+      source_dir,
+      dest_folder_path=destination_dir,
+      recursive=True,
+   )
+   sorter.file_utils.apply_move_plan(str(plan_path))
 
 
 **Example 3: Advanced Sorting with Regex**
@@ -100,13 +144,23 @@ Recursively scan a directory and sort files based on custom patterns. This is gr
 
    # Define categories and their corresponding regex patterns
    regex_patterns = {
-       "Datasets": r".*\.csv$",
-       "Notebooks": r".*\.ipynb$",
-       "Final_Reports": r"final_report_.*\.pdf$"
+      "Datasets": r".*\.csv$",
+      "Notebooks": r".*\.ipynb$",
+      "Final_Reports": r"final_report_.*\.pdf$"
    }
 
    sorter = Sorter()
-   sorter.sort_by_regex(project_folder, regex_patterns, sorted_output)
+   plan_path = sorter.sort_by_regex(
+      project_folder,
+      regex_patterns,
+      sorted_output,
+      recursive=True,
+   )
+   sorter.file_utils.apply_move_plan(str(plan_path))
+
+.. note::
+
+   ``recursive`` defaults to ``True`` for regex sorting so deep project trees are handled automatically. Pass ``recursive=False`` to limit the scan to the root directory only.
 
 
 Project Info

@@ -1,281 +1,411 @@
-<!doctype html>
-<html class="no-js" lang="en" data-content_root="./">
-  <head><meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="prev" title="Welcome to Sortium’s Documentation" href="index.html" />
-        <link rel="prefetch" href="_static/images/sortium-logo-light.png" as="image" />
-        <link rel="prefetch" href="_static/images/sortium-logo.png" as="image" />
 
-    <link rel="shortcut icon" href="_static/sortium-favicon.ico"/><!-- Generated with Sphinx 8.2.3 and Furo 2025.07.19 -->
-        <title>Sortium Package - Sortium documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=25af2a20" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
-    
-    
+<!DOCTYPE html>
 
 
-<style>
-  body {
-    --color-code-background: #f2f2f2;
-  --color-code-foreground: #1e1e1e;
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Documentation &#8212; Sortium 2.1.0 documentation</title>
   
-  }
-  @media not print {
-    body[data-theme="dark"] {
-      --color-code-background: #2b2b2b;
-  --color-code-foreground: #f8f8f2;
-  --color-foreground-primary: #fdfdfd;
-  --color-background-primary: #0e1116;
-  --color-brand-primary: #f9aa1f;
-  --color-brand-content: #f25c2e;
-  --color-sidebar-background: #0e1116;
-  --color-sidebar-link-text: #fdfdfd;
-  --color-sidebar-link-text--top-level: #f9aa1f;
-  --color-sidebar-link-text--active: #f25c2e;
   
-    }
-    @media (prefers-color-scheme: dark) {
-      body:not([data-theme="light"]) {
-        --color-code-background: #2b2b2b;
-  --color-code-foreground: #f8f8f2;
-  --color-foreground-primary: #fdfdfd;
-  --color-background-primary: #0e1116;
-  --color-brand-primary: #f9aa1f;
-  --color-brand-content: #f25c2e;
-  --color-sidebar-background: #0e1116;
-  --color-sidebar-link-text: #fdfdfd;
-  --color-sidebar-link-text--top-level: #f9aa1f;
-  --color-sidebar-link-text--active: #f25c2e;
   
-      }
-    }
-  }
-</style></head>
-  <body>
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/custom.css?v=33bdfe6f" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=20623aea"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'modules';</script>
+    <link rel="icon" href="_static/sortium-favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Welcome to Sortium’s Documentation" href="index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
     
-    <script>
-      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
-    </script>
+      <div class="navbar-item">
+
+  
     
+  
 
-<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
-  <symbol id="svg-toc" viewBox="0 0 24 24">
-    <title>Contents</title>
-    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
-      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
-    </svg>
-  </symbol>
-  <symbol id="svg-menu" viewBox="0 0 24 24">
-    <title>Menu</title>
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
-      <line x1="3" y1="12" x2="21" y2="12"></line>
-      <line x1="3" y1="6" x2="21" y2="6"></line>
-      <line x1="3" y1="18" x2="21" y2="18"></line>
-    </svg>
-  </symbol>
-  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
-    <title>Expand</title>
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
-      <polyline points="9 18 15 12 9 6"></polyline>
-    </svg>
-  </symbol>
-  <symbol id="svg-sun" viewBox="0 0 24 24">
-    <title>Light mode</title>
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
-      <circle cx="12" cy="12" r="5"></circle>
-      <line x1="12" y1="1" x2="12" y2="3"></line>
-      <line x1="12" y1="21" x2="12" y2="23"></line>
-      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-      <line x1="1" y1="12" x2="3" y2="12"></line>
-      <line x1="21" y1="12" x2="23" y2="12"></line>
-      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-    </svg>
-  </symbol>
-  <symbol id="svg-moon" viewBox="0 0 24 24">
-    <title>Dark mode</title>
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
-      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
-    </svg>
-  </symbol>
-  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
-    <title>Auto light/dark, in light mode</title>
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
-      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
-      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
-      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
-      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
-      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
-      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
-      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
-      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
-      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
-      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
-      <circle cx="14.5" cy="9.55" r="3.6"/>
-    </svg>
-  </symbol>
-  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
-    <title>Auto light/dark, in dark mode</title>
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
-      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
-      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
-      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
-      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
-      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
-      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
-      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
-      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
-      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
-      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
-      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
-    </svg>
-  </symbol>
-  <symbol id="svg-pencil" viewBox="0 0 24 24">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
-      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
-      <path d="M13.5 6.5l4 4" />
-      <path d="M20 21l2 -2l-2 -2" />
-      <path d="M17 17l-2 2l2 2" />
-    </svg>
-  </symbol>
-  <symbol id="svg-eye" viewBox="0 0 24 24">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
-      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
-      <path
-        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
-      <path d="M20 21l2 -2l-2 -2" />
-      <path d="M17 17l-2 2l2 2" />
-    </svg>
-  </symbol>
-</svg>
-
-<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
-<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
-<label class="overlay sidebar-overlay" for="__navigation">
-  <div class="visually-hidden">Hide navigation sidebar</div>
-</label>
-<label class="overlay toc-overlay" for="__toc">
-  <div class="visually-hidden">Hide table of contents sidebar</div>
-</label>
-
-<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
-
-
-
-<div class="page">
-  <header class="mobile-header">
-    <div class="header-left">
-      <label class="nav-overlay-icon" for="__navigation">
-        <div class="visually-hidden">Toggle site navigation sidebar</div>
-        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
-      </label>
-    </div>
-    <div class="header-center">
-      <a href="index.html"><div class="brand">Sortium  documentation</div></a>
-    </div>
-    <div class="header-right">
-      <div class="theme-toggle-container theme-toggle-header">
-        <button class="theme-toggle">
-          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
-          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
-          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
-          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
-          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
-        </button>
-      </div>
-      <label class="toc-overlay-icon toc-header-icon" for="__toc">
-        <div class="visually-hidden">Toggle table of contents sidebar</div>
-        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
-      </label>
-    </div>
-  </header>
-  <aside class="sidebar-drawer">
-    <div class="sidebar-container">
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
       
-      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
-  <div class="sidebar-logo-container">
-    <img class="sidebar-logo only-light" src="_static/images/sortium-logo-light.png" alt="Light Logo"/>
-    <img class="sidebar-logo only-dark" src="_static/images/sortium-logo.png" alt="Dark Logo"/>
+    
+    
+    <img src="_static/sortium-logo-full.png" class="logo__image only-light" alt=""/>
+    <script>document.write(`<img src="_static/sortium-logo-full.png" class="logo__image only-dark" alt=""/>`);</script>
+  
+  
+    <p class="title logo__title">Sortium</p>
+  
+</a></div>
+    
   </div>
   
-  <span class="sidebar-brand-text">Sortium  documentation</span>
-  
-</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
-  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
-  <input type="hidden" name="check_keywords" value="yes">
-  <input type="hidden" name="area" value="default">
-</form>
-<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
-  <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul class="current">
-<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Sortium Package</a></li>
-</ul>
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    Documentation
+  </a>
+</li>
 
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Sarthak-G0yal/Sortium" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/sortium/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-box fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">PyPI</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
 </div>
-</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    Documentation
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Sarthak-G0yal/Sortium" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/sortium/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-box fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">PyPI</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"></div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item"><nav class="sidebar-indices-items" aria-labelledby="pst-indices-navigation-heading-2">
+  <p id="pst-indices-navigation-heading-2" class="sidebar-indices-items__title" role="heading" aria-level="1">Indices</p>
+  <ul class="indices-link">
+        <li class="toctree-l1">
+          <a class="reference internal"
+             href="genindex.html"
+             accesskey="I">General Index</a>
+        </li>
+        <li class="toctree-l1">
+          <a class="reference internal" href="py-modindex.html">Python Module Index</a>
+        </li>
+  </ul>
+</nav></div>
+      <div class="sidebar-primary-item">
+<div id="searchbox"></div></div>
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
 
       </div>
       
-    </div>
-  </aside>
-  <div class="main">
-    <div class="content">
-      <div class="article-container">
-        <a href="#" class="back-to-top muted-link">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
-          </svg>
-          <span>Back to top</span>
-        </a>
-        <div class="content-icon-container">
-          <div class="view-this-page">
-  <a class="muted-link" href="_sources/modules.rst.txt" title="View this page">
-    <svg><use href="#svg-eye"></use></svg>
-    <span class="visually-hidden">View this page</span>
-  </a>
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">Documentation</li>
+  </ul>
+</nav>
 </div>
-<div class="theme-toggle-container theme-toggle-content">
-            <button class="theme-toggle">
-              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
-              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
-              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
-              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
-              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
-            </button>
-          </div>
-          <label class="toc-overlay-icon toc-content-icon" for="__toc">
-            <div class="visually-hidden">Toggle table of contents sidebar</div>
-            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
-          </label>
-        </div>
-        <article role="main" id="furo-main-content">
-          <section id="module-sortium.sorter">
-<span id="sortium-package"></span><h1>Sortium Package<a class="headerlink" href="#module-sortium.sorter" title="Link to this heading">¶</a></h1>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="module-sortium.sorter">
+<span id="documentation"></span><h1>Documentation<a class="headerlink" href="#module-sortium.sorter" title="Link to this heading">#</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="sortium.sorter.Sorter">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sortium.sorter.</span></span><span class="sig-name descname"><span class="pre">Sorter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_types_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_utils</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#sortium.file_utils.FileUtils" title="sortium.file_utils.FileUtils"><span class="pre">FileUtils</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sortium/sorter.html#Sorter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sortium.sorter.Sorter" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sortium.sorter.</span></span><span class="sig-name descname"><span class="pre">Sorter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_types_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_utils</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#sortium.file_utils.FileUtils" title="sortium.file_utils.FileUtils"><span class="pre">FileUtils</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sortium/sorter.html#Sorter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sortium.sorter.Sorter" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Organizes files into directories based on various criteria.</p>
-<p>The Sorter class provides parallelized, memory-efficient methods to sort
-files based on their type, modification date, or custom regex patterns.
-It is designed to handle very large numbers of files without consuming
-excessive memory.</p>
+<p>Each public method emits a JSON move plan describing every file’s source
+and destination so you can review, edit, or auto-apply the workflow. The
+class stays memory-efficient while handling large trees by relying on
+generators and incremental planning.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="sortium.sorter.Sorter.file_types_dict">
-<span class="sig-name descname"><span class="pre">file_types_dict</span></span><a class="headerlink" href="#sortium.sorter.Sorter.file_types_dict" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">file_types_dict</span></span><a class="headerlink" href="#sortium.sorter.Sorter.file_types_dict" title="Link to this definition">#</a></dt>
 <dd><p>A mapping of file category
 names to lists of associated file extensions.</p>
 <dl class="field-list simple">
@@ -287,7 +417,7 @@ names to lists of associated file extensions.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="sortium.sorter.Sorter.file_utils">
-<span class="sig-name descname"><span class="pre">file_utils</span></span><a class="headerlink" href="#sortium.sorter.Sorter.file_utils" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">file_utils</span></span><a class="headerlink" href="#sortium.sorter.Sorter.file_utils" title="Link to this definition">#</a></dt>
 <dd><p>An instance of a file utility class.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
@@ -298,44 +428,83 @@ names to lists of associated file extensions.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="sortium.sorter.Sorter.sort_by_date">
-<span class="sig-name descname"><span class="pre">sort_by_date</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">folder_types</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dest_folder_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/sortium/sorter.html#Sorter.sort_by_date"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sortium.sorter.Sorter.sort_by_date" title="Link to this definition">¶</a></dt>
-<dd><p>Sorts files within category folders by their modification date.</p>
-<p>Files are moved into date-stamped subfolders (e.g., “01-Jan-2023”).</p>
+<span class="sig-name descname"><span class="pre">sort_by_date</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">folder_types</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dest_folder_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plan_output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auto_apply</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recursive</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Path</span></span></span><a class="reference internal" href="_modules/sortium/sorter.html#Sorter.sort_by_date"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sortium.sorter.Sorter.sort_by_date" title="Link to this definition">#</a></dt>
+<dd><p>Generates a plan to sort files within categories by modification date.</p>
+<p>Files are moved into date-stamped subfolders (e.g., “01-Jan-2023”). Set
+<code class="docutils literal notranslate"><span class="pre">recursive</span></code> to pull in files from nested directories within each
+category.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>folder_path</strong> – Root directory containing the category folders to process.</p></li>
 <li><p><strong>folder_types</strong> – List of category folder names (e.g., [‘Images’]).</p></li>
-<li><p><strong>dest_folder_path</strong> (<em>str</em><em>, </em><em>optional</em>) – Base directory for the sorted
-folders. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, files are sorted within their current
-category folders.</p></li>
+<li><p><strong>dest_folder_path</strong> – Base directory for the sorted folders. Defaults
+to <code class="docutils literal notranslate"><span class="pre">folder_path</span></code> when <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>plan_output</strong> – Optional JSON path override for the emitted plan.</p></li>
+<li><p><strong>auto_apply</strong> – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, immediately executes the generated plan.</p></li>
+<li><p><strong>recursive</strong> – When <code class="docutils literal notranslate"><span class="pre">True</span></code>, scans inside nested directories under
+each category.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>FileNotFoundError</strong> – If <code class="docutils literal notranslate"><span class="pre">folder_path</span></code> does not exist.</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Path to the JSON plan file.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>FileNotFoundError</strong> – If <code class="docutils literal notranslate"><span class="pre">folder_path</span></code> does not exist.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sortium.sorter.Sorter.sort_by_extension">
+<span class="sig-name descname"><span class="pre">sort_by_extension</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dest_folder_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plan_output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auto_apply</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recursive</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Path</span></span></span><a class="reference internal" href="_modules/sortium/sorter.html#Sorter.sort_by_extension"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sortium.sorter.Sorter.sort_by_extension" title="Link to this definition">#</a></dt>
+<dd><p>Generates a plan to sort files by extension into subdirectories.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>folder_path</strong> – Path to the directory containing unsorted files.</p></li>
+<li><p><strong>dest_folder_path</strong> – Base directory for the sorted category folders.
+Falls back to <code class="docutils literal notranslate"><span class="pre">folder_path</span></code> when <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>ignore_dir</strong> – Optional directory names to skip when scanning.</p></li>
+<li><p><strong>plan_output</strong> – Optional JSON path override for the emitted plan.</p></li>
+<li><p><strong>auto_apply</strong> – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, immediately executes the generated plan.</p></li>
+<li><p><strong>recursive</strong> – When <code class="docutils literal notranslate"><span class="pre">True</span></code> (default), recursively scans the tree.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Path to the JSON plan file.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>FileNotFoundError</strong> – If <code class="docutils literal notranslate"><span class="pre">folder_path</span></code> does not exist.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="sortium.sorter.Sorter.sort_by_regex">
-<span class="sig-name descname"><span class="pre">sort_by_regex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regex</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dest_folder_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/sortium/sorter.html#Sorter.sort_by_regex"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sortium.sorter.Sorter.sort_by_regex" title="Link to this definition">¶</a></dt>
-<dd><p>Sorts files recursively based on regex patterns.</p>
-<p>Scans <code class="docutils literal notranslate"><span class="pre">folder_path</span></code> and its subdirectories for files whose names
-match the provided regex patterns, then moves them to categorized
-folders within <code class="docutils literal notranslate"><span class="pre">dest_folder_path</span></code>.</p>
+<span class="sig-name descname"><span class="pre">sort_by_regex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regex</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dest_folder_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plan_output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auto_apply</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recursive</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Path</span></span></span><a class="reference internal" href="_modules/sortium/sorter.html#Sorter.sort_by_regex"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sortium.sorter.Sorter.sort_by_regex" title="Link to this definition">#</a></dt>
+<dd><p>Generates a plan to sort files recursively based on regex patterns.</p>
+<p>Scans <code class="docutils literal notranslate"><span class="pre">folder_path</span></code> (optionally including subdirectories) for files
+whose names match the provided regex patterns, then moves them to
+categorized folders within <code class="docutils literal notranslate"><span class="pre">dest_folder_path</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>folder_path</strong> – Path to the directory to scan recursively.</p></li>
 <li><p><strong>regex</strong> – Dictionary mapping category names to regex patterns.</p></li>
 <li><p><strong>dest_folder_path</strong> – Base directory where sorted files will be moved.</p></li>
+<li><p><strong>plan_output</strong> – Optional JSON path override for the emitted plan.</p></li>
+<li><p><strong>auto_apply</strong> – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, immediately executes the generated plan.</p></li>
+<li><p><strong>recursive</strong> – When <code class="docutils literal notranslate"><span class="pre">True</span></code> (default), recursively scans the folder.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Path to the JSON plan file.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
 <li><p><strong>FileNotFoundError</strong> – If <code class="docutils literal notranslate"><span class="pre">folder_path</span></code> does not exist.</p></li>
-<li><p><strong>RuntimeError</strong> – If a critical error occurs during parallel sorting.</p></li>
+<li><p><strong>RuntimeError</strong> – If a critical error occurs while preparing the plan.</p></li>
 </ul>
 </dd>
 </dl>
@@ -343,10 +512,12 @@ folders within <code class="docutils literal notranslate"><span class="pre">dest
 
 <dl class="py method">
 <dt class="sig sig-object py" id="sortium.sorter.Sorter.sort_by_type">
-<span class="sig-name descname"><span class="pre">sort_by_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dest_folder_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/sortium/sorter.html#Sorter.sort_by_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sortium.sorter.Sorter.sort_by_type" title="Link to this definition">¶</a></dt>
-<dd><p>Sorts files into subdirectories by file type in parallel.</p>
-<p>Files in the top level of <code class="docutils literal notranslate"><span class="pre">folder_path</span></code> are moved into subdirectories
-(e.g., “Images”, “Documents”) inside <code class="docutils literal notranslate"><span class="pre">dest_folder_path</span></code>.</p>
+<span class="sig-name descname"><span class="pre">sort_by_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dest_folder_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plan_output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auto_apply</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recursive</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Path</span></span></span><a class="reference internal" href="_modules/sortium/sorter.html#Sorter.sort_by_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sortium.sorter.Sorter.sort_by_type" title="Link to this definition">#</a></dt>
+<dd><p>Generates a plan to sort files into subdirectories by file type.</p>
+<p>Files in the top level of <code class="docutils literal notranslate"><span class="pre">folder_path</span></code> are mapped into subdirectories
+(e.g., “Images”, “Documents”) inside <code class="docutils literal notranslate"><span class="pre">dest_folder_path</span></code>. Enable
+<code class="docutils literal notranslate"><span class="pre">recursive</span></code> to scan the entire tree. The plan is written to JSON so it
+can be inspected or edited before execution.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This method is memory-efficient and suitable for sorting
@@ -356,13 +527,19 @@ directories with a very large number of files.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>folder_path</strong> – Path to the directory containing unsorted files.</p></li>
-<li><p><strong>dest_folder_path</strong> (<em>str</em><em>, </em><em>optional</em>) – Base directory for the sorted
-category folders. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, <code class="docutils literal notranslate"><span class="pre">folder_path</span></code> is used.</p></li>
-<li><p><strong>ignore_dir</strong> (<em>List</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – Directory names to ignore.</p></li>
+<li><p><strong>dest_folder_path</strong> – Base directory for the sorted category folders.
+Falls back to <code class="docutils literal notranslate"><span class="pre">folder_path</span></code> when <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>ignore_dir</strong> – Optional directory names to skip when scanning.</p></li>
+<li><p><strong>plan_output</strong> – Optional JSON path override for the emitted plan.</p></li>
+<li><p><strong>auto_apply</strong> – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, immediately executes the generated plan.</p></li>
+<li><p><strong>recursive</strong> – When <code class="docutils literal notranslate"><span class="pre">True</span></code>, recursively scans nested folders.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>FileNotFoundError</strong> – If <code class="docutils literal notranslate"><span class="pre">folder_path</span></code> does not exist.</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Path to the JSON plan file.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>FileNotFoundError</strong> – If <code class="docutils literal notranslate"><span class="pre">folder_path</span></code> does not exist.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -371,12 +548,59 @@ category folders. If <code class="docutils literal notranslate"><span class="pre
 
 <dl class="py class" id="module-sortium.file_utils">
 <dt class="sig sig-object py" id="sortium.file_utils.FileUtils">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sortium.file_utils.</span></span><span class="sig-name descname"><span class="pre">FileUtils</span></span><a class="reference internal" href="_modules/sortium/file_utils.html#FileUtils"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sortium.file_utils.FileUtils" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sortium.file_utils.</span></span><span class="sig-name descname"><span class="pre">FileUtils</span></span><a class="reference internal" href="_modules/sortium/file_utils.html#FileUtils"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sortium.file_utils.FileUtils" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Provides memory-efficient utilities for file and directory manipulation.</p>
 <dl class="py method">
+<dt class="sig sig-object py" id="sortium.file_utils.FileUtils.apply_move_plan">
+<span class="sig-name descname"><span class="pre">apply_move_plan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plan_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reverse</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dry_run</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/sortium/file_utils.html#FileUtils.apply_move_plan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sortium.file_utils.FileUtils.apply_move_plan" title="Link to this definition">#</a></dt>
+<dd><p>Applies or reverses a JSON move plan produced by Sorter methods.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>plan_file</strong> – Path to the JSON plan file to execute.</p></li>
+<li><p><strong>reverse</strong> – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, moves files back to their <code class="docutils literal notranslate"><span class="pre">source_path</span></code>.</p></li>
+<li><p><strong>dry_run</strong> – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, validates the plan without moving files.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A summary dictionary containing <code class="docutils literal notranslate"><span class="pre">entries</span></code>, <code class="docutils literal notranslate"><span class="pre">moved</span></code> and
+<code class="docutils literal notranslate"><span class="pre">errors</span></code> keys.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>FileNotFoundError</strong> – If <code class="docutils literal notranslate"><span class="pre">plan_file</span></code> does not exist.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sortium.file_utils.FileUtils.export_directory_structure">
+<span class="sig-name descname"><span class="pre">export_directory_structure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Path</span></span></span><a class="reference internal" href="_modules/sortium/file_utils.html#FileUtils.export_directory_structure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sortium.file_utils.FileUtils.export_directory_structure" title="Link to this definition">#</a></dt>
+<dd><p>Writes the directory tree rooted at <code class="docutils literal notranslate"><span class="pre">folder_path</span></code> to a JSON file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>folder_path</strong> – Directory whose structure should be traced.</p></li>
+<li><p><strong>output_file</strong> – Destination JSON file path.</p></li>
+<li><p><strong>ignore_dir</strong> – Optional iterable of additional directory or file names
+to skip alongside <code class="docutils literal notranslate"><span class="pre">DEFAULT_IGNORE_ENTRIES</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Path to the generated JSON file.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>FileNotFoundError</strong> – If <code class="docutils literal notranslate"><span class="pre">folder_path</span></code> does not exist.</p></li>
+<li><p><strong>NotADirectoryError</strong> – If <code class="docutils literal notranslate"><span class="pre">folder_path</span></code> is not a directory.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="sortium.file_utils.FileUtils.find_unique_extensions">
-<span class="sig-name descname"><span class="pre">find_unique_extensions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Set</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/sortium/file_utils.html#FileUtils.find_unique_extensions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sortium.file_utils.FileUtils.find_unique_extensions" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">find_unique_extensions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Set</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/sortium/file_utils.html#FileUtils.find_unique_extensions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sortium.file_utils.FileUtils.find_unique_extensions" title="Link to this definition">#</a></dt>
 <dd><p>Recursively finds all unique file extensions in a directory.</p>
 <p>This method is memory-efficient, scanning the directory tree without
 loading all paths into memory at once.</p>
@@ -384,7 +608,8 @@ loading all paths into memory at once.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>source_path</strong> – Path to the root directory to scan.</p></li>
-<li><p><strong>ignore_dir</strong> (<em>List</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – Directory names to ignore.</p></li>
+<li><p><strong>ignore_dir</strong> – Additional directory names to ignore alongside the
+built-in defaults (<code class="docutils literal notranslate"><span class="pre">DEFAULT_IGNORE_ENTRIES</span></code>).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -398,23 +623,23 @@ loading all paths into memory at once.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="sortium.file_utils.FileUtils.flatten_dir">
-<span class="sig-name descname"><span class="pre">flatten_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dest_folder_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/sortium/file_utils.html#FileUtils.flatten_dir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sortium.file_utils.FileUtils.flatten_dir" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">flatten_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dest_folder_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/sortium/file_utils.html#FileUtils.flatten_dir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sortium.file_utils.FileUtils.flatten_dir" title="Link to this definition">#</a></dt>
 <dd><p>Moves all files from a directory tree into a single destination folder.</p>
 <p>This method recursively finds all files in <code class="docutils literal notranslate"><span class="pre">folder_path</span></code> and moves
 them to <code class="docutils literal notranslate"><span class="pre">dest_folder_path</span></code>. It does not preserve the original
 directory structure. It does not delete the original empty folders.</p>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>This operation is parallelized but does not currently
-support removing the original subdirectories due to the
-complexities of doing so safely in parallel.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This operation runs sequentially and does not remove the
+original (now empty) subdirectories.</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>folder_path</strong> – Path to the root folder to flatten.</p></li>
 <li><p><strong>dest_folder_path</strong> – Path to the single folder where all files will be moved.</p></li>
-<li><p><strong>ignore_dir</strong> (<em>Sequence</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – Directory names to ignore.</p></li>
+<li><p><strong>ignore_dir</strong> – Additional directory names to ignore alongside the
+built-in defaults (<code class="docutils literal notranslate"><span class="pre">DEFAULT_IGNORE_ENTRIES</span></code>).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
@@ -425,7 +650,7 @@ complexities of doing so safely in parallel.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="sortium.file_utils.FileUtils.get_file_modified_date">
-<span class="sig-name descname"><span class="pre">get_file_modified_date</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">datetime</span></span></span><a class="reference internal" href="_modules/sortium/file_utils.html#FileUtils.get_file_modified_date"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sortium.file_utils.FileUtils.get_file_modified_date" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_file_modified_date</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">datetime</span></span></span><a class="reference internal" href="_modules/sortium/file_utils.html#FileUtils.get_file_modified_date"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sortium.file_utils.FileUtils.get_file_modified_date" title="Link to this definition">#</a></dt>
 <dd><p>Returns the last modified datetime of a file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -442,7 +667,7 @@ complexities of doing so safely in parallel.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="sortium.file_utils.FileUtils.iter_all_files_recursive">
-<span class="sig-name descname"><span class="pre">iter_all_files_recursive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Generator</span><span class="p"><span class="pre">[</span></span><span class="pre">Path</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/sortium/file_utils.html#FileUtils.iter_all_files_recursive"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sortium.file_utils.FileUtils.iter_all_files_recursive" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">iter_all_files_recursive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Generator</span><span class="p"><span class="pre">[</span></span><span class="pre">Path</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/sortium/file_utils.html#FileUtils.iter_all_files_recursive"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sortium.file_utils.FileUtils.iter_all_files_recursive" title="Link to this definition">#</a></dt>
 <dd><p>Recursively yields all files in a directory and its subdirectories.</p>
 <p>This is a memory-efficient generator that does not load the entire
 file list into memory.</p>
@@ -450,7 +675,8 @@ file list into memory.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>folder_path</strong> – Path to the root directory to scan.</p></li>
-<li><p><strong>ignore_dir</strong> (<em>Sequence</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – Directory names to ignore.</p></li>
+<li><p><strong>ignore_dir</strong> – Additional directory names to ignore alongside the
+built-in defaults (<code class="docutils literal notranslate"><span class="pre">DEFAULT_IGNORE_ENTRIES</span></code>).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Yields<span class="colon">:</span></dt>
@@ -461,14 +687,15 @@ file list into memory.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="sortium.file_utils.FileUtils.iter_shallow_files">
-<span class="sig-name descname"><span class="pre">iter_shallow_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Generator</span><span class="p"><span class="pre">[</span></span><span class="pre">Path</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/sortium/file_utils.html#FileUtils.iter_shallow_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sortium.file_utils.FileUtils.iter_shallow_files" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">iter_shallow_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Generator</span><span class="p"><span class="pre">[</span></span><span class="pre">Path</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/sortium/file_utils.html#FileUtils.iter_shallow_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sortium.file_utils.FileUtils.iter_shallow_files" title="Link to this definition">#</a></dt>
 <dd><p>Yields files in the top level of a directory.</p>
 <p>This is a non-recursive generator.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>folder_path</strong> – Path to the folder to iterate.</p></li>
-<li><p><strong>ignore_dir</strong> (<em>Sequence</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – Names of directories or files to ignore.</p></li>
+<li><p><strong>ignore_dir</strong> – Additional names to ignore alongside the
+built-in defaults (<code class="docutils literal notranslate"><span class="pre">DEFAULT_IGNORE_ENTRIES</span></code>).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Yields<span class="colon">:</span></dt>
@@ -477,11 +704,29 @@ file list into memory.</p>
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="sortium.file_utils.FileUtils.plan_destination_path">
+<span class="sig-name descname"><span class="pre">plan_destination_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dest_folder_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Path</span></span></span><a class="reference internal" href="_modules/sortium/file_utils.html#FileUtils.plan_destination_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sortium.file_utils.FileUtils.plan_destination_path" title="Link to this definition">#</a></dt>
+<dd><p>Predicts the collision-safe destination path for a file move.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source_path</strong> – Current location of the file.</p></li>
+<li><p><strong>dest_folder_path</strong> – Folder where the file is planned to be moved.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Path of the file at the destination, including any rename that
+would be required to avoid collisions.</p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="sortium.config.DEFAULT_FILE_TYPES">
-<span class="sig-prename descclassname"><span class="pre">sortium.config.</span></span><span class="sig-name descname"><span class="pre">DEFAULT_FILE_TYPES</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#sortium.config.DEFAULT_FILE_TYPES" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">sortium.config.</span></span><span class="sig-name descname"><span class="pre">DEFAULT_FILE_TYPES</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#sortium.config.DEFAULT_FILE_TYPES" title="Link to this definition">#</a></dt>
 <dd><p>Default file type categories and their associated file extensions.</p>
 <p>Used to map file extensions to logical categories during file sorting.</p>
 <p class="rubric">Examples</p>
@@ -510,85 +755,130 @@ file list into memory.</p>
 
 </section>
 
-        </article>
-      </div>
-      <footer>
-        
-        <div class="related-pages">
-          
-          <a class="prev-page" href="index.html">
-              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
-              <div class="page-info">
-                <div class="context">
-                  <span>Previous</span>
-                </div>
-                
-                <div class="title">Home</div>
-                
-              </div>
-            </a>
-        </div>
-        <div class="bottom-of-page">
-          <div class="left-details">
-            <div class="copyright">
-                Copyright &#169; 2025, Sarthak Goyal
-            </div>
-            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
-            
-            <a href="https://github.com/pradyunsg/furo">Furo</a>
-            
-          </div>
-          <div class="right-details">
-            
-          </div>
-        </div>
-        
-      </footer>
-    </div>
-    <aside class="toc-drawer">
-      
-      
-      <div class="toc-sticky toc-scroll">
-        <div class="toc-title-container">
-          <span class="toc-title">
-            On this page
-          </span>
-        </div>
-        <div class="toc-tree-container">
-          <div class="toc-tree">
-            <ul>
-<li><a class="reference internal" href="#">Sortium Package</a><ul>
-<li><a class="reference internal" href="#sortium.sorter.Sorter"><code class="docutils literal notranslate"><span class="pre">Sorter</span></code></a><ul>
-<li><a class="reference internal" href="#sortium.sorter.Sorter.file_types_dict"><code class="docutils literal notranslate"><span class="pre">Sorter.file_types_dict</span></code></a></li>
-<li><a class="reference internal" href="#sortium.sorter.Sorter.file_utils"><code class="docutils literal notranslate"><span class="pre">Sorter.file_utils</span></code></a></li>
-<li><a class="reference internal" href="#sortium.sorter.Sorter.sort_by_date"><code class="docutils literal notranslate"><span class="pre">Sorter.sort_by_date()</span></code></a></li>
-<li><a class="reference internal" href="#sortium.sorter.Sorter.sort_by_regex"><code class="docutils literal notranslate"><span class="pre">Sorter.sort_by_regex()</span></code></a></li>
-<li><a class="reference internal" href="#sortium.sorter.Sorter.sort_by_type"><code class="docutils literal notranslate"><span class="pre">Sorter.sort_by_type()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#sortium.file_utils.FileUtils"><code class="docutils literal notranslate"><span class="pre">FileUtils</span></code></a><ul>
-<li><a class="reference internal" href="#sortium.file_utils.FileUtils.find_unique_extensions"><code class="docutils literal notranslate"><span class="pre">FileUtils.find_unique_extensions()</span></code></a></li>
-<li><a class="reference internal" href="#sortium.file_utils.FileUtils.flatten_dir"><code class="docutils literal notranslate"><span class="pre">FileUtils.flatten_dir()</span></code></a></li>
-<li><a class="reference internal" href="#sortium.file_utils.FileUtils.get_file_modified_date"><code class="docutils literal notranslate"><span class="pre">FileUtils.get_file_modified_date()</span></code></a></li>
-<li><a class="reference internal" href="#sortium.file_utils.FileUtils.iter_all_files_recursive"><code class="docutils literal notranslate"><span class="pre">FileUtils.iter_all_files_recursive()</span></code></a></li>
-<li><a class="reference internal" href="#sortium.file_utils.FileUtils.iter_shallow_files"><code class="docutils literal notranslate"><span class="pre">FileUtils.iter_shallow_files()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#sortium.config.DEFAULT_FILE_TYPES"><code class="docutils literal notranslate"><span class="pre">DEFAULT_FILE_TYPES</span></code></a></li>
-</ul>
-</li>
-</ul>
 
-          </div>
-        </div>
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Welcome to Sortium’s Documentation</p>
       </div>
-      
-      
-    </aside>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
   </div>
-</div><script src="_static/documentation_options.js?v=5929fcd5"></script>
-    <script src="_static/doctools.js?v=9bcbadda"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="_static/scripts/furo.js?v=46bd48cc"></script>
-    </body>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sortium.sorter.Sorter"><code class="docutils literal notranslate"><span class="pre">Sorter</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sortium.sorter.Sorter.file_types_dict"><code class="docutils literal notranslate"><span class="pre">Sorter.file_types_dict</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sortium.sorter.Sorter.file_utils"><code class="docutils literal notranslate"><span class="pre">Sorter.file_utils</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sortium.sorter.Sorter.sort_by_date"><code class="docutils literal notranslate"><span class="pre">Sorter.sort_by_date()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sortium.sorter.Sorter.sort_by_extension"><code class="docutils literal notranslate"><span class="pre">Sorter.sort_by_extension()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sortium.sorter.Sorter.sort_by_regex"><code class="docutils literal notranslate"><span class="pre">Sorter.sort_by_regex()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sortium.sorter.Sorter.sort_by_type"><code class="docutils literal notranslate"><span class="pre">Sorter.sort_by_type()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sortium.file_utils.FileUtils"><code class="docutils literal notranslate"><span class="pre">FileUtils</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sortium.file_utils.FileUtils.apply_move_plan"><code class="docutils literal notranslate"><span class="pre">FileUtils.apply_move_plan()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sortium.file_utils.FileUtils.export_directory_structure"><code class="docutils literal notranslate"><span class="pre">FileUtils.export_directory_structure()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sortium.file_utils.FileUtils.find_unique_extensions"><code class="docutils literal notranslate"><span class="pre">FileUtils.find_unique_extensions()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sortium.file_utils.FileUtils.flatten_dir"><code class="docutils literal notranslate"><span class="pre">FileUtils.flatten_dir()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sortium.file_utils.FileUtils.get_file_modified_date"><code class="docutils literal notranslate"><span class="pre">FileUtils.get_file_modified_date()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sortium.file_utils.FileUtils.iter_all_files_recursive"><code class="docutils literal notranslate"><span class="pre">FileUtils.iter_all_files_recursive()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sortium.file_utils.FileUtils.iter_shallow_files"><code class="docutils literal notranslate"><span class="pre">FileUtils.iter_shallow_files()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sortium.file_utils.FileUtils.plan_destination_path"><code class="docutils literal notranslate"><span class="pre">FileUtils.plan_destination_path()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sortium.config.DEFAULT_FILE_TYPES"><code class="docutils literal notranslate"><span class="pre">DEFAULT_FILE_TYPES</span></code></a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="_sources/modules.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2025, Sarthak Goyal.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
 </html>
