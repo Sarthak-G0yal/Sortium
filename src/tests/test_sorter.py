@@ -58,6 +58,26 @@ def test_sort_by_type(sorter_instance: Sorter, file_tree: Path):
     assert (file_tree / "sub_dir" / "nested_image.png").is_file()
 
 
+def test_sort_by_type_recursive(sorter_instance: Sorter, file_tree: Path):
+    """Ensures recursive mode captures nested files."""
+    plan_path = sorter_instance.sort_by_type(
+        str(file_tree),
+        plan_output=str(file_tree / "plan_type_recursive.json"),
+        recursive=True,
+        ignore_dir=["ignore_this_dir"],
+    )
+    plan_data = json.loads(plan_path.read_text())
+    assert plan_data["entry_count"] == 8
+    assert plan_data["metadata"]["recursive"] is True
+
+    sorter_instance.file_utils.apply_move_plan(str(plan_path))
+
+    assert (file_tree / "Images" / "nested_image.png").is_file()
+    assert (file_tree / "Documents" / "nested_doc.pdf").is_file()
+    assert (file_tree / "Archives" / "deep_archive.zip").is_file()
+    assert not (file_tree / "sub_dir" / "nested_image.png").exists()
+
+
 def test_sort_by_type_to_destination(sorter_instance: Sorter, file_tree: Path):
     """Tests sorting files to a separate destination directory."""
     dest_path = file_tree / "sorted_output"

@@ -128,12 +128,14 @@ class Sorter:
         ignore_dir: List[str] | None = None,
         plan_output: str | None = None,
         auto_apply: bool = False,
+        recursive: bool = False,
     ) -> Path:
         """Generates a plan to sort files into subdirectories by file type.
 
         Files in the top level of ``folder_path`` are mapped into subdirectories
-        (e.g., "Images", "Documents") inside ``dest_folder_path``. The plan is
-        written to JSON so it can be inspected or edited before execution.
+        (e.g., "Images", "Documents") inside ``dest_folder_path``. Enable
+        ``recursive`` to scan the entire tree. The plan is written to JSON so it
+        can be inspected or edited before execution.
 
         .. note:: This method is memory-efficient and suitable for sorting
                   directories with a very large number of files.
@@ -145,6 +147,7 @@ class Sorter:
             ignore_dir: Optional directory names to skip when scanning.
             plan_output: Optional JSON path override for the emitted plan.
             auto_apply: If ``True``, immediately executes the generated plan.
+            recursive: When ``True``, recursively scans nested folders.
 
         Returns:
             Path to the JSON plan file.
@@ -158,9 +161,13 @@ class Sorter:
         dest_base_folder = Path(dest_folder_path) if dest_folder_path else source_folder
 
         entries: List[Dict[str, Any]] = []
-        for item in self.file_utils.iter_shallow_files(
-            str(source_folder), ignore_dir
-        ):
+        file_iterator = (
+            self.file_utils.iter_all_files_recursive(str(source_folder), ignore_dir)
+            if recursive
+            else self.file_utils.iter_shallow_files(str(source_folder), ignore_dir)
+        )
+
+        for item in file_iterator:
             category = self._get_category(item.suffix)
             dest_folder = dest_base_folder / category
             planned_path = self.file_utils.plan_destination_path(
@@ -184,6 +191,7 @@ class Sorter:
             extra_metadata={
                 "ignored": list(ignore_dir or []),
                 "file_types": self.file_types_dict,
+                "recursive": recursive,
             },
         )
 
@@ -199,10 +207,13 @@ class Sorter:
         dest_folder_path: str | None = None,
         plan_output: str | None = None,
         auto_apply: bool = False,
+        recursive: bool = False,
     ) -> Path:
         """Generates a plan to sort files within categories by modification date.
 
-        Files are moved into date-stamped subfolders (e.g., "01-Jan-2023").
+        Files are moved into date-stamped subfolders (e.g., "01-Jan-2023"). Set
+        ``recursive`` to pull in files from nested directories within each
+        category.
 
         Args:
             folder_path: Root directory containing the category folders to process.
@@ -211,6 +222,8 @@ class Sorter:
                 to ``folder_path`` when ``None``.
             plan_output: Optional JSON path override for the emitted plan.
             auto_apply: If ``True``, immediately executes the generated plan.
+            recursive: When ``True``, scans inside nested directories under
+                each category.
 
         Returns:
             Path to the JSON plan file.
@@ -230,7 +243,14 @@ class Sorter:
                 print(f"Category folder '{category_folder}' not found, skipping.")
                 continue
 
-            for file_path in category_folder.iterdir():
+            if recursive:
+                file_iter = self.file_utils.iter_all_files_recursive(
+                    str(category_folder)
+                )
+            else:
+                file_iter = category_folder.iterdir()
+
+            for file_path in file_iter:
                 if not file_path.is_file():
                     continue
 
@@ -261,7 +281,10 @@ class Sorter:
             destination_root=dest_root,
             entries=entries,
             plan_output=plan_output,
-            extra_metadata={"folder_types": folder_types},
+            extra_metadata={
+                "folder_types": folder_types,
+                "recursive": recursive,
+            },
         )
 
         if auto_apply:
@@ -276,12 +299,13 @@ class Sorter:
         dest_folder_path: str,
         plan_output: str | None = None,
         auto_apply: bool = False,
+        recursive: bool = True,
     ) -> Path:
         """Generates a plan to sort files recursively based on regex patterns.
 
-        Scans ``folder_path`` and its subdirectories for files whose names
-        match the provided regex patterns, then moves them to categorized
-        folders within ``dest_folder_path``.
+        Scans ``folder_path`` (optionally including subdirectories) for files
+        whose names match the provided regex patterns, then moves them to
+        categorized folders within ``dest_folder_path``.
 
         Args:
             folder_path: Path to the directory to scan recursively.
@@ -289,6 +313,7 @@ class Sorter:
             dest_folder_path: Base directory where sorted files will be moved.
             plan_output: Optional JSON path override for the emitted plan.
             auto_apply: If ``True``, immediately executes the generated plan.
+            recursive: When ``True`` (default), recursively scans the folder.
 
         Returns:
             Path to the JSON plan file.
@@ -303,7 +328,11 @@ class Sorter:
         dest_base_path = Path(dest_folder_path)
 
         entries: List[Dict[str, Any]] = []
-        file_generator = self.file_utils.iter_all_files_recursive(str(source_path))
+        file_generator = (
+            self.file_utils.iter_all_files_recursive(str(source_path))
+            if recursive
+            else self.file_utils.iter_shallow_files(str(source_path))
+        )
         for file_path in file_generator:
             for category, pattern in regex.items():
                 if re.match(pattern, file_path.name):
@@ -327,7 +356,7 @@ class Sorter:
             destination_root=dest_base_path,
             entries=entries,
             plan_output=plan_output,
-            extra_metadata={"regex": regex},
+            extra_metadata={"regex": regex, "recursive": recursive},
         )
 
         if auto_apply:
@@ -342,6 +371,7 @@ class Sorter:
         ignore_dir: List[str] | None = None,
         plan_output: str | None = None,
         auto_apply: bool = False,
+        recursive: bool = True,
     ) -> Path:
         """Generates a plan to sort files by extension into subdirectories.
 
@@ -352,6 +382,7 @@ class Sorter:
             ignore_dir: Optional directory names to skip when scanning.
             plan_output: Optional JSON path override for the emitted plan.
             auto_apply: If ``True``, immediately executes the generated plan.
+            recursive: When ``True`` (default), recursively scans the tree.
 
         Returns:
             Path to the JSON plan file.
@@ -365,9 +396,13 @@ class Sorter:
         dest_base_folder = Path(dest_folder_path) if dest_folder_path else source_folder
 
         entries: List[Dict[str, Any]] = []
-        for item in self.file_utils.iter_all_files_recursive(
-            str(source_folder), ignore_dir
-        ):
+        file_iterator = (
+            self.file_utils.iter_all_files_recursive(str(source_folder), ignore_dir)
+            if recursive
+            else self.file_utils.iter_shallow_files(str(source_folder), ignore_dir)
+        )
+
+        for item in file_iterator:
             extension = item.suffix.lower().lstrip(".")
             dest_folder = dest_base_folder / extension if extension else dest_base_folder
             planned_path = self.file_utils.plan_destination_path(
@@ -387,7 +422,10 @@ class Sorter:
             destination_root=dest_base_folder,
             entries=entries,
             plan_output=plan_output,
-            extra_metadata={"ignored": list(ignore_dir or [])},
+            extra_metadata={
+                "ignored": list(ignore_dir or []),
+                "recursive": recursive,
+            },
         )
 
         if auto_apply:

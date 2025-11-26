@@ -429,7 +429,7 @@ wheels = [
 
 [[package]]
 name = "sortium"
-version = "1.7.0"
+version = "2.1.0"
 source = { editable = "." }
 
 [package.optional-dependencies]

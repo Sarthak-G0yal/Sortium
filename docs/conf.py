@@ -1,6 +1,8 @@
 import os
 import sys
 
+from sortium import __version__ as sortium_version
+
 # Configuration file for the Sphinx documentation builder.
 
 # -- Project information -----------------------------------------------------
@@ -8,6 +10,8 @@ import sys
 project = "Sortium"
 author = "Sarthak Goyal"
 copyright = "2025, Sarthak Goyal"
+version = ".".join(sortium_version.split(".")[:2])
+release = sortium_version
 
 # -- General configuration ---------------------------------------------------
 

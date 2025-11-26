@@ -54,6 +54,10 @@ Welcome to Sortium's Documentation
           <h3>Minimal Memory Footprint</h3>
           <p>Streams directories with generators so even sprawling NAS shares stay manageable.</p>
        </article>
+       <article class="sortium-feature">
+          <h3>Recursive On-Demand</h3>
+          <p>Flip a ``recursive=True`` flag on any strategy to pull nested files into the plan—or leave it off for shallow sweeps.</p>
+       </article>
     </section>
 
 .. note::
@@ -95,10 +99,14 @@ This is the simplest use case. It organizes all files in a folder into subdirect
 
    # Create a Sorter instance and produce a plan
    sorter = Sorter()
-   plan_path = sorter.sort_by_type(my_folder)
+   plan_path = sorter.sort_by_type(my_folder, recursive=True)
 
    # Inspect/edit the JSON if desired, then apply it
    sorter.file_utils.apply_move_plan(str(plan_path))
+
+.. tip::
+
+   Drop ``recursive=True`` (the default) if you only want to move files living directly inside ``my_folder``.
 
 
 **Example 2: Sorting to a New Destination**
@@ -115,7 +123,11 @@ Organize files from a source folder and move the categorized results to a separa
    sorter = Sorter()
 
    # Prepare a plan that moves files into categorized folders inside destination_dir
-   plan_path = sorter.sort_by_type(source_dir, dest_folder_path=destination_dir)
+   plan_path = sorter.sort_by_type(
+      source_dir,
+      dest_folder_path=destination_dir,
+      recursive=True,
+   )
    sorter.file_utils.apply_move_plan(str(plan_path))
 
 
@@ -138,8 +150,17 @@ Recursively scan a directory and sort files based on custom patterns. This is gr
    }
 
    sorter = Sorter()
-   plan_path = sorter.sort_by_regex(project_folder, regex_patterns, sorted_output)
+   plan_path = sorter.sort_by_regex(
+      project_folder,
+      regex_patterns,
+      sorted_output,
+      recursive=True,
+   )
    sorter.file_utils.apply_move_plan(str(plan_path))
+
+.. note::
+
+   ``recursive`` defaults to ``True`` for regex sorting so deep project trees are handled automatically. Pass ``recursive=False`` to limit the scan to the root directory only.
 
 
 Project Info

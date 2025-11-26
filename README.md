@@ -73,7 +73,10 @@ source_directory = "./my_messy_downloads_folder"
 sorter = Sorter()
 
 # Phase 1: Generate an editable JSON plan
-plan_path = sorter.sort_by_type(source_directory)
+plan_path = sorter.sort_by_type(
+  source_directory,
+  recursive=True,  # include nested folders
+)
 
 # (Optional) Inspect / edit the JSON plan here
 # ...
@@ -84,6 +87,8 @@ print(f"Applied plan {plan_path}")
 
 # Need to undo? Re-use the same plan with reverse=True
 sorter.file_utils.apply_move_plan(str(plan_path), reverse=True)
+
+# Prefer a shallow cleanup? Drop recursive=True (it defaults to False).
 ```
 
 ### Example 2: Sort Files to a Different Destination
@@ -103,6 +108,7 @@ plan_path = sorter.sort_by_type(
   source_dir,
   dest_folder_path=destination_dir,
   plan_output="./sorting_plan.json",
+  recursive=True,
 )
 
 # Review/edit sorting_plan.json if needed, then execute
